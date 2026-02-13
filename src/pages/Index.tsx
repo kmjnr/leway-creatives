@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import Philosophy from "@/components/Philosophy";
 import Services from "@/components/Services";
 import RealityCheck from "@/components/RealityCheck";
+import Comparison from "@/components/Comparison";
 import HowItWorks from "@/components/HowItWorks";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
@@ -110,6 +111,7 @@ const Index = () => {
         <Philosophy />
         <Services />
         <RealityCheck />
+        <Comparison />
         <HowItWorks />
         <Testimonials />
         <FAQ />
