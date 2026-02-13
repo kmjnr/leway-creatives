@@ -46,7 +46,7 @@ export default function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="rounded-2xl border border-white/10 bg-white/5 p-8 flex flex-col"
+              className="rounded-2xl border border-overlay/10 bg-overlay/5 p-8 flex flex-col"
             >
               <div className="flex gap-1 mb-4">
                 {Array.from({ length: t.stars }).map((_, j) => (

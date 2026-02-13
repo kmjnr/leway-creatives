@@ -80,7 +80,7 @@ export default function ContactForm() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="rounded-2xl border border-white/10 bg-white/5 p-8"
+            className="rounded-2xl border border-overlay/10 bg-overlay/5 p-8"
           >
             <AnimatePresence mode="wait">
               {submitted ? (
@@ -135,7 +135,7 @@ export default function ContactForm() {
                       id="name"
                       placeholder="Your Name"
                       {...register("name")}
-                      className="mt-1 bg-white/5 border-white/10 text-accent-foreground placeholder:text-accent-foreground/30"
+                      className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30"
                     />
                     {errors.name && (
                       <p className="text-xs text-destructive mt-1">{errors.name.message}</p>
@@ -151,7 +151,7 @@ export default function ContactForm() {
                       type="email"
                       placeholder="best@email.com"
                       {...register("email")}
-                      className="mt-1 bg-white/5 border-white/10 text-accent-foreground placeholder:text-accent-foreground/30"
+                      className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30"
                     />
                     {errors.email && (
                       <p className="text-xs text-destructive mt-1">{errors.email.message}</p>
@@ -167,7 +167,7 @@ export default function ContactForm() {
                       type="tel"
                       placeholder="+254..."
                       {...register("whatsapp")}
-                      className="mt-1 bg-white/5 border-white/10 text-accent-foreground placeholder:text-accent-foreground/30"
+                      className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30"
                     />
                     <p className="text-xs text-accent-foreground/40 mt-1">
                       Please include country code
@@ -186,7 +186,7 @@ export default function ContactForm() {
                       placeholder="I need a high-converting landing page for my real estate business..."
                       rows={4}
                       {...register("service")}
-                      className="mt-1 bg-white/5 border-white/10 text-accent-foreground placeholder:text-accent-foreground/30"
+                      className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30"
                     />
                     {errors.service && (
                       <p className="text-xs text-destructive mt-1">{errors.service.message}</p>

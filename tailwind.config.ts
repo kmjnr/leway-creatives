@@ -51,6 +51,8 @@ export default {
         sage: "hsl(var(--sage))",
         paper: "hsl(var(--paper))",
         mint: "hsl(var(--mint))",
+        overlay: "hsl(var(--overlay))",
+        "overlay-shadow": "hsl(var(--overlay-shadow))",
       },
       fontFamily: {
         display: ['"Plus Jakarta Sans"', 'sans-serif'],

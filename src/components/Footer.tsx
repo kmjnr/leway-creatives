@@ -12,7 +12,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-accent border-t border-white/5" aria-label="Site footer">
+    <footer className="bg-accent border-t border-overlay/5" aria-label="Site footer">
       <div className="container mx-auto px-6 max-w-6xl py-16">
         <div className="grid gap-12 md:grid-cols-3">
           {/* Brand */}
@@ -76,7 +76,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-white/5 py-5">
+      <div className="border-t border-overlay/5 py-5">
         <div className="container mx-auto px-6 max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="font-body text-xs text-accent-foreground/40">
             © {year} LEWAY Creatives. All rights reserved.
