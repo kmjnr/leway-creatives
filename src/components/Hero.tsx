@@ -25,7 +25,7 @@ export default function Hero() {
 
   return (
     <section
-      className="relative min-h-screen flex items-center bg-accent overflow-hidden pt-20"
+      className="relative min-h-screen flex items-center bg-accent overflow-hidden pt-20 pb-16 md:pb-24"
       aria-label="Hero"
     >
       {/* Background glow effects */}
