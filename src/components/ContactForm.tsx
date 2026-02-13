@@ -39,8 +39,13 @@ export default function ContactForm() {
   };
 
   return (
-    <section id="contact" className="py-24 md:py-32 bg-accent" aria-label="Contact form">
-      <div className="container mx-auto px-6 max-w-4xl">
+    <section id="contact" className="relative py-24 md:py-32 bg-foreground overflow-hidden" aria-label="Contact form">
+      {/* Decorative radial glow */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full bg-primary/10 blur-[120px]" />
+        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-primary/5 blur-[100px]" />
+      </div>
+      <div className="relative container mx-auto px-6 max-w-4xl">
         <div className="grid gap-12 lg:grid-cols-2 items-start">
           {/* Left copy */}
           <motion.div
