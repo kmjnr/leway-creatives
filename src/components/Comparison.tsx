@@ -82,7 +82,7 @@ export default function Comparison() {
                 </div>
                 <div className="flex items-center gap-2.5 px-6 py-4 bg-primary/[0.03]">
                   {row.lewayIcon}
-                  <span className="font-display text-sm font-bold text-accent-foreground">
+                  <span className="font-display text-sm font-bold text-foreground">
                     {row.leway}
                   </span>
                 </div>
