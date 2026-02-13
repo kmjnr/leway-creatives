@@ -210,6 +210,20 @@ export default function ContactForm() {
           </motion.div>
         </div>
       </div>
+      {/* Diagonal divider */}
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none" aria-hidden="true">
+        <svg
+          className="relative block w-full h-16 md:h-24"
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <polygon
+            points="0,120 1200,0 1200,120"
+            className="fill-accent"
+          />
+        </svg>
+      </div>
     </section>
   );
 }
