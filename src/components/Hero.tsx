@@ -42,7 +42,7 @@ export default function Hero() {
             transition={{ duration: 0.7, ease: "easeOut" }}
             className="flex flex-col items-start gap-7"
           >
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-medium text-primary tracking-wide uppercase">
+            <span className="inline-flex items-center gap-2 rounded-full border border-overlay/10 bg-overlay/5 px-4 py-1.5 text-xs font-medium text-primary tracking-wide uppercase">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               Design & Copywriting Agency
             </span>
@@ -83,7 +83,7 @@ export default function Hero() {
               {services.map(({ icon: Icon, label }) => (
                 <span
                   key={label}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm px-4 py-2 text-sm font-medium text-accent-foreground/80"
+                  className="inline-flex items-center gap-2 rounded-full border border-overlay/10 bg-overlay/5 backdrop-blur-sm px-4 py-2 text-sm font-medium text-accent-foreground/80"
                 >
                   <Icon className="w-4 h-4 text-primary" />
                   {label}
@@ -107,7 +107,7 @@ export default function Hero() {
             {/* Main image card */}
             <div className="relative w-full max-w-md lg:max-w-lg">
               {/* Primary image container — tilted for dynamism */}
-              <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm shadow-2xl shadow-primary/10 rotate-1 hover:rotate-0 transition-transform duration-500">
+              <div className="relative rounded-2xl overflow-hidden border border-overlay/10 bg-overlay/5 backdrop-blur-sm shadow-2xl shadow-primary/10 rotate-1 hover:rotate-0 transition-transform duration-500">
                 <div className="aspect-[4/5] bg-gradient-to-br from-accent via-accent to-primary/20 flex items-center justify-center">
                   {/* Placeholder — replace with actual image */}
                   <div className="text-center p-8">
@@ -126,7 +126,7 @@ export default function Hero() {
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
-                className="absolute -left-6 top-1/4 rounded-xl border border-white/10 bg-accent/90 backdrop-blur-md px-4 py-3 shadow-lg shadow-black/20 -rotate-3"
+                className="absolute -left-6 top-1/4 rounded-xl border border-overlay/10 bg-accent/90 backdrop-blur-md px-4 py-3 shadow-lg shadow-overlay-shadow/20 -rotate-3"
               >
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
@@ -143,7 +143,7 @@ export default function Hero() {
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.65 }}
-                className="absolute -right-4 top-[15%] rounded-xl border border-white/10 bg-accent/90 backdrop-blur-md px-4 py-3 shadow-lg shadow-black/20 rotate-2"
+                className="absolute -right-4 top-[15%] rounded-xl border border-overlay/10 bg-accent/90 backdrop-blur-md px-4 py-3 shadow-lg shadow-overlay-shadow/20 rotate-2"
               >
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
@@ -160,7 +160,7 @@ export default function Hero() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.8 }}
-                className="absolute -bottom-4 left-1/2 -translate-x-1/2 rounded-xl border border-white/10 bg-accent/90 backdrop-blur-md px-5 py-3 shadow-lg shadow-black/20"
+                className="absolute -bottom-4 left-1/2 -translate-x-1/2 rounded-xl border border-overlay/10 bg-accent/90 backdrop-blur-md px-5 py-3 shadow-lg shadow-overlay-shadow/20"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">

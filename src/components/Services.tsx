@@ -83,7 +83,7 @@ export default function Services() {
                 className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${
                   isActive
                     ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
-                    : "bg-white/5 border border-white/10 text-accent-foreground/70 hover:border-white/20"
+                    : "bg-overlay/5 border border-overlay/10 text-accent-foreground/70 hover:border-overlay/20"
                 }`}
                 aria-pressed={isActive}
               >
@@ -108,7 +108,7 @@ export default function Services() {
             {current.services.map((s) => (
               <div
                 key={s.name}
-                className="group rounded-2xl border border-white/10 bg-white/5 p-6 transition-all hover:border-primary/30 hover:bg-white/[0.08]"
+                className="group rounded-2xl border border-overlay/10 bg-overlay/5 p-6 transition-all hover:border-primary/30 hover:bg-overlay/[0.08]"
               >
                 <div className="flex items-start gap-3">
                   <ChevronRight
