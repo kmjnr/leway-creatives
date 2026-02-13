@@ -5,14 +5,24 @@ const scrollTo = (id: string) => {
   document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
 };
 
-const services = [
-  { icon: Globe, label: "Web Design" },
-  { icon: Palette, label: "Graphic Design" },
-  { icon: PenTool, label: "Copywriting" },
-  { icon: UserCheck, label: "Personal Branding" },
-];
-
 export default function Hero() {
+  const buttons = (
+    <div className="flex flex-wrap gap-4 mt-1">
+      <button
+        onClick={() => scrollTo("#contact")}
+        className="rounded-full bg-primary px-8 py-3.5 font-display font-bold text-primary-foreground transition-transform hover:scale-105 hover:shadow-xl hover:shadow-primary/25"
+      >
+        Start Your Transformation
+      </button>
+      <button
+        onClick={() => scrollTo("#contact")}
+        className="rounded-full border border-accent-foreground/20 px-8 py-3.5 font-display font-semibold text-accent-foreground transition-transform hover:scale-105 hover:border-accent-foreground/40"
+      >
+        Order Service
+      </button>
+    </div>
+  );
+
   return (
     <section
       className="relative min-h-screen flex items-center bg-accent overflow-hidden pt-20"
@@ -58,38 +68,8 @@ export default function Hero() {
               Web Design with Psychological Copywriting to turn your visitors into obsessive buyers.
             </p>
 
-            <div className="flex flex-wrap gap-4 mt-1">
-              <button
-                onClick={() => scrollTo("#contact")}
-                className="rounded-full bg-primary px-8 py-3.5 font-display font-bold text-primary-foreground transition-transform hover:scale-105 hover:shadow-xl hover:shadow-primary/25"
-              >
-                Start Your Transformation
-              </button>
-              <button
-                onClick={() => scrollTo("#contact")}
-                className="rounded-full border border-accent-foreground/20 px-8 py-3.5 font-display font-semibold text-accent-foreground transition-transform hover:scale-105 hover:border-accent-foreground/40"
-              >
-                Order Service
-              </button>
-            </div>
-
-            {/* Service pills — at a glance */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-wrap gap-3 mt-2"
-            >
-              {services.map(({ icon: Icon, label }) => (
-                <span
-                  key={label}
-                  className="inline-flex items-center gap-2 rounded-full border border-overlay/10 bg-overlay/5 backdrop-blur-sm px-4 py-2 text-sm font-medium text-accent-foreground/80"
-                >
-                  <Icon className="w-4 h-4 text-primary" />
-                  {label}
-                </span>
-              ))}
-            </motion.div>
+            {/* Buttons: visible on desktop only */}
+            <div className="hidden lg:block">{buttons}</div>
           </motion.div>
 
           {/* Right: Creative image composition */}
@@ -109,7 +89,6 @@ export default function Hero() {
               {/* Primary image container — tilted for dynamism */}
               <div className="relative rounded-2xl overflow-hidden border border-overlay/10 bg-overlay/5 backdrop-blur-sm shadow-2xl shadow-primary/10 rotate-1 hover:rotate-0 transition-transform duration-500">
                 <div className="aspect-[4/5] bg-gradient-to-br from-accent via-accent to-primary/20 flex items-center justify-center">
-                  {/* Placeholder — replace with actual image */}
                   <div className="text-center p-8">
                     <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-primary/20 flex items-center justify-center">
                       <Palette className="w-10 h-10 text-primary" />
@@ -121,12 +100,12 @@ export default function Hero() {
                 </div>
               </div>
 
-              {/* Floating accent cards — service previews */}
+              {/* Floating accent cards */}
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
-                className="absolute -left-6 top-1/4 rounded-xl border border-overlay/10 bg-accent/90 backdrop-blur-md px-4 py-3 shadow-lg shadow-overlay-shadow/20 -rotate-3"
+                className="absolute -left-6 top-[18%] rounded-xl border border-overlay/10 bg-accent/90 backdrop-blur-md px-4 py-3 shadow-lg shadow-overlay-shadow/20 -rotate-3"
               >
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
@@ -143,7 +122,7 @@ export default function Hero() {
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.65 }}
-                className="absolute -right-4 top-[15%] rounded-xl border border-overlay/10 bg-accent/90 backdrop-blur-md px-4 py-3 shadow-lg shadow-overlay-shadow/20 rotate-2"
+                className="absolute -right-4 top-[8%] rounded-xl border border-overlay/10 bg-accent/90 backdrop-blur-md px-4 py-3 shadow-lg shadow-overlay-shadow/20 rotate-2"
               >
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
@@ -152,6 +131,23 @@ export default function Hero() {
                   <div>
                     <p className="text-xs font-display font-bold text-accent-foreground">Copywriting</p>
                     <p className="text-[10px] text-accent-foreground/50">Words that sell</p>
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.75 }}
+                className="absolute -left-4 top-[55%] rounded-xl border border-overlay/10 bg-accent/90 backdrop-blur-md px-4 py-3 shadow-lg shadow-overlay-shadow/20 rotate-2"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                    <Palette className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-display font-bold text-accent-foreground">Graphic Design</p>
+                    <p className="text-[10px] text-accent-foreground/50">Visuals that pop</p>
                   </div>
                 </div>
               </motion.div>
@@ -173,6 +169,16 @@ export default function Hero() {
                 </div>
               </motion.div>
             </div>
+          </motion.div>
+
+          {/* Buttons: visible on mobile only, after image */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="lg:hidden"
+          >
+            {buttons}
           </motion.div>
         </div>
       </div>
