@@ -39,7 +39,7 @@ export default function ContactForm() {
   };
 
   return (
-    <section id="contact" className="relative py-24 md:py-32 bg-foreground overflow-hidden" aria-label="Contact form">
+    <section id="contact" className="relative pt-24 md:pt-32 pb-40 md:pb-52 bg-foreground overflow-hidden" aria-label="Contact form">
       {/* Decorative radial glow */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full bg-primary/10 blur-[120px]" />
@@ -210,17 +210,27 @@ export default function ContactForm() {
           </motion.div>
         </div>
       </div>
-      {/* Diagonal divider */}
+      {/* Diagonal divider with gradient */}
       <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none" aria-hidden="true">
         <svg
-          className="relative block w-full h-16 md:h-24"
-          viewBox="0 0 1200 120"
+          className="relative block w-full h-32 md:h-48"
+          viewBox="0 0 1200 200"
           preserveAspectRatio="none"
           xmlns="http://www.w3.org/2000/svg"
         >
+          <defs>
+            <linearGradient id="divider-gradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="hsl(153, 52%, 11%)" stopOpacity="0.4" />
+              <stop offset="100%" stopColor="hsl(140, 6%, 97%)" stopOpacity="1" />
+            </linearGradient>
+          </defs>
           <polygon
-            points="0,120 1200,0 1200,120"
-            className="fill-accent"
+            points="0,200 1200,40 1200,200"
+            fill="url(#divider-gradient)"
+          />
+          <polygon
+            points="0,200 1200,80 1200,200"
+            fill="hsl(140, 6%, 97%)"
           />
         </svg>
       </div>
