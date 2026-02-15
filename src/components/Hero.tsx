@@ -16,7 +16,7 @@ export default function Hero() {
         Start Your Transformation
       </button>
       <button
-      onClick={() => scrollTo("#contact")}
+      onClick={() => scrollTo("#services")}
       className="rounded-full border border-accent-foreground/20 px-8 py-3.5 font-display font-semibold text-accent-foreground transition-transform hover:scale-105 hover:border-accent-foreground/40">
 
         See Services   
