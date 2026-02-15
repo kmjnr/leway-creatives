@@ -12,7 +12,7 @@ const schema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
   email: z.string().trim().email("Enter a valid email").max(255),
   whatsapp: z.string().trim().min(8, "Enter a valid WhatsApp number").max(20),
-  service: z.string().trim().min(1, "Describe what you need").max(1000),
+  service: z.string().trim().min(1, "Describe what you need").max(1000)
 });
 
 type FormData = z.infer<typeof schema>;
@@ -25,7 +25,7 @@ export default function ContactForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const onSubmit = (data: FormData) => {
@@ -52,8 +52,8 @@ export default function ContactForm() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6 }}
-          >
+            transition={{ duration: 0.6 }}>
+
             <h2 className="font-display text-3xl md:text-4xl font-extrabold text-accent-foreground leading-tight mb-6">
               You've Come This Far.{" "}
               <span className="text-primary">You're Interested.</span>
@@ -85,22 +85,22 @@ export default function ContactForm() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="rounded-2xl border border-overlay/10 bg-overlay/5 p-8"
-          >
+            className="rounded-2xl border border-overlay/10 bg-overlay/5 p-8">
+
             <AnimatePresence mode="wait">
-              {submitted ? (
-                <motion.div
-                  key="success"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  className="flex flex-col items-center text-center py-8"
-                >
+              {submitted ?
+              <motion.div
+                key="success"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="flex flex-col items-center text-center py-8">
+
                   <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", delay: 0.1 }}
-                  >
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", delay: 0.1 }}>
+
                     <CheckCircle2 size={64} className="text-primary mb-4" />
                   </motion.div>
                   <h3 className="font-display text-2xl font-bold text-accent-foreground mb-2">
@@ -112,22 +112,22 @@ export default function ContactForm() {
                     as soon as possible.
                   </p>
                   <button
-                    onClick={() => setSubmitted(null)}
-                    className="flex items-center gap-2 text-sm text-primary font-semibold"
-                  >
+                  onClick={() => setSubmitted(null)}
+                  className="flex items-center gap-2 text-sm text-primary font-semibold">
+
                     <ArrowLeft size={16} /> Back
                   </button>
-                </motion.div>
-              ) : (
-                <motion.form
-                  key="form"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  onSubmit={handleSubmit(onSubmit)}
-                  className="space-y-5"
-                  noValidate
-                >
+                </motion.div> :
+
+              <motion.form
+                key="form"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onSubmit={handleSubmit(onSubmit)}
+                className="space-y-5"
+                noValidate>
+
                   <h3 className="font-display text-xl font-bold text-accent-foreground mb-2">
                     Let's Turn Spend Into Well-Spent.
                   </h3>
@@ -137,14 +137,14 @@ export default function ContactForm() {
                       Name
                     </Label>
                     <Input
-                      id="name"
-                      placeholder="Your Name"
-                      {...register("name")}
-                      className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30"
-                    />
-                    {errors.name && (
-                      <p className="text-xs text-destructive mt-1">{errors.name.message}</p>
-                    )}
+                    id="name"
+                    placeholder="Your Name"
+                    {...register("name")}
+                    className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30" />
+
+                    {errors.name &&
+                  <p className="text-xs text-destructive mt-1">{errors.name.message}</p>
+                  }
                   </div>
 
                   <div>
@@ -152,15 +152,15 @@ export default function ContactForm() {
                       Email
                     </Label>
                     <Input
-                      id="email"
-                      type="email"
-                      placeholder="best@email.com"
-                      {...register("email")}
-                      className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30"
-                    />
-                    {errors.email && (
-                      <p className="text-xs text-destructive mt-1">{errors.email.message}</p>
-                    )}
+                    id="email"
+                    type="email"
+                    placeholder="best@email.com"
+                    {...register("email")}
+                    className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30" />
+
+                    {errors.email &&
+                  <p className="text-xs text-destructive mt-1">{errors.email.message}</p>
+                  }
                   </div>
 
                   <div>
@@ -168,18 +168,18 @@ export default function ContactForm() {
                       WhatsApp Number
                     </Label>
                     <Input
-                      id="whatsapp"
-                      type="tel"
-                      placeholder="+254..."
-                      {...register("whatsapp")}
-                      className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30"
-                    />
+                    id="whatsapp"
+                    type="tel"
+                    placeholder="+254..."
+                    {...register("whatsapp")}
+                    className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30" />
+
                     <p className="text-xs text-accent-foreground/40 mt-1">
                       Please include country code
                     </p>
-                    {errors.whatsapp && (
-                      <p className="text-xs text-destructive mt-1">{errors.whatsapp.message}</p>
-                    )}
+                    {errors.whatsapp &&
+                  <p className="text-xs text-destructive mt-1">{errors.whatsapp.message}</p>
+                  }
                   </div>
 
                   <div>
@@ -187,25 +187,25 @@ export default function ContactForm() {
                       What service are you looking for?
                     </Label>
                     <Textarea
-                      id="service"
-                      placeholder="I need a high-converting landing page for my real estate business..."
-                      rows={4}
-                      {...register("service")}
-                      className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30"
-                    />
-                    {errors.service && (
-                      <p className="text-xs text-destructive mt-1">{errors.service.message}</p>
-                    )}
+                    id="service"
+                    placeholder="I need a high-converting landing page for my real estate business..."
+                    rows={4}
+                    {...register("service")}
+                    className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30" />
+
+                    {errors.service &&
+                  <p className="text-xs text-destructive mt-1">{errors.service.message}</p>
+                  }
                   </div>
 
                   <button
-                    type="submit"
-                    className="w-full rounded-full bg-primary py-3.5 font-display font-bold text-primary-foreground transition-transform hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/25"
-                  >
-                    Book A Free Strategy Session
+                  type="submit"
+                  className="w-full rounded-full bg-primary py-3.5 font-display font-bold text-primary-foreground transition-transform hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/25">
+
+                    Send Request          
                   </button>
                 </motion.form>
-              )}
+              }
             </AnimatePresence>
           </motion.div>
         </div>
@@ -216,8 +216,8 @@ export default function ContactForm() {
           className="relative block w-full h-32 md:h-48"
           viewBox="0 0 1200 200"
           preserveAspectRatio="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+          xmlns="http://www.w3.org/2000/svg">
+
           <defs>
             <linearGradient id="divider-gradient" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="hsl(153, 52%, 11%)" stopOpacity="0.4" />
@@ -226,14 +226,14 @@ export default function ContactForm() {
           </defs>
           <polygon
             points="0,200 1200,40 1200,200"
-            fill="url(#divider-gradient)"
-          />
+            fill="url(#divider-gradient)" />
+
           <polygon
             points="0,200 1200,80 1200,200"
-            fill="hsl(140, 6%, 97%)"
-          />
+            fill="hsl(140, 6%, 97%)" />
+
         </svg>
       </div>
-    </section>
-  );
+    </section>);
+
 }
