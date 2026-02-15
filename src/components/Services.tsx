@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Globe, Palette, PenTool, UserCheck, ChevronRight, ChevronLeft, ImageIcon } from "lucide-react";
+import metaAdGraphicDesign from "@/assets/images/meta-ad-graphic-design--headphones.webp";
 
 const categories = [
   {
@@ -20,7 +21,7 @@ const categories = [
     icon: Palette,
     title: "Graphic & Creative Design",
     description: "Visual identity that demands attention. From scroll-stopping ads to brand systems that make competitors nervous — we design assets that work as hard as you do.",
-    images: [] as string[],
+    images: [metaAdGraphicDesign],
     services: [
       { name: "Ads Banners", desc: "Visually engaging banners for Meta and other platforms to boost ad performance." },
       { name: "Flyer & Poster Design", desc: "Catchy promotional materials for both online and print marketing." },
