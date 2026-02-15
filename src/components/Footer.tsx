@@ -77,7 +77,7 @@ export default function Footer() {
         <div className="container mx-auto px-6 max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="font-body text-xs text-muted-foreground/70">© {year} LEWAY Creatives. All rights reserved.</p>
           <div className="flex gap-4">
-            <a href="#" className="font-body text-xs text-muted-foreground/70 hover:text-primary transition-colors">
+            <a href="/privacy-policy" className="font-body text-xs text-muted-foreground/70 hover:text-primary transition-colors">
               Privacy Policy
             </a>
             <a href="#" className="font-body text-xs text-muted-foreground/70 hover:text-primary transition-colors">
