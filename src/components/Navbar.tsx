@@ -29,7 +29,7 @@ export default function Navbar() {
           href="/"
           className="flex items-center gap-2"
           aria-label="LEWAY Creatives Home">
-          <img src={logo} alt="LEWAY Creatives" className="h-8 w-auto" />
+          <img src={logo} alt="LEWAY Creatives" className="h-10 md:h-12 w-auto" />
         </a>
 
         {/* Desktop links */}
