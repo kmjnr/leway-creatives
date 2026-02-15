@@ -48,43 +48,24 @@ export default function HowItWorks() {
 
           {/* Right: Timeline */}
           <div className="relative">
-            {/* Creative organic connecting line */}
+            {/* S-curve connecting line between steps */}
             <svg
-              className="absolute left-6 md:left-8 top-8 bottom-8 h-[calc(100%-4rem)] w-12 -translate-x-1/2"
-              viewBox="0 0 48 400"
+              className="absolute left-6 md:left-8 top-6 md:top-8 pointer-events-none z-0"
+              style={{ height: 'calc(100% - 3rem)' }}
+              width="120"
+              viewBox="0 0 120 600"
               preserveAspectRatio="none"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"
             >
-              <defs>
-                <linearGradient id="line-gradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.15" />
-                  <stop offset="30%" stopColor="hsl(var(--primary))" stopOpacity="0.4" />
-                  <stop offset="70%" stopColor="hsl(var(--primary))" stopOpacity="0.3" />
-                  <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.1" />
-                </linearGradient>
-              </defs>
-              {/* Thick organic background stroke */}
               <path
-                d="M 24 0 C 28 40, 18 80, 24 120 C 30 160, 16 200, 24 240 C 32 280, 20 320, 24 360 L 24 400"
-                stroke="url(#line-gradient)"
-                strokeWidth="6"
-                strokeLinecap="round"
-              />
-              {/* Thin sharp center stroke */}
-              <path
-                d="M 24 0 C 26 50, 22 90, 24 130 C 26 170, 22 210, 24 250 C 26 290, 22 340, 24 400"
-                stroke="hsl(var(--primary))"
+                d="M 24 0 C 24 60, 100 80, 100 150 C 100 220, 24 180, 24 250 C 24 320, 100 280, 100 350 C 100 420, 24 400, 24 500 L 24 600"
+                stroke="hsl(var(--border))"
                 strokeWidth="1.5"
-                strokeOpacity="0.5"
                 strokeLinecap="round"
+                fill="none"
               />
-              {/* Decorative dots at nodes */}
-              <circle cx="24" cy="0" r="3" fill="hsl(var(--primary))" fillOpacity="0.3" />
-              <circle cx="24" cy="133" r="2.5" fill="hsl(var(--primary))" fillOpacity="0.25" />
-              <circle cx="24" cy="266" r="2" fill="hsl(var(--primary))" fillOpacity="0.2" />
-              <circle cx="24" cy="400" r="3" fill="hsl(var(--primary))" fillOpacity="0.15" />
             </svg>
 
             <div className="flex flex-col gap-16">
