@@ -27,9 +27,7 @@ export default function Footer() {
 
           {/* Services */}
           <div>
-            <h4 className="font-display font-bold text-foreground mb-4 text-sm uppercase tracking-wider">
-              Services
-            </h4>
+            <h4 className="font-display font-bold text-foreground mb-4 text-sm uppercase tracking-wider">Services</h4>
             <ul className="space-y-2">
               {serviceLinks.map((s) => (
                 <li key={s}>
@@ -46,9 +44,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-display font-bold text-foreground mb-4 text-sm uppercase tracking-wider">
-              Contact
-            </h4>
+            <h4 className="font-display font-bold text-foreground mb-4 text-sm uppercase tracking-wider">Contact</h4>
             <ul className="space-y-3">
               <li>
                 <a
@@ -61,7 +57,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="https://wa.me/254700000000"
+                  href="https://wa.me/254741408647"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 font-body text-sm text-muted-foreground hover:text-primary transition-colors"
@@ -78,9 +74,7 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-overlay/5 py-5">
         <div className="container mx-auto px-6 max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="font-body text-xs text-muted-foreground/70">
-            © {year} LEWAY Creatives. All rights reserved.
-          </p>
+          <p className="font-body text-xs text-muted-foreground/70">© {year} LEWAY Creatives. All rights reserved.</p>
           <div className="flex gap-4">
             <a href="#" className="font-body text-xs text-muted-foreground/70 hover:text-primary transition-colors">
               Privacy Policy
