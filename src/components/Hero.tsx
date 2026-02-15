@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Globe, Palette, PenTool, UserCheck } from "lucide-react";
+import heroImage from "@/assets/images/hero-image.webp";
 
 const scrollTo = (id: string) => {
   document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
@@ -88,16 +89,12 @@ export default function Hero() {
             <div className="relative w-full max-w-md lg:max-w-lg">
               {/* Primary image container — tilted for dynamism */}
               <div className="relative rounded-2xl overflow-hidden border border-overlay/10 bg-overlay/5 backdrop-blur-sm shadow-2xl shadow-primary/10 rotate-1 hover:rotate-0 transition-transform duration-500">
-                <div className="aspect-[4/5] bg-gradient-to-br from-accent via-accent to-primary/20 flex items-center justify-center">
-                  <div className="text-center p-8">
-                    <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-primary/20 flex items-center justify-center">
-                      <Palette className="w-10 h-10 text-primary" />
-                    </div>
-                    <p className="text-accent-foreground/50 font-body text-sm">
-                      Hero image placeholder
-                    </p>
-                  </div>
-                </div>
+              <img
+                  src={heroImage}
+                  alt="LEWAY Creatives — laptop, tablet and phone showcasing web design, visual identity and personal branding work"
+                  className="w-full h-auto object-cover"
+                  loading="eager"
+                />
               </div>
 
               {/* Floating accent cards */}
