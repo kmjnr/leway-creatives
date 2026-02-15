@@ -4,6 +4,7 @@ import { Globe, Palette, PenTool, UserCheck, ChevronRight, ChevronLeft, ImageIco
 import metaAdGraphicDesign from "@/assets/images/meta-ad-graphic-design--headphones.webp";
 import webDesignOrient from "@/assets/images/wordpress-design-orient.webp";
 import cvWritingDesign from "@/assets/images/cv-writing-design.webp";
+import socialMediaCarousel from "@/assets/images/social-media-carousel-design.webp";
 
 const categories = [
   {
@@ -37,7 +38,7 @@ const categories = [
     icon: PenTool,
     title: "Content Creation & Copywriting",
     description: "Words that sell, stories that stick. We craft copy that doesn't just inform — it persuades, converts, and builds lasting brand authority across every channel.",
-    images: [] as string[],
+    images: [socialMediaCarousel],
     services: [
       { name: "Social Media Content", desc: "Posts crafted to engage audiences while staying consistent with your brand voice, plus visual design." },
       { name: "Social Media Management", desc: "Content scheduling, posting, and engagement strategies to grow your online presence." },
