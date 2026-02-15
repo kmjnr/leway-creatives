@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { HelpCircle } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -24,42 +25,87 @@ const faqs = [
 export default function FAQ() {
   return (
     <section id="faq" className="py-24 md:py-32 bg-background" aria-label="Frequently asked questions">
-      <div className="container mx-auto px-6 max-w-3xl">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
-            Frequently Asked <span className="text-primary">Questions</span>
-          </h2>
-        </motion.div>
+      <div className="container mx-auto px-6 max-w-5xl">
+        <div className="grid md:grid-cols-[1fr_1fr] gap-12 md:gap-0 items-start">
+          {/* Left: Sticky heading */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6 }}
+            className="md:sticky md:top-32"
+          >
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold text-foreground leading-tight">
+              Frequently<br />
+              Asked<br />
+              <span className="text-primary">Questions.</span>
+            </h2>
+            <p className="font-body text-lg text-muted-foreground mt-4 max-w-xs">
+              Straight answers. No fluff, no fine print.
+            </p>
+          </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.5 }}
-        >
-          <Accordion type="single" collapsible className="space-y-3">
-            {faqs.map((faq, i) => (
-              <AccordionItem
-                key={i}
-                value={`faq-${i}`}
-                className="rounded-xl border border-border bg-card px-6 data-[state=open]:shadow-lg transition-shadow"
-              >
-                <AccordionTrigger className="font-display text-left font-bold text-foreground hover:no-underline py-5">
-                  {faq.q}
-                </AccordionTrigger>
-                <AccordionContent className="font-body text-muted-foreground leading-relaxed pb-5">
-                  {faq.a}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </motion.div>
+          {/* Right: FAQ timeline */}
+          <div className="relative">
+            {/* S-curve connecting line */}
+            <svg
+              className="absolute left-6 md:left-8 top-6 md:top-8 pointer-events-none z-0"
+              style={{ height: "calc(100% - 3rem)" }}
+              width="120"
+              viewBox="0 0 120 600"
+              preserveAspectRatio="none"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                d="M 24 0 C 24 80, 100 100, 100 200 C 100 300, 24 250, 24 350 C 24 450, 100 400, 100 500 L 100 600"
+                stroke="hsl(var(--border))"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                fill="none"
+              />
+            </svg>
+
+            <Accordion type="single" collapsible className="flex flex-col gap-12">
+              {faqs.map((faq, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className="relative flex items-start gap-6 md:gap-8"
+                >
+                  {/* Number circle */}
+                  <div className="relative z-10 flex-shrink-0 flex h-12 w-12 md:h-16 md:w-16 items-center justify-center rounded-full border-2 border-primary bg-background">
+                    <span className="font-display text-lg md:text-xl font-bold text-primary">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+
+                  {/* Accordion item */}
+                  <div className="flex-1 pt-1 md:pt-2">
+                    <AccordionItem
+                      value={`faq-${i}`}
+                      className="border-b border-border pb-2"
+                    >
+                      <AccordionTrigger className="font-display text-left text-xl md:text-2xl font-bold text-foreground hover:no-underline py-0 gap-3">
+                        <div className="flex items-center gap-3">
+                          <HelpCircle size={20} className="text-primary shrink-0" />
+                          {faq.q}
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent className="font-body text-sm md:text-base text-muted-foreground leading-relaxed pt-3 max-w-sm">
+                        {faq.a}
+                      </AccordionContent>
+                    </AccordionItem>
+                  </div>
+                </motion.div>
+              ))}
+            </Accordion>
+          </div>
+        </div>
       </div>
     </section>
   );
