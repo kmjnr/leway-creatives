@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Globe, Palette, PenTool, UserCheck, ChevronRight, ChevronLeft, ImageIcon } from "lucide-react";
 import metaAdGraphicDesign from "@/assets/images/meta-ad-graphic-design--headphones.webp";
 import webDesignOrient from "@/assets/images/wordpress-design-orient.webp";
+import cvWritingDesign from "@/assets/images/cv-writing-design.webp";
 
 const categories = [
   {
@@ -49,7 +50,7 @@ const categories = [
     icon: UserCheck,
     title: "Career & Personal Branding",
     description: "Your career materials should open doors, not collect dust. We build personal brands that get interviews, attract opportunities, and position you as the obvious choice.",
-    images: [] as string[],
+    images: [cvWritingDesign],
     services: [
       { name: "ATS-Optimized Resumes", desc: "Professionally written resumes designed to pass Applicant Tracking Systems." },
       { name: "Creative Resume/CV Design", desc: "Beautifully designed resumes that stand out to recruiters." },
