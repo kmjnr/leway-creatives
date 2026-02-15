@@ -1,4 +1,5 @@
 import { Mail, MessageCircle } from "lucide-react";
+import logo from "@/assets/images/logo.png";
 
 const serviceLinks = [
   "Web Design Kenya & Worldwide",
@@ -17,8 +18,8 @@ export default function Footer() {
         <div className="grid gap-12 md:grid-cols-3">
           {/* Brand */}
           <div>
-            <a href="/" className="font-display text-xl font-extrabold text-foreground">
-              LEWAY<span className="text-primary">.</span>
+            <a href="/" className="inline-block">
+              <img src={logo} alt="LEWAY Creatives" className="h-8 w-auto" />
             </a>
             <p className="font-body text-sm text-muted-foreground mt-3 leading-relaxed">
               Elite web design & psychological copywriting. Kenya & Worldwide.

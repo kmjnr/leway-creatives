@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import logo from "@/assets/images/logo.png";
 
 const navLinks = [
 { label: "Services", href: "#services" },
@@ -26,10 +27,9 @@ export default function Navbar() {
         {/* Logo */}
         <a
           href="/"
-          className="font-display text-xl font-extrabold tracking-tight text-accent-foreground"
+          className="flex items-center gap-2"
           aria-label="LEWAY Creatives Home">
-
-          LEWAY<span className="text-primary">.</span>
+          <img src={logo} alt="LEWAY Creatives" className="h-8 w-auto" />
         </a>
 
         {/* Desktop links */}
