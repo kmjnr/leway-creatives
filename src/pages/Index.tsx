@@ -62,6 +62,46 @@ const jsonLd = {
             text: "A landing page? 2–4 days. A full site? 1–2 weeks. We move at the speed of business, not agency bureaucracy.",
           },
         },
+        {
+          "@type": "Question",
+          name: "How many revisions do I get?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Every project includes 2 rounds of revisions baked into the price. Most clients nail it by round one because we get the brief right upfront. Additional rounds are available at a flat fee — no surprises.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "What are your payment terms?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "We require 50% upfront to kick off, and the remaining 50% on delivery. For larger projects, we offer milestone-based billing. We accept M-Pesa, bank transfer, and PayPal.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Do you offer a satisfaction guarantee?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "We don't do refunds — we do results. That said, we've never had a client walk away unhappy. Our revision process ensures you get exactly what you need before we call it done.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Can you work with my existing brand guidelines?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Absolutely. Send us your brand kit and we'll work within your identity. If you don't have one yet, we can build that too — logos, color systems, typography, the whole package.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Do you offer ongoing support after launch?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Yes. We offer monthly retainer plans for content updates, website maintenance, and ongoing design work. Think of us as your creative department on speed dial.",
+          },
+        },
       ],
     },
     {
