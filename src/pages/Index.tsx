@@ -149,8 +149,8 @@ const Index = () => {
       <main>
         <Hero />
         <Philosophy />
-        <Services />
         <RealityCheck />
+        <Services />
         <Comparison />
         <HowItWorks />
         <Testimonials />
