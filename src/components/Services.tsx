@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Globe, Palette, PenTool, UserCheck, ChevronRight, ChevronLeft, ImageIcon } from "lucide-react";
 import metaAdGraphicDesign from "@/assets/images/meta-ad-graphic-design--headphones.webp";
+import webDesignOrient from "@/assets/images/wordpress-design-orient.webp";
 
 const categories = [
   {
@@ -9,7 +10,7 @@ const categories = [
     icon: Globe,
     title: "Web Design & Development",
     description: "We don't just build websites — we engineer conversion machines. Every pixel, every word, every interaction is designed to turn visitors into paying customers.",
-    images: [] as string[],
+    images: [webDesignOrient],
     services: [
       { name: "Landing Pages", desc: "High-converting pages built to maximize traffic and conversion for your marketing campaigns." },
       { name: "Complete Website Design", desc: "Custom-designed websites that are responsive, user-friendly, and aligned with your brand identity." },
