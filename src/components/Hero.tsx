@@ -86,13 +86,23 @@ export default function Hero() {
             {/* Main image card */}
             <div className="relative w-full max-w-md lg:max-w-lg">
               {/* Primary image container — tilted for dynamism */}
-              <div className="relative rounded-2xl overflow-hidden border border-overlay/10 bg-overlay/5 backdrop-blur-sm shadow-2xl shadow-primary/10 rotate-1 hover:rotate-0 transition-transform duration-500">
+              <div className="relative rounded-3xl overflow-hidden rotate-1 hover:rotate-0 transition-transform duration-500">
                 <img
                   src={heroImage}
                   alt="LEWAY Creatives — laptop, tablet and phone showcasing web design, visual identity and personal branding work"
                   className="w-full h-auto object-cover"
                   loading="eager" />
-
+                {/* Gradient edges for seamless blend into dark hero background */}
+                <div className="absolute inset-0 pointer-events-none rounded-3xl"
+                  style={{
+                    background: `
+                      radial-gradient(ellipse at center, transparent 50%, hsl(var(--accent)) 95%),
+                      linear-gradient(to bottom, transparent 60%, hsl(var(--accent)) 100%),
+                      linear-gradient(to top, transparent 85%, hsl(var(--accent)) 100%),
+                      linear-gradient(to right, transparent 85%, hsl(var(--accent)) 100%),
+                      linear-gradient(to left, transparent 85%, hsl(var(--accent)) 100%)
+                    `
+                  }} />
               </div>
 
               {/* Floating accent cards */}
