@@ -96,11 +96,11 @@ export default function Hero() {
                 <div className="absolute inset-0 pointer-events-none rounded-3xl"
                   style={{
                     background: `
-                      radial-gradient(ellipse at center, transparent 50%, hsl(var(--accent)) 95%),
-                      linear-gradient(to bottom, transparent 60%, hsl(var(--accent)) 100%),
-                      linear-gradient(to top, transparent 85%, hsl(var(--accent)) 100%),
-                      linear-gradient(to right, transparent 85%, hsl(var(--accent)) 100%),
-                      linear-gradient(to left, transparent 85%, hsl(var(--accent)) 100%)
+                      radial-gradient(ellipse at center, transparent 30%, hsl(var(--accent) / 0.4) 60%, hsl(var(--accent)) 85%),
+                      linear-gradient(to bottom, transparent 40%, hsl(var(--accent)) 90%),
+                      linear-gradient(to top, transparent 70%, hsl(var(--accent)) 95%),
+                      linear-gradient(to right, transparent 70%, hsl(var(--accent)) 95%),
+                      linear-gradient(to left, transparent 70%, hsl(var(--accent)) 95%)
                     `
                   }} />
               </div>
