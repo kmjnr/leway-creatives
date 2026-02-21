@@ -24,7 +24,7 @@ const rows = [
 
 export default function Comparison() {
   return (
-    <section className="py-24 md:py-32 bg-accent" aria-label="Why choose LEWAY">
+    <section className="py-24 md:py-32 bg-background" aria-label="Why choose LEWAY">
       <div className="container mx-auto px-6 max-w-5xl">
         <div className="grid gap-10 lg:grid-cols-2 items-center">
           {/* Left — Copy */}
@@ -34,10 +34,10 @@ export default function Comparison() {
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-extrabold text-accent-foreground mb-4">
+            <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-extrabold text-foreground mb-4">
               Why the "Other Guys" Fail
             </h2>
-            <p className="font-body text-accent-foreground/60 leading-relaxed mb-8 max-w-md">
+            <p className="font-body text-muted-foreground leading-relaxed mb-8 max-w-md">
               Most creatives focus on one thing: making it look cool. We focus on making it work.
             </p>
             <a
