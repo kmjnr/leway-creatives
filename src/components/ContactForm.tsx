@@ -1,17 +1,25 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckCircle2, ArrowLeft } from "lucide-react";
+import { CheckCircle2, ArrowLeft, ChevronDown, Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+
+const SERVICE_OPTIONS = [
+  "Web Design & Development",
+  "Graphic & Creative Design",
+  "Content Creation & Copywriting",
+  "Career & Personal Branding",
+] as const;
 
 const schema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
   email: z.string().trim().email("Enter a valid email").max(255),
   whatsapp: z.string().trim().min(8, "Enter a valid WhatsApp number").max(20),
+  services: z.array(z.string()).optional(),
   service: z.string().trim().min(1, "Describe what you need").max(1000)
 });
 
@@ -21,20 +29,34 @@ const currentMonth = new Date().toLocaleString("en-US", { month: "long" });
 
 export default function ContactForm() {
   const [submitted, setSubmitted] = useState<string | null>(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors }
-  } = useForm<FormData>({ resolver: zodResolver(schema) });
+  } = useForm<FormData>({ resolver: zodResolver(schema), defaultValues: { services: [] } });
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const onSubmit = (data: FormData) => {
+    const selectedServices = data.services?.length ? `\nServices: ${data.services.join(", ")}` : "";
     const msg = encodeURIComponent(
-      `Hi LEWAY Creatives!\n\nName: ${data.name}\nEmail: ${data.email}\nWhatsApp: ${data.whatsapp}\n\nService Needed:\n${data.service}`
+      `Hi LEWAY Creatives!\n\nName: ${data.name}\nEmail: ${data.email}\nWhatsApp: ${data.whatsapp}${selectedServices}\n\nService Needed:\n${data.service}`
     );
     setSubmitted(data.name);
     setTimeout(() => {
-      window.open(`https://wa.me/254700000000?text=${msg}`, "_blank");
+      window.open(`https://wa.me/254741408647?text=${msg}`, "_blank");
     }, 1500);
   };
 
@@ -180,6 +202,66 @@ export default function ContactForm() {
                     {errors.whatsapp &&
                   <p className="text-xs text-destructive mt-1">{errors.whatsapp.message}</p>
                   }
+                  </div>
+
+                  {/* Services multi-select dropdown */}
+                  <div>
+                    <Label className="text-accent-foreground/80 text-sm">
+                      Services You're Interested In{" "}
+                      <span className="text-accent-foreground/40 font-normal">(optional)</span>
+                    </Label>
+                    <Controller
+                      control={control}
+                      name="services"
+                      render={({ field }) => {
+                        const selected = field.value || [];
+                        const toggle = (val: string) => {
+                          const next = selected.includes(val)
+                            ? selected.filter((s) => s !== val)
+                            : [...selected, val];
+                          field.onChange(next);
+                        };
+                        return (
+                          <div ref={dropdownRef} className="relative mt-1">
+                            <button
+                              type="button"
+                              onClick={() => setDropdownOpen((o) => !o)}
+                              className="flex w-full items-center justify-between rounded-md border border-overlay/10 bg-overlay/5 px-3 py-2.5 text-sm text-accent-foreground transition-colors hover:border-overlay/20"
+                            >
+                              <span className={selected.length ? "text-accent-foreground" : "text-accent-foreground/30"}>
+                                {selected.length ? `${selected.length} selected` : "Select services…"}
+                              </span>
+                              <ChevronDown size={16} className={`text-accent-foreground/50 transition-transform ${dropdownOpen ? "rotate-180" : ""}`} />
+                            </button>
+                            <AnimatePresence>
+                              {dropdownOpen && (
+                                <motion.div
+                                  initial={{ opacity: 0, y: -4 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  exit={{ opacity: 0, y: -4 }}
+                                  transition={{ duration: 0.15 }}
+                                  className="absolute z-50 mt-1 w-full rounded-md border border-overlay/10 bg-foreground shadow-lg"
+                                >
+                                  {SERVICE_OPTIONS.map((opt) => (
+                                    <button
+                                      key={opt}
+                                      type="button"
+                                      onClick={() => toggle(opt)}
+                                      className="flex w-full items-center gap-3 px-3 py-2.5 text-sm text-accent-foreground/80 transition-colors hover:bg-overlay/10"
+                                    >
+                                      <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border ${selected.includes(opt) ? "border-primary bg-primary text-primary-foreground" : "border-overlay/20"}`}>
+                                        {selected.includes(opt) && <Check size={12} />}
+                                      </span>
+                                      {opt}
+                                    </button>
+                                  ))}
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        );
+                      }}
+                    />
                   </div>
 
                   <div>
