@@ -1,10 +1,6 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-
 const TermsAndConditions = () => {
   return (
     <>
-      <Navbar />
       <main className="pt-28 pb-20">
         <div className="container mx-auto px-6 max-w-3xl">
           <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-2">
@@ -152,7 +148,6 @@ const TermsAndConditions = () => {
           </div>
         </div>
       </main>
-      <Footer />
     </>
   );
 };

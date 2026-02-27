@@ -1,5 +1,5 @@
 import { Mail, MessageCircle } from "lucide-react";
-import logo from "@/assets/images/logo.png";
+import Link from "next/link";
 
 const serviceLinks = [
   "Web Design Kenya & Worldwide",
@@ -18,9 +18,9 @@ export default function Footer() {
         <div className="grid gap-12 md:grid-cols-3">
           {/* Brand */}
           <div>
-            <a href="/" className="inline-block">
-              <img src={logo} alt="LEWAY Creatives" className="h-8 w-auto" />
-            </a>
+            <Link href="/" className="inline-block">
+              <img src="/images/logo.png" alt="LEWAY Creatives" className="h-8 w-auto" />
+            </Link>
             <p className="font-body text-sm text-muted-foreground mt-3 leading-relaxed">
               Elite web design & psychological copywriting. Kenya & Worldwide.
             </p>
@@ -32,12 +32,12 @@ export default function Footer() {
             <ul className="space-y-2">
               {serviceLinks.map((s) => (
                 <li key={s}>
-                  <a
-                    href="#services"
+                  <Link
+                    href="/#services"
                     className="font-body text-sm text-muted-foreground hover:text-primary transition-colors"
                   >
                     {s}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -77,12 +77,12 @@ export default function Footer() {
         <div className="container mx-auto px-6 max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="font-body text-xs text-muted-foreground/70">© {year} LEWAY Creatives. All rights reserved.</p>
           <div className="flex gap-4">
-            <a href="/privacy-policy" className="font-body text-xs text-muted-foreground/70 hover:text-primary transition-colors">
+            <Link href="/privacy-policy" className="font-body text-xs text-muted-foreground/70 hover:text-primary transition-colors">
               Privacy Policy
-            </a>
-            <a href="/terms-and-conditions" className="font-body text-xs text-muted-foreground/70 hover:text-primary transition-colors">
+            </Link>
+            <Link href="/terms-and-conditions" className="font-body text-xs text-muted-foreground/70 hover:text-primary transition-colors">
               Terms &amp; Conditions
-            </a>
+            </Link>
           </div>
         </div>
       </div>

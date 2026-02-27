@@ -1,6 +1,7 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { Globe, Palette, PenTool, UserCheck } from "lucide-react";
-import heroImage from "@/assets/images/hero-image.webp";
 
 const scrollTo = (id: string) => {
   document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
@@ -88,7 +89,7 @@ export default function Hero() {
               {/* Primary image container — tilted for dynamism */}
               <div className="relative rounded-3xl overflow-hidden rotate-1 hover:rotate-0 transition-transform duration-500">
                 <img
-                  src={heroImage}
+                  src="/images/hero-image.webp"
                   alt="LEWAY Creatives — laptop, tablet and phone showcasing web design, visual identity and personal branding work"
                   className="w-full h-auto object-cover"
                   loading="eager"

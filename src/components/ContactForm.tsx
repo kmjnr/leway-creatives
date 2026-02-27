@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { z } from "zod";
@@ -102,17 +104,17 @@ export default function ContactForm() {
 
             <AnimatePresence mode="wait">
               {submitted ?
-              <motion.div
-                key="success"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                className="flex flex-col items-center text-center py-8">
+                <motion.div
+                  key="success"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  className="flex flex-col items-center text-center py-8">
 
                   <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", delay: 0.1 }}>
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", delay: 0.1 }}>
 
                     <CheckCircle2 size={64} className="text-primary mb-4" />
                   </motion.div>
@@ -125,21 +127,21 @@ export default function ContactForm() {
                     as soon as possible.
                   </p>
                   <button
-                  onClick={() => setSubmitted(null)}
-                  className="flex items-center gap-2 text-sm text-primary font-semibold">
+                    onClick={() => setSubmitted(null)}
+                    className="flex items-center gap-2 text-sm text-primary font-semibold">
 
                     <ArrowLeft size={16} /> Back
                   </button>
                 </motion.div> :
 
-              <motion.form
-                key="form"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onSubmit={handleSubmit(onSubmit)}
-                className="space-y-5"
-                noValidate>
+                <motion.form
+                  key="form"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onSubmit={handleSubmit(onSubmit)}
+                  className="space-y-5"
+                  noValidate>
 
                   <h3 className="font-display text-xl font-bold text-accent-foreground mb-2">
                     Let's Turn Spend Into Well-Spent.
@@ -150,14 +152,14 @@ export default function ContactForm() {
                       Name
                     </Label>
                     <Input
-                    id="name"
-                    placeholder="Your Name"
-                    {...register("name")}
-                    className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30" />
+                      id="name"
+                      placeholder="Your Name"
+                      {...register("name")}
+                      className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30" />
 
                     {errors.name &&
-                  <p className="text-xs text-destructive mt-1">{errors.name.message}</p>
-                  }
+                      <p className="text-xs text-destructive mt-1">{errors.name.message}</p>
+                    }
                   </div>
 
                   <div>
@@ -165,15 +167,15 @@ export default function ContactForm() {
                       Email
                     </Label>
                     <Input
-                    id="email"
-                    type="email"
-                    placeholder="best@email.com"
-                    {...register("email")}
-                    className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30" />
+                      id="email"
+                      type="email"
+                      placeholder="best@email.com"
+                      {...register("email")}
+                      className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30" />
 
                     {errors.email &&
-                  <p className="text-xs text-destructive mt-1">{errors.email.message}</p>
-                  }
+                      <p className="text-xs text-destructive mt-1">{errors.email.message}</p>
+                    }
                   </div>
 
                   <div>
@@ -181,18 +183,18 @@ export default function ContactForm() {
                       WhatsApp Number
                     </Label>
                     <Input
-                    id="whatsapp"
-                    type="tel"
-                    placeholder="+254..."
-                    {...register("whatsapp")}
-                    className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30" />
+                      id="whatsapp"
+                      type="tel"
+                      placeholder="+254..."
+                      {...register("whatsapp")}
+                      className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30" />
 
                     <p className="text-xs text-accent-foreground/40 mt-1">
                       Please include country code
                     </p>
                     {errors.whatsapp &&
-                  <p className="text-xs text-destructive mt-1">{errors.whatsapp.message}</p>
-                  }
+                      <p className="text-xs text-destructive mt-1">{errors.whatsapp.message}</p>
+                    }
                   </div>
 
                   {/* Services multi-select dropdown */}
@@ -260,21 +262,21 @@ export default function ContactForm() {
                       What service are you looking for?
                     </Label>
                     <Textarea
-                    id="service"
-                    placeholder="I need a high-converting landing page for my real estate business..."
-                    rows={4}
-                    {...register("service")}
-                    className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30" />
+                      id="service"
+                      placeholder="I need a high-converting landing page for my real estate business..."
+                      rows={4}
+                      {...register("service")}
+                      className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30" />
 
                     {errors.service &&
-                  <p className="text-xs text-destructive mt-1">{errors.service.message}</p>
-                  }
+                      <p className="text-xs text-destructive mt-1">{errors.service.message}</p>
+                    }
                   </div>
 
                   <button
-                  type="submit"
-                  className="w-full rounded-full bg-primary py-3.5 font-display font-bold text-primary-foreground transition-transform hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/25">
-                    Send Request          
+                    type="submit"
+                    className="w-full rounded-full bg-primary py-3.5 font-display font-bold text-primary-foreground transition-transform hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/25">
+                    Send Request
                   </button>
 
                   {/* Urgency badge */}

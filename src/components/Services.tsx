@@ -1,10 +1,9 @@
+"use client";
+
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Globe, Palette, PenTool, UserCheck, ChevronRight, ChevronLeft, ImageIcon } from "lucide-react";
-import metaAdGraphicDesign from "@/assets/images/meta-ad-graphic-design--headphones.webp";
-import webDesignOrient from "@/assets/images/wordpress-design-orient.webp";
-import cvWritingDesign from "@/assets/images/cv-writing-design.webp";
-import socialMediaCarousel from "@/assets/images/social-media-carousel-design.webp";
+
 
 const categories = [
   {
@@ -12,7 +11,7 @@ const categories = [
     icon: Globe,
     title: "Web Design & Development",
     description: "We don't just build websites — we engineer conversion machines. Every pixel, every word, every interaction is designed to turn visitors into paying customers.",
-    images: [webDesignOrient],
+    images: ["/images/wordpress-design-orient.webp"],
     services: [
       { name: "Landing Pages", desc: "High-converting pages built to maximize traffic and conversion for your marketing campaigns." },
       { name: "Complete Website Design", desc: "Custom-designed websites that are responsive, user-friendly, and aligned with your brand identity." },
@@ -24,7 +23,7 @@ const categories = [
     icon: Palette,
     title: "Graphic & Creative Design",
     description: "Visual identity that demands attention. From scroll-stopping ads to brand systems that make competitors nervous — we design assets that work as hard as you do.",
-    images: [metaAdGraphicDesign],
+    images: ["/images/meta-ad-graphic-design--headphones.webp"],
     services: [
       { name: "Ads Banners", desc: "Visually engaging banners for Meta and other platforms to boost ad performance." },
       { name: "Flyer & Poster Design", desc: "Catchy promotional materials for both online and print marketing." },
@@ -38,7 +37,7 @@ const categories = [
     icon: PenTool,
     title: "Content Creation & Copywriting",
     description: "Words that sell, stories that stick. We craft copy that doesn't just inform — it persuades, converts, and builds lasting brand authority across every channel.",
-    images: [socialMediaCarousel],
+    images: ["/images/social-media-carousel-design.webp"],
     services: [
       { name: "Social Media Content", desc: "Posts crafted to engage audiences while staying consistent with your brand voice, plus visual design." },
       { name: "Social Media Management", desc: "Content scheduling, posting, and engagement strategies to grow your online presence." },
@@ -51,7 +50,7 @@ const categories = [
     icon: UserCheck,
     title: "Career & Personal Branding",
     description: "Your career materials should open doors, not collect dust. We build personal brands that get interviews, attract opportunities, and position you as the obvious choice.",
-    images: [cvWritingDesign],
+    images: ["/images/cv-writing-design.webp"],
     services: [
       { name: "ATS-Optimized Resumes", desc: "Professionally written resumes designed to pass Applicant Tracking Systems." },
       { name: "Creative Resume/CV Design", desc: "Beautifully designed resumes that stand out to recruiters." },
@@ -130,9 +129,8 @@ function ImageCarousel({ images, title }: { images: string[]; title: string }) {
               <button
                 key={i}
                 onClick={() => setCurrentIndex(i)}
-                className={`h-1.5 rounded-full transition-all ${
-                  i === currentIndex ? "w-6 bg-primary" : "w-1.5 bg-overlay/40"
-                }`}
+                className={`h-1.5 rounded-full transition-all ${i === currentIndex ? "w-6 bg-primary" : "w-1.5 bg-overlay/40"
+                  }`}
                 aria-label={`Go to image ${i + 1}`}
               />
             ))}
@@ -174,11 +172,10 @@ export default function Services() {
               <button
                 key={cat.id}
                 onClick={() => setActive(cat.id)}
-                className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${
-                  isActive
+                className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${isActive
                     ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
                     : "bg-overlay/5 border border-overlay/10 text-accent-foreground/70 hover:border-overlay/20"
-                }`}
+                  }`}
                 aria-pressed={isActive}
               >
                 <Icon size={16} />

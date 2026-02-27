@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import Navbar from "@/components/Navbar";
+
 import Hero from "@/components/Hero";
 import Philosophy from "@/components/Philosophy";
 import Services from "@/components/Services";
@@ -9,7 +8,6 @@ import HowItWorks from "@/components/HowItWorks";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import ContactForm from "@/components/ContactForm";
-import Footer from "@/components/Footer";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -133,19 +131,12 @@ const jsonLd = {
 };
 
 const Index = () => {
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.type = "application/ld+json";
-    script.textContent = JSON.stringify(jsonLd);
-    document.head.appendChild(script);
-    return () => {
-      document.head.removeChild(script);
-    };
-  }, []);
-
   return (
     <>
-      <Navbar />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <main>
         <Hero />
         <Philosophy />
@@ -157,7 +148,6 @@ const Index = () => {
         <FAQ />
         <ContactForm />
       </main>
-      <Footer />
     </>
   );
 };

@@ -1,12 +1,14 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { CheckCircle, XCircle } from "lucide-react";
 
 const features = [
-"Design + Copy",
-"Fast Timeline",
-"Conversion Focus",
-"Personal Touch",
-"Affordable Pricing"];
+  "Design + Copy",
+  "Fast Timeline",
+  "Conversion Focus",
+  "Personal Touch",
+  "Affordable Pricing"];
 
 
 export default function Comparison() {
@@ -58,9 +60,9 @@ export default function Comparison() {
 
             {/* Rows */}
             {features.map((feature, i) =>
-            <div
-              key={i}
-              className={`grid grid-cols-[1fr_auto_auto] ${i < features.length - 1 ? "border-b border-border/50" : ""}`}>
+              <div
+                key={i}
+                className={`grid grid-cols-[1fr_auto_auto] ${i < features.length - 1 ? "border-b border-border/50" : ""}`}>
 
                 <div className="px-6 py-4">
                   <span className="font-body text-sm text-foreground">{feature}</span>
