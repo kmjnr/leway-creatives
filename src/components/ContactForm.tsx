@@ -85,15 +85,6 @@ export default function ContactForm() {
               the only logical choice.
             </p>
 
-            <div className="flex items-center gap-2 mb-6">
-              <span className="relative flex h-3 w-3">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
-                <span className="relative inline-flex h-3 w-3 rounded-full bg-primary" />
-              </span>
-              <span className="font-body text-sm text-accent-foreground/80">
-                Only <strong>5 spots</strong> available for {currentMonth}
-              </span>
-            </div>
 
             <p className="font-body text-sm text-accent-foreground/50 italic">
               P.S. You'll leave the session with a roadmap even if we don't work
@@ -283,9 +274,19 @@ export default function ContactForm() {
                   <button
                   type="submit"
                   className="w-full rounded-full bg-primary py-3.5 font-display font-bold text-primary-foreground transition-transform hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/25">
-
                     Send Request          
                   </button>
+
+                  {/* Urgency badge */}
+                  <div className="flex items-center justify-center gap-2 rounded-lg border border-primary/30 bg-primary/10 px-4 py-3 mt-1">
+                    <span className="relative flex h-3 w-3 shrink-0">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+                      <span className="relative inline-flex h-3 w-3 rounded-full bg-primary" />
+                    </span>
+                    <span className="font-display text-sm font-bold text-primary">
+                      Only 5 spots available for {currentMonth}
+                    </span>
+                  </div>
                 </motion.form>
               }
             </AnimatePresence>
