@@ -53,7 +53,7 @@ export default function Footer() {
                   className="flex items-center gap-2 font-body text-sm text-muted-foreground hover:text-primary transition-colors"
                 >
                   <Mail size={14} />
-                  hello@lewaycreatives.com
+                  Lewaycreative@protonmail.com
                 </a>
               </li>
               <li>
