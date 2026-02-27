@@ -1,25 +1,12 @@
 import { motion } from "framer-motion";
-import { XCircle, CheckCircle, Zap, User } from "lucide-react";
+import { CheckCircle, XCircle } from "lucide-react";
 
-const rows = [
-  {
-    typical: "Pretty but pointless",
-    typicalIcon: <XCircle size={16} className="text-destructive" />,
-    leway: "Conversion-Focused",
-    lewayIcon: <CheckCircle size={16} className="text-primary" />,
-  },
-  {
-    typical: "Slow WordPress bloat",
-    typicalIcon: <XCircle size={16} className="text-destructive" />,
-    leway: "Blazing Fast Next.js",
-    lewayIcon: <Zap size={16} className="text-primary" />,
-  },
-  {
-    typical: "Generic AI Copy",
-    typicalIcon: <XCircle size={16} className="text-destructive" />,
-    leway: "Human Strategy",
-    lewayIcon: <User size={16} className="text-primary" />,
-  },
+const features = [
+  "Design + Copy",
+  "Fast Timeline",
+  "Conversion Focus",
+  "Personal Touch",
+  "Affordable Pricing",
 ];
 
 export default function Comparison() {
@@ -54,37 +41,35 @@ export default function Comparison() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="rounded-2xl border border-overlay/10 bg-background overflow-hidden shadow-lg shadow-overlay-shadow/5"
+            className="rounded-2xl border border-border/50 bg-background overflow-hidden shadow-lg shadow-foreground/5"
           >
             {/* Header */}
-            <div className="grid grid-cols-2">
-              <div className="px-6 py-4 border-b border-r border-overlay/10">
-                <span className="font-body text-sm italic text-muted-foreground">
-                  Typical Agency
-                </span>
+            <div className="grid grid-cols-[1fr_auto_auto]">
+              <div className="px-6 py-4 border-b border-border/50">
+                <span className="font-body text-sm text-muted-foreground italic">Feature</span>
               </div>
-              <div className="px-6 py-4 border-b border-overlay/10 bg-primary/5">
-                <span className="font-display text-sm font-bold text-primary">
-                  LEWAY Creatives
-                </span>
+              <div className="px-8 py-4 border-b border-border/50 text-center min-w-[100px]">
+                <span className="font-display text-sm font-bold text-foreground">LEWAY</span>
+              </div>
+              <div className="px-8 py-4 border-b border-border/50 text-center min-w-[100px]">
+                <span className="font-body text-sm text-muted-foreground">Others</span>
               </div>
             </div>
 
             {/* Rows */}
-            {rows.map((row, i) => (
+            {features.map((feature, i) => (
               <div
                 key={i}
-                className={`grid grid-cols-2 ${i < rows.length - 1 ? "border-b border-overlay/10" : ""}`}
+                className={`grid grid-cols-[1fr_auto_auto] ${i < features.length - 1 ? "border-b border-border/50" : ""}`}
               >
-                <div className="flex items-center gap-2.5 px-6 py-4 border-r border-overlay/10">
-                  {row.typicalIcon}
-                  <span className="font-body text-sm text-muted-foreground">{row.typical}</span>
+                <div className="px-6 py-4">
+                  <span className="font-body text-sm text-foreground">{feature}</span>
                 </div>
-                <div className="flex items-center gap-2.5 px-6 py-4 bg-primary/[0.03]">
-                  {row.lewayIcon}
-                  <span className="font-display text-sm font-bold text-foreground">
-                    {row.leway}
-                  </span>
+                <div className="px-8 py-4 flex items-center justify-center min-w-[100px]">
+                  <CheckCircle size={22} className="text-primary" />
+                </div>
+                <div className="px-8 py-4 flex items-center justify-center min-w-[100px]">
+                  <XCircle size={22} className="text-destructive" />
                 </div>
               </div>
             ))}
