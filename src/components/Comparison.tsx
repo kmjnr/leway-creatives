@@ -2,12 +2,12 @@ import { motion } from "framer-motion";
 import { CheckCircle, XCircle } from "lucide-react";
 
 const features = [
-  "Design + Copy",
-  "Fast Timeline",
-  "Conversion Focus",
-  "Personal Touch",
-  "Affordable Pricing",
-];
+"Design + Copy",
+"Fast Timeline",
+"Conversion Focus",
+"Personal Touch",
+"Affordable Pricing"];
+
 
 export default function Comparison() {
   return (
@@ -19,18 +19,18 @@ export default function Comparison() {
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.5 }}
-          >
+            transition={{ duration: 0.5 }}>
+
             <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-extrabold text-foreground mb-4">
-              Why the "Other Guys" Fail
+              Why Other Agencies Fail
             </h2>
             <p className="font-body text-muted-foreground leading-relaxed mb-8 max-w-md">
               Most creatives focus on one thing: making it look cool. We focus on making it work.
             </p>
             <a
               href="#contact"
-              className="inline-flex items-center justify-center rounded-full bg-primary px-7 py-3 font-display text-sm font-bold text-primary-foreground shadow-lg shadow-primary/25 transition-transform hover:scale-105"
-            >
+              className="inline-flex items-center justify-center rounded-full bg-primary px-7 py-3 font-display text-sm font-bold text-primary-foreground shadow-lg shadow-primary/25 transition-transform hover:scale-105">
+
               Get Your Strategy Audit
             </a>
           </motion.div>
@@ -41,8 +41,8 @@ export default function Comparison() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="rounded-2xl border border-border/50 bg-background overflow-hidden shadow-lg shadow-foreground/5"
-          >
+            className="rounded-2xl border border-border/50 bg-background overflow-hidden shadow-lg shadow-foreground/5">
+
             {/* Header */}
             <div className="grid grid-cols-[1fr_auto_auto]">
               <div className="px-6 py-4 border-b border-border/50">
@@ -57,11 +57,11 @@ export default function Comparison() {
             </div>
 
             {/* Rows */}
-            {features.map((feature, i) => (
-              <div
-                key={i}
-                className={`grid grid-cols-[1fr_auto_auto] ${i < features.length - 1 ? "border-b border-border/50" : ""}`}
-              >
+            {features.map((feature, i) =>
+            <div
+              key={i}
+              className={`grid grid-cols-[1fr_auto_auto] ${i < features.length - 1 ? "border-b border-border/50" : ""}`}>
+
                 <div className="px-6 py-4">
                   <span className="font-body text-sm text-foreground">{feature}</span>
                 </div>
@@ -72,10 +72,10 @@ export default function Comparison() {
                   <XCircle size={22} className="text-destructive" />
                 </div>
               </div>
-            ))}
+            )}
           </motion.div>
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 }
