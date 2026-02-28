@@ -31,6 +31,8 @@ const currentMonth = new Date().toLocaleString("en-US", { month: "long" });
 
 export default function ContactForm() {
   const [submitted, setSubmitted] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -51,15 +53,29 @@ export default function ContactForm() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const onSubmit = (data: FormData) => {
-    const selectedServices = data.services?.length ? `\nServices: ${data.services.join(", ")}` : "";
-    const msg = encodeURIComponent(
-      `Hi LEWAY Creatives!\n\nName: ${data.name}\nEmail: ${data.email}\nWhatsApp: ${data.whatsapp}${selectedServices}\n\nService Needed:\n${data.service}`
-    );
-    setSubmitted(data.name);
-    setTimeout(() => {
-      window.open(`https://wa.me/254741408647?text=${msg}`, "_blank");
-    }, 1500);
+  const onSubmit = async (data: FormData) => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json.error || "Something went wrong. Please try again.");
+      }
+
+      setSubmitted(data.name);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Something went wrong. Please try again.";
+      setSubmitError(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -69,26 +85,27 @@ export default function ContactForm() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full bg-primary/10 blur-[120px]" />
         <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-primary/5 blur-[100px]" />
       </div>
-      <div className="relative container mx-auto px-6 max-w-4xl">
-        <div className="grid gap-12 lg:grid-cols-2 items-start">
-          {/* Left copy */}
+      <div className="relative w-full px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-32 mx-auto max-w-4xl">
+        <div className="flex flex-col items-center w-full">
+          {/* Top copy */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6 }}>
+            transition={{ duration: 0.6 }}
+            className="text-center mb-10 w-full">
 
-            <h2 className="font-display text-3xl md:text-4xl font-extrabold text-accent-foreground leading-tight mb-6">
+            <h2 className="font-display text-3xl md:text-4xl font-extrabold text-accent-foreground leading-tight mb-4">
               You've Come This Far.{" "}
               <span className="text-primary">You're Interested.</span>
             </h2>
-            <p className="font-body text-accent-foreground/70 text-lg mb-6 leading-relaxed">
+            <p className="font-body text-accent-foreground/70 text-lg mb-4 leading-relaxed max-w-2xl mx-auto">
               The market is crowded. Your competitors are noisy. Let's make you
               the only logical choice.
             </p>
 
 
-            <p className="font-body text-sm text-accent-foreground/50 italic">
+            <p className="font-body text-sm text-accent-foreground/50 italic max-w-2xl mx-auto">
               P.S. You'll leave the session with a roadmap even if we don't work
               together.
             </p>
@@ -100,7 +117,7 @@ export default function ContactForm() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="rounded-2xl border border-overlay/10 bg-overlay/5 p-8">
+            className="w-full rounded-2xl border border-overlay/10 bg-overlay/5 p-8 sm:p-10 shadow-lg relative z-10">
 
             <AnimatePresence mode="wait">
               {submitted ?
@@ -273,10 +290,15 @@ export default function ContactForm() {
                     }
                   </div>
 
+                  {submitError && (
+                    <p className="text-xs text-destructive text-center -mb-1">{submitError}</p>
+                  )}
+
                   <button
                     type="submit"
-                    className="w-full rounded-full bg-primary py-3.5 font-display font-bold text-primary-foreground transition-transform hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/25">
-                    Send Request
+                    disabled={isSubmitting}
+                    className="w-full rounded-full bg-primary py-3.5 font-display font-bold text-primary-foreground transition-transform hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/25 disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100">
+                    {isSubmitting ? "Sending…" : "Send Request"}
                   </button>
 
                   {/* Urgency badge */}

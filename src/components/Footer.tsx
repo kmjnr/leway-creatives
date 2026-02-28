@@ -19,7 +19,13 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <Link href="/" className="inline-block">
-              <img src="/images/logo.png" alt="LEWAY Creatives" className="h-8 w-auto" />
+              <img
+                src="/images/leway-creatives-logo.png"
+                alt="LEWAY Creatives — Web Design & Copywriting Agency Kenya"
+                className="h-8 w-auto"
+                width={160}
+                height={32}
+              />
             </Link>
             <p className="font-body text-sm text-muted-foreground mt-3 leading-relaxed">
               Elite web design & psychological copywriting. Kenya & Worldwide.

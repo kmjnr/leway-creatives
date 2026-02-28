@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Globe, Palette, PenTool, UserCheck, ChevronRight, ChevronLeft, ImageIcon } from "lucide-react";
+import { Globe, Palette, PenTool, UserCheck, ChevronRight, ChevronLeft, ImageIcon, ExternalLink } from "lucide-react";
 
+
+type ServiceImage = { src: string; alt: string; link?: string };
 
 const categories = [
   {
@@ -11,7 +13,18 @@ const categories = [
     icon: Globe,
     title: "Web Design & Development",
     description: "We don't just build websites — we engineer conversion machines. Every pixel, every word, every interaction is designed to turn visitors into paying customers.",
-    images: ["/images/wordpress-design-orient.webp"],
+    images: [
+      {
+        src: "/images/wordpress-design-orient.webp",
+        alt: "WordPress website design for Orient — responsive web design portfolio by LEWAY Creatives Kenya",
+        link: "http://orientcleaningservices.co.ke/",
+      },
+      {
+        src: "/images/safebox-landing-page.webp",
+        alt: "High-converting product landing page for safe box company in Kenya — conversion-focused web design by LEWAY Creatives",
+        link: "https://premiumsafeboxes.netlify.app/",
+      },
+    ] as ServiceImage[],
     services: [
       { name: "Landing Pages", desc: "High-converting pages built to maximize traffic and conversion for your marketing campaigns." },
       { name: "Complete Website Design", desc: "Custom-designed websites that are responsive, user-friendly, and aligned with your brand identity." },
@@ -23,7 +36,12 @@ const categories = [
     icon: Palette,
     title: "Graphic & Creative Design",
     description: "Visual identity that demands attention. From scroll-stopping ads to brand systems that make competitors nervous — we design assets that work as hard as you do.",
-    images: ["/images/meta-ad-graphic-design--headphones.webp"],
+    images: [
+      {
+        src: "/images/meta-ad-graphic-design--headphones.webp",
+        alt: "Meta Facebook ad banner graphic design for headphones brand — professional ad design services by LEWAY Creatives Kenya",
+      },
+    ] as ServiceImage[],
     services: [
       { name: "Ads Banners", desc: "Visually engaging banners for Meta and other platforms to boost ad performance." },
       { name: "Flyer & Poster Design", desc: "Catchy promotional materials for both online and print marketing." },
@@ -37,7 +55,12 @@ const categories = [
     icon: PenTool,
     title: "Content Creation & Copywriting",
     description: "Words that sell, stories that stick. We craft copy that doesn't just inform — it persuades, converts, and builds lasting brand authority across every channel.",
-    images: ["/images/social-media-carousel-design.webp"],
+    images: [
+      {
+        src: "/images/social-media-carousel-design.webp",
+        alt: "Social media carousel content design for brand growth — social media management and copywriting by LEWAY Creatives",
+      },
+    ] as ServiceImage[],
     services: [
       { name: "Social Media Content", desc: "Posts crafted to engage audiences while staying consistent with your brand voice, plus visual design." },
       { name: "Social Media Management", desc: "Content scheduling, posting, and engagement strategies to grow your online presence." },
@@ -50,7 +73,12 @@ const categories = [
     icon: UserCheck,
     title: "Career & Personal Branding",
     description: "Your career materials should open doors, not collect dust. We build personal brands that get interviews, attract opportunities, and position you as the obvious choice.",
-    images: ["/images/cv-writing-design.webp"],
+    images: [
+      {
+        src: "/images/cv-writing-design.webp",
+        alt: "ATS-optimized resume and CV design — professional resume writing and personal branding services by LEWAY Creatives Kenya",
+      },
+    ] as ServiceImage[],
     services: [
       { name: "ATS-Optimized Resumes", desc: "Professionally written resumes designed to pass Applicant Tracking Systems." },
       { name: "Creative Resume/CV Design", desc: "Beautifully designed resumes that stand out to recruiters." },
@@ -60,16 +88,42 @@ const categories = [
   },
 ];
 
-function ImageCarousel({ images, title }: { images: string[]; title: string }) {
+function ImageCarousel({ images, title }: { images: ServiceImage[]; title: string }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState<1 | -1>(1); // 1 = left (forward), -1 = right (backward)
+  const isPaused = useRef(false);
+
+  const goTo = useCallback((nextIndex: number, dir: 1 | -1) => {
+    setDirection(dir);
+    setCurrentIndex(nextIndex);
+  }, []);
 
   const next = useCallback(() => {
-    setCurrentIndex((i) => (i + 1) % images.length);
-  }, [images.length]);
+    goTo((currentIndex + 1) % images.length, 1);
+  }, [currentIndex, images.length, goTo]);
 
   const prev = useCallback(() => {
-    setCurrentIndex((i) => (i - 1 + images.length) % images.length);
+    goTo((currentIndex - 1 + images.length) % images.length, -1);
+  }, [currentIndex, images.length, goTo]);
+
+  // Auto-scroll: advances right-to-left every 3 seconds, pauses on hover
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const interval = setInterval(() => {
+      if (!isPaused.current) {
+        setDirection(1);
+        setCurrentIndex((i) => (i + 1) % images.length);
+      }
+    }, 3000);
+    return () => clearInterval(interval);
   }, [images.length]);
+
+  // Slide variants: direction 1 → slides in from right (left-ward motion)
+  const variants = {
+    enter: (dir: number) => ({ x: dir > 0 ? "100%" : "-100%", opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (dir: number) => ({ x: dir > 0 ? "-100%" : "100%", opacity: 0 }),
+  };
 
   // Placeholder state when no images
   if (images.length === 0) {
@@ -94,41 +148,71 @@ function ImageCarousel({ images, title }: { images: string[]; title: string }) {
   }
 
   return (
-    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-overlay/10">
-      <AnimatePresence mode="wait">
-        <motion.img
+    <div
+      className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-overlay/10"
+      onMouseEnter={() => { isPaused.current = true; }}
+      onMouseLeave={() => { isPaused.current = false; }}
+    >
+      <AnimatePresence mode="popLayout" custom={direction}>
+        <motion.div
           key={currentIndex}
-          src={images[currentIndex]}
-          alt={`${title} example ${currentIndex + 1}`}
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          transition={{ duration: 0.4 }}
-          className="absolute inset-0 h-full w-full object-cover"
-        />
+          custom={direction}
+          variants={variants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="absolute inset-0 h-full w-full group"
+        >
+          {images[currentIndex].link ? (
+            <a
+              href={images[currentIndex].link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block relative w-full h-full overflow-hidden"
+            >
+              <img
+                src={images[currentIndex].src}
+                alt={images[currentIndex].alt}
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-accent/60 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center backdrop-blur-[2px]">
+                <span className="bg-primary text-primary-foreground px-5 py-2.5 rounded-full font-display font-semibold shadow-lg flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                  See Project <ExternalLink size={16} />
+                </span>
+              </div>
+            </a>
+          ) : (
+            <img
+              src={images[currentIndex].src}
+              alt={images[currentIndex].alt}
+              className="h-full w-full object-cover"
+            />
+          )}
+        </motion.div>
       </AnimatePresence>
 
       {images.length > 1 && (
         <>
           <button
             onClick={prev}
-            className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-accent/80 backdrop-blur-sm p-2 text-accent-foreground/80 hover:text-accent-foreground transition-colors"
+            className="absolute left-3 top-1/2 -translate-y-1/2 z-10 rounded-full bg-accent/80 backdrop-blur-sm p-2 text-accent-foreground/80 hover:text-accent-foreground transition-colors"
             aria-label="Previous image"
           >
             <ChevronLeft size={18} />
           </button>
           <button
             onClick={next}
-            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-accent/80 backdrop-blur-sm p-2 text-accent-foreground/80 hover:text-accent-foreground transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 z-10 rounded-full bg-accent/80 backdrop-blur-sm p-2 text-accent-foreground/80 hover:text-accent-foreground transition-colors"
             aria-label="Next image"
           >
             <ChevronRight size={18} />
           </button>
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex gap-1.5">
             {images.map((_, i) => (
               <button
                 key={i}
-                onClick={() => setCurrentIndex(i)}
+                onClick={() => goTo(i, i > currentIndex ? 1 : -1)}
                 className={`h-1.5 rounded-full transition-all ${i === currentIndex ? "w-6 bg-primary" : "w-1.5 bg-overlay/40"
                   }`}
                 aria-label={`Go to image ${i + 1}`}
@@ -147,7 +231,7 @@ export default function Services() {
 
   return (
     <section id="services" className="py-24 md:py-32 bg-accent" aria-label="Our services">
-      <div className="container mx-auto px-6 max-w-6xl">
+      <div className="w-full px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-32 mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -173,8 +257,8 @@ export default function Services() {
                 key={cat.id}
                 onClick={() => setActive(cat.id)}
                 className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${isActive
-                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
-                    : "bg-overlay/5 border border-overlay/10 text-accent-foreground/70 hover:border-overlay/20"
+                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
+                  : "bg-overlay/5 border border-overlay/10 text-accent-foreground/70 hover:border-overlay/20"
                   }`}
                 aria-pressed={isActive}
               >

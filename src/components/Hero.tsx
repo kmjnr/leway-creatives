@@ -89,10 +89,12 @@ export default function Hero() {
               {/* Primary image container — tilted for dynamism */}
               <div className="relative rounded-3xl overflow-hidden rotate-1 hover:rotate-0 transition-transform duration-500">
                 <img
-                  src="/images/hero-image.webp"
-                  alt="LEWAY Creatives — laptop, tablet and phone showcasing web design, visual identity and personal branding work"
+                  src="/images/leway-creatives-web-design-agency-kenya.webp"
+                  alt="LEWAY Creatives — laptop, tablet and phone showcasing web design, visual identity and personal branding work for clients in Kenya and worldwide"
                   className="w-full h-auto object-cover"
                   loading="eager"
+                  width={600}
+                  height={450}
                 />
                 {/* Gradient edges for seamless blend into dark hero background */}
                 <div

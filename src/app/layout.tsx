@@ -18,13 +18,18 @@ export const metadata: Metadata = {
         description: 'We combine elite Web Design with Psychological Copywriting to turn your visitors into obsessive buyers. Kenya & Worldwide.',
         type: 'website',
         url: 'https://lewaycreatives.com',
-        images: [{ url: 'https://lovable.dev/opengraph-image-p98pqg.png' }],
+        images: [{
+            url: 'https://lewaycreatives.com/images/leway-creatives-web-design-agency-kenya.webp',
+            width: 1200,
+            height: 630,
+            alt: 'LEWAY Creatives — Web Design & Copywriting Agency Kenya',
+        }],
     },
     twitter: {
         card: 'summary_large_image',
         title: 'Web Design & Creative Strategy | LEWAY Creatives',
         description: 'Elite web design + psychological copywriting. Kenya & Worldwide.',
-        images: ['https://lovable.dev/opengraph-image-p98pqg.png'],
+        images: ['https://lewaycreatives.com/images/leway-creatives-web-design-agency-kenya.webp'],
     },
 };
 

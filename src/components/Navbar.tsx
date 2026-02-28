@@ -37,7 +37,13 @@ export default function Navbar() {
           href="/"
           className="flex items-center gap-2"
           aria-label="LEWAY Creatives Home">
-          <img src="/images/logo.png" alt="LEWAY Creatives" className="h-10 md:h-12 w-auto" />
+          <img
+            src="/images/leway-creatives-logo.png"
+            alt="LEWAY Creatives — Web Design & Copywriting Agency Kenya"
+            className="h-10 md:h-12 w-auto"
+            width={200}
+            height={48}
+          />
         </Link>
 
         {/* Desktop links */}
