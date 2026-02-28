@@ -1,13 +1,16 @@
 
+import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
-import Philosophy from "@/components/Philosophy";
-import Services from "@/components/Services";
-import RealityCheck from "@/components/RealityCheck";
-import Comparison from "@/components/Comparison";
-import HowItWorks from "@/components/HowItWorks";
-import Testimonials from "@/components/Testimonials";
-import FAQ from "@/components/FAQ";
-import ContactForm from "@/components/ContactForm";
+
+// Below-the-fold sections — loaded lazily to reduce initial JS bundle
+const Philosophy = dynamic(() => import("@/components/Philosophy"));
+const RealityCheck = dynamic(() => import("@/components/RealityCheck"));
+const Services = dynamic(() => import("@/components/Services"));
+const Comparison = dynamic(() => import("@/components/Comparison"));
+const HowItWorks = dynamic(() => import("@/components/HowItWorks"));
+const Testimonials = dynamic(() => import("@/components/Testimonials"));
+const FAQ = dynamic(() => import("@/components/FAQ"));
+const ContactForm = dynamic(() => import("@/components/ContactForm"));
 
 const jsonLd = {
   "@context": "https://schema.org",

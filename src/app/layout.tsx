@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Plus_Jakarta_Sans, Inter } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/components/Providers';
 import ScrollToTop from '@/components/ScrollToTop';
@@ -33,13 +34,27 @@ export const metadata: Metadata = {
     },
 };
 
+const plusJakartaSans = Plus_Jakarta_Sans({
+    subsets: ['latin'],
+    weight: ['400', '500', '600', '700', '800'],
+    variable: '--font-display',
+    display: 'swap',
+});
+
+const inter = Inter({
+    subsets: ['latin'],
+    weight: ['400', '500', '600'],
+    variable: '--font-body',
+    display: 'swap',
+});
+
 export default function RootLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" suppressHydrationWarning>
+        <html lang="en" suppressHydrationWarning className={`${plusJakartaSans.variable} ${inter.variable}`}>
             <body className="antialiased font-body min-h-screen bg-background text-foreground">
                 <Providers>
                     <Navbar />

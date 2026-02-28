@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Globe, Palette, PenTool, UserCheck } from "lucide-react";
 
@@ -88,13 +89,14 @@ export default function Hero() {
             <div className="relative w-full max-w-md lg:max-w-lg">
               {/* Primary image container — tilted for dynamism */}
               <div className="relative rounded-3xl overflow-hidden rotate-1 hover:rotate-0 transition-transform duration-500">
-                <img
+                <Image
                   src="/images/leway-creatives-web-design-agency-kenya.webp"
                   alt="LEWAY Creatives — laptop, tablet and phone showcasing web design, visual identity and personal branding work for clients in Kenya and worldwide"
                   className="w-full h-auto object-cover"
-                  loading="eager"
+                  priority
                   width={600}
                   height={450}
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
                 {/* Gradient edges for seamless blend into dark hero background */}
                 <div
