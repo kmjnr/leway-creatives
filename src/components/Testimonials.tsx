@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Star } from "lucide-react";
+import { Star, Quote } from "lucide-react";
 
 const testimonials = [
   {
@@ -10,15 +10,7 @@ const testimonials = [
     name: "Mary J",
     role: "Solopreneur",
     stars: 5,
-    size: "large" as const,
-  },
-  {
-    quote:
-      "Got 3 interviews the month after they rewrote my LinkedIn. Game changer. I can monitor my personal brand before things get too big to handle.",
-    name: "Alex Kamau",
-    role: "Job Seeker",
-    stars: 5,
-    size: "medium" as const,
+    avatar: "/images/avatar_1.png",
   },
   {
     quote:
@@ -26,7 +18,7 @@ const testimonials = [
     name: "Sarah M",
     role: "Startup Founder",
     stars: 5,
-    size: "medium" as const,
+    avatar: "/images/avatar_2.png",
   },
   {
     quote:
@@ -34,7 +26,7 @@ const testimonials = [
     name: "Brian O",
     role: "Marketing Lead",
     stars: 5,
-    size: "small" as const,
+    avatar: "/images/avatar_3.png",
   },
   {
     quote:
@@ -42,7 +34,7 @@ const testimonials = [
     name: "Michael N",
     role: "Managing Director",
     stars: 5,
-    size: "large" as const,
+    avatar: "/images/avatar_6.png",
   },
   {
     quote:
@@ -50,79 +42,88 @@ const testimonials = [
     name: "Diana K",
     role: "Brand Strategist",
     stars: 5,
-    size: "small" as const,
+    avatar: "/images/avatar_4.png",
+  },
+  {
+    quote:
+      "Got 3 interviews the month after they rewrote my LinkedIn. Game changer. I can monitor my personal brand before things get too big to handle.",
+    name: "Alex Kamau",
+    role: "Job Seeker",
+    stars: 5,
+    avatar: "/images/avatar_5.png",
   },
 ];
-
-function StarRating({ count }: { count: number }) {
-  return (
-    <div className="flex gap-0.5">
-      {Array.from({ length: count }).map((_, i) => (
-        <Star key={i} size={14} className="fill-primary text-primary" />
-      ))}
-    </div>
-  );
-}
 
 export default function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="py-24 md:py-32 bg-background"
+      className="relative py-20 md:py-32 bg-background text-leway-dark overflow-hidden noise-bg z-10"
       aria-label="Client testimonials"
     >
-      <div className="container mx-auto px-6 max-w-6xl">
-        {/* Header */}
+      <div className="container mx-auto px-6 max-w-7xl">
+
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.6 }}
+          className="mb-20 text-center flex flex-col items-center"
         >
-          <span className="font-display text-sm font-semibold uppercase tracking-widest text-primary mb-3 block">
-            Feedback
-          </span>
-          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold text-foreground">
-            See what our clients think about{" "}
-            <span className="text-primary">LEWAY</span>
+          <h2 className="font-ui uppercase tracking-widest text-[#8A9E8E] text-[11px] mb-6 flex items-center justify-center gap-4 w-full">
+            <span className="w-8 h-[2px] bg-[#0D6B35]"></span>
+            CLIENT FEEDBACK
+            <span className="w-8 h-[2px] bg-[#0D6B35]"></span>
           </h2>
+          <h3 className="font-display text-4xl md:text-7xl lg:text-[5.5rem] font-medium leading-[1.05] md:leading-[1.05] max-w-4xl tracking-tight">
+            See What They <br className="hidden md:block" /> <span className="italic text-leway-dark">Think About Us</span>
+          </h3>
         </motion.div>
 
-        {/* Masonry Bento Grid */}
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5">
+        <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 md:gap-8 space-y-6 md:space-y-8">
           {testimonials.map((t, i) => (
             <motion.blockquote
               key={t.name}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.45, delay: i * 0.08 }}
-              className="break-inside-avoid rounded-2xl border border-border bg-card p-6 md:p-7 flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow"
+              transition={{ duration: 0.5, delay: (i % 3) * 0.15 }}
+              className="break-inside-avoid relative p-6 md:p-8 lg:p-10 flex flex-col gap-5 md:gap-6 group bg-white/[0.02] backdrop-blur-sm border-l-[3px] border-leway-green hover:bg-white/[0.05] transition-colors duration-500 shadow-xl shadow-forest/5"
             >
-              {/* Author header */}
-              <div className="flex items-center gap-3">
-                {/* Placeholder avatar */}
-                <div className="h-11 w-11 rounded-full bg-muted flex items-center justify-center overflow-hidden shrink-0">
-                  <span className="font-display font-bold text-muted-foreground text-sm">
-                    {t.name[0]}
-                  </span>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <cite className="font-display font-bold text-card-foreground not-italic text-sm block truncate">
-                    {t.name}
-                  </cite>
-                  <span className="text-xs text-muted-foreground">{t.role}</span>
-                </div>
+              {/* Massive decorative quote mark */}
+              <div className="absolute top-4 right-6 opacity-10 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none">
+                <Quote size={80} className="text-leway-dark fill-current" />
               </div>
 
-              {/* Quote */}
-              <p className="font-body text-card-foreground/80 leading-relaxed text-sm">
-                {t.quote}
+              <div className="flex gap-1.5 relative z-10">
+                {Array.from({ length: t.stars }).map((_, j) => (
+                  <Star key={j} size={16} className="fill-leway-gold text-leway-gold" />
+                ))}
+              </div>
+
+              <p className="font-body text-lg md:text-xl text-leway-dark/80 leading-relaxed font-light relative z-10">
+                "{t.quote}"
               </p>
 
-              {/* Stars */}
-              <StarRating count={t.stars} />
+              <div className="flex items-center gap-5 mt-4 relative z-10">
+                <div className="h-14 w-14 rounded-full bg-background flex items-center justify-center shadow-inner overflow-hidden shrink-0 border border-leway-green grayscale group-hover:grayscale-0 transition-all duration-500">
+                  {t.avatar ? (
+                    <img src={t.avatar} alt={t.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="font-display font-bold text-leway-dark text-xl">
+                      {t.name[0]}
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-col">
+                  <cite className="font-display font-medium text-leway-dark not-italic text-lg">
+                    {t.name}
+                  </cite>
+                  <span className="font-ui text-xs tracking-[0.15em] uppercase text-leway-green mt-1">
+                    {t.role}
+                  </span>
+                </div>
+              </div>
             </motion.blockquote>
           ))}
         </div>

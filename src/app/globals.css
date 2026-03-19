@@ -4,59 +4,115 @@
 
 @layer base {
   :root {
-    --background: 140 6% 97%;
-    /* Paper White #F9FAF9 */
-    --foreground: 153 52% 11%;
-    /* Deep Forest #0D2A1F */
+    /* Brand Colors */
+    --color-bg-primary: #F8F6F1;
+    --color-bg-secondary: #EFECE3;
+    --color-bg-dark: #0B1F0F;
+    --color-bg-dark-secondary: #0F2714;
+    --color-bg-inverse: #0B1F0F;
 
-    --card: 0 0% 100%;
-    --card-foreground: 153 52% 11%;
+    --color-text-primary: #0B1F0F;
+    --color-text-secondary: rgba(11, 31, 15, 0.7);
+    --color-text-muted: rgba(11, 31, 15, 0.4);
+    --color-text-inverse: #F8F6F1;
+    --color-text-accent: #22C55E;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 153 52% 11%;
+    --color-accent-primary: #22C55E;
+    --color-accent-secondary: #0F1F13;
+    --color-accent-hover: #1EA650;
+    --color-gold: #C9A84C;
 
-    --primary: 145 69% 49%;
-    /* Vibrant Mint #2ECC71 */
-    --primary-foreground: 0 0% 0%;
+    --color-border-default: rgba(11, 31, 15, 0.1);
+    --color-border-strong: rgba(11, 31, 15, 0.2);
+    --color-border-inverse: rgba(248, 246, 241, 0.1);
 
-    --secondary: 120 11% 90%;
-    /* Soft Sage #E2E8E0 */
-    --secondary-foreground: 153 52% 11%;
+    /* Fluid Type Scale */
+    --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+    --text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+    --text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+    --text-lg: clamp(1.25rem, 1rem + 1.25vw, 1.5rem);
+    --text-xl: clamp(1.5rem, 1rem + 2.5vw, 2.5rem);
+    --text-2xl: clamp(2rem, 1.25rem + 3.75vw, 3.5rem);
+    --text-3xl: clamp(2.5rem, 1.5rem + 5vw, 5rem);
+    --text-hero: clamp(3.5rem, 2rem + 6vw, 7.5rem);
+    --text-stat: clamp(4rem, 2.5rem + 8vw, 10rem);
 
-    --muted: 120 11% 90%;
-    --muted-foreground: 153 20% 40%;
+    /* Spacing */
+    --space-2xs: 0.125rem;
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+    --space-3xl: 4rem;
+    --space-4xl: 6rem;
+    --space-5xl: 8rem;
+    --space-section: clamp(4rem, 3rem + 5vw, 8rem);
 
-    --accent: 153 52% 11%;
-    /* Deep Forest */
-    --accent-foreground: 140 6% 97%;
+    /* Depth / Shadows */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-2xl: 1.5rem;
+    --radius-full: 9999px;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --shadow-glow: 0 0 40px rgba(34, 197, 94, 0.15);
 
-    --border: 120 11% 85%;
-    --input: 120 11% 85%;
-    --ring: 145 69% 49%;
-
-    --radius: 0.5rem;
-
-    --forest: 153 52% 11%;
-    --sage: 120 11% 90%;
-    --paper: 140 6% 97%;
-    --mint: 145 69% 49%;
-
-    --overlay: 0 0% 100%;
-    --overlay-shadow: 0 0% 0%;
+    /* Z-Index */
+    --z-base: 0;
+    --z-dropdown: 100;
+    --z-sticky: 200;
+    --z-overlay: 300;
+    --z-modal: 400;
+    --z-cursor: 9999;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
+    box-sizing: border-box;
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
     font-family: var(--font-body), sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Hide default cursor on desktop since we have a custom cursor */
+    cursor: none;
+    scroll-behavior: smooth;
+  }
+
+  /* Only hide cursor when hover is supported */
+  @media (hover: none) and (pointer: coarse) {
+    body {
+      cursor: auto;
+    }
+  }
+
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  [role="button"],
+  [tabindex="0"] {
+    cursor: none;
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+
+    a,
+    button,
+    input,
+    textarea,
+    select,
+    [role="button"],
+    [tabindex="0"] {
+      cursor: auto;
+    }
   }
 
   h1,
@@ -65,17 +121,77 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-display), sans-serif;
+    font-family: var(--font-display), serif;
     letter-spacing: -0.02em;
+    font-weight: 400;
   }
 }
 
 @layer utilities {
-  .font-display {
-    font-family: var(--font-display), sans-serif;
+  .noise-bg {
+    position: relative;
   }
 
-  .font-body {
-    font-family: var(--font-body), sans-serif;
+  .noise-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    mix-blend-mode: multiply;
+  }
+
+  .noise-bg-dark {
+    position: relative;
+  }
+
+  .noise-bg-dark::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+  }
+
+  .bg-radial-dark {
+    background: radial-gradient(circle at center, var(--color-bg-dark-secondary) 0%, var(--color-bg-dark) 100%);
+  }
+
+  .clip-diagonal {
+    clip-path: polygon(0 0, 100% 4vw, 100% 100%, 0 calc(100% - 4vw));
+  }
+
+  .clip-diagonal-top {
+    clip-path: polygon(0 0, 100% 4vw, 100% 100%, 0 100%);
+  }
+
+  .clip-diagonal-bottom {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 4vw));
+  }
+
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

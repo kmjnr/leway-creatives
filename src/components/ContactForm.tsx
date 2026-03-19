@@ -8,13 +8,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle2, ArrowLeft, ChevronDown, Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 
 const SERVICE_OPTIONS = [
   "Web Design & Development",
-  "Graphic & Creative Design",
-  "Content Creation & Copywriting",
+  "Content & Copywriting",
+  "Marketing Design",
+  "Lead Generation",
   "Career & Personal Branding",
+  "Full Growth Package (All Services)",
+  "Not Sure Yet \u2014 I Need Advice",
 ] as const;
 
 const schema = z.object({
@@ -27,7 +29,12 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-const currentMonth = new Date().toLocaleString("en-US", { month: "long" });
+const getFollowingMonth = () => {
+  const now = new Date();
+  const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+  return nextMonth.toLocaleString("en-US", { month: "long" });
+};
+const followingMonth = getFollowingMonth();
 
 export default function ContactForm() {
   const [submitted, setSubmitted] = useState<string | null>(null);
@@ -56,19 +63,16 @@ export default function ContactForm() {
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     setSubmitError(null);
-
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-
       if (!res.ok) {
         const json = await res.json().catch(() => ({}));
         throw new Error(json.error || "Something went wrong. Please try again.");
       }
-
       setSubmitted(data.name);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Something went wrong. Please try again.";
@@ -79,268 +83,208 @@ export default function ContactForm() {
   };
 
   return (
-    <section id="contact" className="relative pt-24 md:pt-32 pb-40 md:pb-52 bg-foreground overflow-hidden" aria-label="Contact form">
-      {/* Decorative radial glow */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full bg-primary/10 blur-[120px]" />
-        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-primary/5 blur-[100px]" />
-      </div>
-      <div className="relative w-full px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-32 mx-auto max-w-4xl">
-        <div className="flex flex-col items-center w-full">
-          {/* Top copy */}
+    <section id="contact" className="relative pt-20 pb-32 md:pt-32 md:pb-40 lg:pt-40 lg:pb-52 bg-background-dark text-leway-light overflow-hidden bg-radial-dark noise-bg-dark clip-diagonal-top z-20">
+      <div className="container mx-auto px-6 max-w-7xl relative z-10 pt-6 md:pt-10">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
+
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-10 w-full">
-
-            <h2 className="font-display text-3xl md:text-4xl font-extrabold text-accent-foreground leading-tight mb-4">
-              You've Come This Far.{" "}
-              <span className="text-primary">You're Interested.</span>
+            className="lg:w-5/12 lg:sticky lg:top-40"
+          >
+            <h2 className="font-ui uppercase tracking-widest text-[#C9A84C] text-[11px] mb-6 flex items-center gap-4">
+              <span className="w-8 h-[1px] bg-[#C9A84C]"></span>
+              YOUR MOVE
             </h2>
-            <p className="font-body text-accent-foreground/70 text-lg mb-4 leading-relaxed max-w-2xl mx-auto">
-              The market is crowded. Your competitors are noisy. Let's make you
-              the only logical choice.
+            <h3 className="font-display text-4xl sm:text-5xl md:text-7xl lg:text-[6rem] font-medium leading-[1]">
+              Ready to <br />
+              <span className="italic text-white">Dominate?</span>
+            </h3>
+            <p className="font-body text-lg md:text-xl text-leway-light/70 mt-6 md:mt-8 mb-8 md:mb-12 tracking-wide font-light max-w-sm leading-relaxed">
+              The market is crowded. Your competitors are noisy. Let's make you the only logical choice.
             </p>
 
-
-            <p className="font-body text-sm text-accent-foreground/50 italic max-w-2xl mx-auto">
-              P.S. You'll leave the session with a roadmap even if we don't work
-              together.
-            </p>
+            <div className="p-8 border border-white/5 bg-white/[0.02] backdrop-blur-md inline-block shadow-2xl relative">
+              <span className="font-ui text-[10px] tracking-[0.2em] uppercase text-leway-gold mb-3 block">— Status</span>
+              <p className="font-display font-medium text-white text-2xl pr-4">Taking new clients for <span className="text-leway-green italic">{followingMonth}</span>.</p>
+              {/* Blinking indicator */}
+              <div className="absolute top-8 right-8 w-2 h-2 rounded-full bg-leway-green animate-pulse"></div>
+            </div>
           </motion.div>
 
-          {/* Form / Success */}
+          {/* Form Area */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="w-full rounded-2xl border border-overlay/10 bg-overlay/5 p-8 sm:p-10 shadow-lg relative z-10">
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="lg:w-7/12 w-full max-w-2xl mx-auto"
+          >
+            <div className="rounded-none md:border border-white/5 md:bg-white/[0.01] md:backdrop-blur-sm p-0 md:p-14 shadow-none md:shadow-2xl">
 
-            <AnimatePresence mode="wait">
-              {submitted ?
-                <motion.div
-                  key="success"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  className="flex flex-col items-center text-center py-8">
-
+              <AnimatePresence mode="wait">
+                {submitted ? (
                   <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", delay: 0.1 }}>
-
-                    <CheckCircle2 size={64} className="text-primary mb-4" />
-                  </motion.div>
-                  <h3 className="font-display text-2xl font-bold text-accent-foreground mb-2">
-                    Message Received!
-                  </h3>
-                  <p className="font-body text-accent-foreground/70 mb-6">
-                    Thanks, <strong>{submitted}</strong>! We've received your
-                    details. We are analyzing your request and will reach out to you
-                    as soon as possible.
-                  </p>
-                  <button
-                    onClick={() => setSubmitted(null)}
-                    className="flex items-center gap-2 text-sm text-primary font-semibold">
-
-                    <ArrowLeft size={16} /> Back
-                  </button>
-                </motion.div> :
-
-                <motion.form
-                  key="form"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  onSubmit={handleSubmit(onSubmit)}
-                  className="space-y-5"
-                  noValidate>
-
-                  <h3 className="font-display text-xl font-bold text-accent-foreground mb-2">
-                    Let's Turn Spend Into Well-Spent.
-                  </h3>
-
-                  <div>
-                    <Label htmlFor="name" className="text-accent-foreground/80 text-sm">
-                      Name
-                    </Label>
-                    <Input
-                      id="name"
-                      placeholder="Your Name"
-                      {...register("name")}
-                      className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30" />
-
-                    {errors.name &&
-                      <p className="text-xs text-destructive mt-1">{errors.name.message}</p>
-                    }
-                  </div>
-
-                  <div>
-                    <Label htmlFor="email" className="text-accent-foreground/80 text-sm">
-                      Email
-                    </Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="best@email.com"
-                      {...register("email")}
-                      className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30" />
-
-                    {errors.email &&
-                      <p className="text-xs text-destructive mt-1">{errors.email.message}</p>
-                    }
-                  </div>
-
-                  <div>
-                    <Label htmlFor="whatsapp" className="text-accent-foreground/80 text-sm">
-                      WhatsApp Number
-                    </Label>
-                    <Input
-                      id="whatsapp"
-                      type="tel"
-                      placeholder="+254..."
-                      {...register("whatsapp")}
-                      className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30" />
-
-                    <p className="text-xs text-accent-foreground/40 mt-1">
-                      Please include country code
+                    key="success"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    className="flex flex-col items-center text-center py-20"
+                  >
+                    <CheckCircle2 size={80} className="text-leway-green mb-8 stroke-1" />
+                    <h3 className="font-display text-4xl font-medium text-white mb-4">
+                      Message Received
+                    </h3>
+                    <p className="font-body text-xl text-paper/60 mb-10 font-light max-w-md leading-relaxed">
+                      Thanks, <strong>{submitted}</strong>. We've received your
+                      details. We are analyzing your request and will reach out shortly.
                     </p>
-                    {errors.whatsapp &&
-                      <p className="text-xs text-destructive mt-1">{errors.whatsapp.message}</p>
-                    }
-                  </div>
+                    <button
+                      onClick={() => setSubmitted(null)}
+                      className="group font-ui tracking-widest uppercase text-sm text-leway-green flex items-center gap-4 transition-all"
+                    >
+                      <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+                      Back to Form
+                    </button>
+                  </motion.div>
+                ) : (
+                  <motion.form
+                    key="form"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="flex flex-col gap-10"
+                    noValidate
+                  >
+                    <div>
+                      <label htmlFor="name" className="font-ui uppercase tracking-widest text-[10px] text-leway-light/60 mb-2 block">Name</label>
+                      <Input
+                        id="name"
+                        placeholder="John Doe"
+                        {...register("name")}
+                        className="bg-transparent border-0 border-b border-white/20 rounded-none text-white px-0 py-4 text-2xl md:text-3xl focus-visible:ring-0 focus-visible:border-[#C9A84C] placeholder:text-white/20 transition-colors font-display"
+                      />
+                      {errors.name && <p className="text-xs text-leway-gold mt-2 font-ui uppercase tracking-widest">{errors.name.message}</p>}
+                    </div>
 
-                  {/* Services multi-select dropdown */}
-                  <div>
-                    <Label className="text-accent-foreground/80 text-sm">
-                      Services You're Interested In{" "}
-                      <span className="text-accent-foreground/40 font-normal">(optional)</span>
-                    </Label>
-                    <Controller
-                      control={control}
-                      name="services"
-                      render={({ field }) => {
-                        const selected = field.value || [];
-                        const toggle = (val: string) => {
-                          const next = selected.includes(val)
-                            ? selected.filter((s) => s !== val)
-                            : [...selected, val];
-                          field.onChange(next);
-                        };
-                        return (
-                          <div ref={dropdownRef} className="relative mt-1">
-                            <button
-                              type="button"
-                              onClick={() => setDropdownOpen((o) => !o)}
-                              className="flex w-full items-center justify-between rounded-md border border-overlay/10 bg-overlay/5 px-3 py-2.5 text-sm text-accent-foreground transition-colors hover:border-overlay/20"
-                            >
-                              <span className={selected.length ? "text-accent-foreground" : "text-accent-foreground/30"}>
-                                {selected.length ? `${selected.length} selected` : "Select services…"}
-                              </span>
-                              <ChevronDown size={16} className={`text-accent-foreground/50 transition-transform ${dropdownOpen ? "rotate-180" : ""}`} />
-                            </button>
-                            <AnimatePresence>
-                              {dropdownOpen && (
-                                <motion.div
-                                  initial={{ opacity: 0, y: -4 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -4 }}
-                                  transition={{ duration: 0.15 }}
-                                  className="absolute z-50 mt-1 w-full rounded-md border border-overlay/10 bg-foreground shadow-lg"
-                                >
-                                  {SERVICE_OPTIONS.map((opt) => (
-                                    <button
-                                      key={opt}
-                                      type="button"
-                                      onClick={() => toggle(opt)}
-                                      className="flex w-full items-center gap-3 px-3 py-2.5 text-sm text-accent-foreground/80 transition-colors hover:bg-overlay/10"
-                                    >
-                                      <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border ${selected.includes(opt) ? "border-primary bg-primary text-primary-foreground" : "border-overlay/20"}`}>
-                                        {selected.includes(opt) && <Check size={12} />}
-                                      </span>
-                                      {opt}
-                                    </button>
-                                  ))}
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-                        );
-                      }}
-                    />
-                  </div>
+                    <div>
+                      <label htmlFor="email" className="font-ui uppercase tracking-widest text-[10px] text-leway-light/60 mb-2 block">Email</label>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="best@email.com"
+                        {...register("email")}
+                        className="bg-transparent border-0 border-b border-white/20 rounded-none text-white px-0 py-4 text-2xl md:text-3xl focus-visible:ring-0 focus-visible:border-[#C9A84C] placeholder:text-white/20 transition-colors font-display"
+                      />
+                      {errors.email && <p className="text-xs text-leway-gold mt-2 font-ui uppercase tracking-widest">{errors.email.message}</p>}
+                    </div>
 
-                  <div>
-                    <Label htmlFor="service" className="text-accent-foreground/80 text-sm">
-                      What service are you looking for?
-                    </Label>
-                    <Textarea
-                      id="service"
-                      placeholder="I need a high-converting landing page for my real estate business..."
-                      rows={4}
-                      {...register("service")}
-                      className="mt-1 bg-overlay/5 border-overlay/10 text-accent-foreground placeholder:text-accent-foreground/30" />
+                    <div>
+                      <label htmlFor="whatsapp" className="font-ui uppercase tracking-widest text-[10px] text-leway-light/60 mb-2 block">WhatsApp Number</label>
+                      <Input
+                        id="whatsapp"
+                        type="tel"
+                        placeholder="+254..."
+                        {...register("whatsapp")}
+                        className="bg-transparent border-0 border-b border-white/20 rounded-none text-white px-0 py-4 text-2xl md:text-3xl focus-visible:ring-0 focus-visible:border-[#C9A84C] placeholder:text-white/20 transition-colors font-display"
+                      />
+                      {errors.whatsapp && <p className="text-xs text-leway-gold mt-2 font-ui uppercase tracking-widest">{errors.whatsapp.message}</p>}
+                    </div>
 
-                    {errors.service &&
-                      <p className="text-xs text-destructive mt-1">{errors.service.message}</p>
-                    }
-                  </div>
+                    <div>
+                      <label className="font-ui uppercase tracking-widest text-[10px] text-leway-light/60 mb-2 block">
+                        Services You're Interested In <span className="text-leway-light/30 ml-2">(Optional)</span>
+                      </label>
+                      <Controller
+                        control={control}
+                        name="services"
+                        render={({ field }) => {
+                          const selected = field.value || [];
+                          const toggle = (val: string) => {
+                            const next = selected.includes(val)
+                              ? selected.filter((s) => s !== val)
+                              : [...selected, val];
+                            field.onChange(next);
+                          };
+                          return (
+                            <div ref={dropdownRef} className="relative z-50">
+                              <button
+                                type="button"
+                                onClick={() => setDropdownOpen((o) => !o)}
+                                className="flex w-full items-center justify-between border-b border-white/20 bg-transparent px-0 py-4 text-xl md:text-2xl text-white transition-colors hover:border-leway-green font-display text-left"
+                              >
+                                <span className={selected.length ? "text-white" : "text-white/20"}>
+                                  {selected.length ? `${selected.length} Selected` : "Select services..."}
+                                </span>
+                                <ChevronDown size={20} className={`text-white/50 transition-transform ${dropdownOpen ? "rotate-180" : ""}`} />
+                              </button>
+                              <AnimatePresence>
+                                {dropdownOpen && (
+                                  <motion.div
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: 10 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="absolute w-full mt-2 border border-white/10 bg-[#0F2714] shadow-2xl z-50 p-2"
+                                  >
+                                    {SERVICE_OPTIONS.map((opt) => (
+                                      <button
+                                        key={opt}
+                                        type="button"
+                                        onClick={() => toggle(opt)}
+                                        className="flex w-full items-center gap-4 px-4 py-4 text-base md:text-lg text-white/80 transition-colors hover:bg-white/5 hover:text-white font-body font-light text-left"
+                                      >
+                                        <span className={`flex h-5 w-5 shrink-0 items-center justify-center border ${selected.includes(opt) ? "border-leway-green bg-leway-green text-forest" : "border-white/20 rounded-sm"}`}>
+                                          {selected.includes(opt) && <Check size={14} strokeWidth={3} />}
+                                        </span>
+                                        {opt}
+                                      </button>
+                                    ))}
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
+                            </div>
+                          );
+                        }}
+                      />
+                    </div>
 
-                  {submitError && (
-                    <p className="text-xs text-destructive text-center -mb-1">{submitError}</p>
-                  )}
+                    <div>
+                      <label htmlFor="service" className="font-ui uppercase tracking-widest text-[10px] text-leway-light/60 mb-2 block">
+                        What service are you looking for?
+                      </label>
+                      <Textarea
+                        id="service"
+                        placeholder="Tell us about your project..."
+                        rows={4}
+                        {...register("service")}
+                        className="bg-transparent border-0 border-b border-white/20 rounded-none text-white px-0 py-4 text-xl md:text-2xl focus-visible:ring-0 focus-visible:border-[#C9A84C] placeholder:text-white/20 transition-colors font-display resize-none"
+                      />
+                      {errors.service && <p className="text-xs text-leway-gold mt-2 font-ui uppercase tracking-widest">{errors.service.message}</p>}
+                    </div>
 
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full rounded-full bg-primary py-3.5 font-display font-bold text-primary-foreground transition-transform hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/25 disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100">
-                    {isSubmitting ? "Sending…" : "Send Request"}
-                  </button>
+                    {submitError && (
+                      <p className="text-sm text-leway-gold bg-leway-gold/10 p-4 border border-leway-gold/20 font-ui tracking-widest uppercase text-center">{submitError}</p>
+                    )}
 
-                  {/* Urgency badge */}
-                  <div className="flex items-center justify-center gap-2 rounded-lg border border-primary/30 bg-primary/10 px-4 py-3 mt-1">
-                    <span className="relative flex h-3 w-3 shrink-0">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
-                      <span className="relative inline-flex h-3 w-3 rounded-full bg-primary" />
-                    </span>
-                    <span className="font-display text-sm font-bold text-primary">
-                      Only 5 spots available for {currentMonth}
-                    </span>
-                  </div>
-                </motion.form>
-              }
-            </AnimatePresence>
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="group relative overflow-hidden bg-leway-green px-8 py-6 text-leway-dark font-ui font-bold uppercase tracking-[0.2em] text-sm md:text-base transition-all hover:scale-[1.02] disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100 mt-4 outline-none focus-visible:ring-2 ring-leway-green ring-offset-2 ring-offset-forest"
+                    >
+                      <span className="relative z-10">{isSubmitting ? "TRANSMITTING..." : "SUBMIT INQUIRY"}</span>
+                      <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out" />
+                    </button>
+                  </motion.form>
+                )}
+              </AnimatePresence>
+            </div>
           </motion.div>
         </div>
       </div>
-      {/* Diagonal divider with gradient */}
-      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none" aria-hidden="true">
-        <svg
-          className="relative block w-full h-32 md:h-48"
-          viewBox="0 0 1200 200"
-          preserveAspectRatio="none"
-          xmlns="http://www.w3.org/2000/svg">
-
-          <defs>
-            <linearGradient id="divider-gradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="hsl(153, 52%, 11%)" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="hsl(140, 6%, 97%)" stopOpacity="1" />
-            </linearGradient>
-          </defs>
-          <polygon
-            points="0,200 1200,40 1200,200"
-            fill="url(#divider-gradient)" />
-
-          <polygon
-            points="0,200 1200,80 1200,200"
-            fill="hsl(140, 6%, 97%)" />
-
-        </svg>
-      </div>
-    </section>);
-
+    </section>
+  );
 }

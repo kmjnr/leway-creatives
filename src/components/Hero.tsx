@@ -1,200 +1,138 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
-import { Globe, Palette, PenTool, UserCheck } from "lucide-react";
+import Marquee from "@/components/ui/Marquee";
+import RotatingBadge from "@/components/ui/RotatingBadge";
 
 const scrollTo = (id: string) => {
   document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
 };
 
 export default function Hero() {
-  const buttons = (
-    <div className="flex flex-wrap gap-4 mt-1">
-      <button
-        onClick={() => scrollTo("#contact")}
-        className="rounded-full bg-primary px-8 py-3.5 font-display font-bold text-primary-foreground transition-transform hover:scale-105 hover:shadow-xl hover:shadow-primary/25"
-      >
-        Start Your Transformation
-      </button>
-      <button
-        onClick={() => scrollTo("#services")}
-        className="rounded-full border border-accent-foreground/20 px-8 py-3.5 font-display font-semibold text-accent-foreground transition-transform hover:scale-105 hover:border-accent-foreground/40"
-      >
-        See our Services
-      </button>
-    </div>
-  );
-
   return (
     <section
-      className="relative min-h-screen flex items-center bg-accent overflow-hidden pt-20 pb-16 md:pb-24"
+      className="relative w-full min-h-screen bg-leway-dark text-leway-light overflow-hidden flex flex-col noise-bg-dark font-body select-none pt-20 md:pt-24"
       aria-label="Hero"
     >
-      {/* Background glow effects */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[700px] rounded-full bg-primary/8 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-primary/5 blur-[100px] pointer-events-none" />
-      <div className="absolute top-20 right-10 w-[200px] h-[200px] rounded-full bg-primary/6 blur-[80px] pointer-events-none" />
 
-      {/* Subtle dot pattern overlay */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
+      {/* Background radial gradients for atmosphere */}
+      <div className="absolute top-0 left-0 w-full h-[150%] pointer-events-none opacity-50 mix-blend-screen"
         style={{
-          backgroundImage: "radial-gradient(circle, hsl(var(--accent-foreground)) 1px, transparent 1px)",
-          backgroundSize: "24px 24px",
+          background: "radial-gradient(circle at 70% 20%, rgba(34, 197, 94, 0.15) 0%, transparent 40%), radial-gradient(circle at 10% 70%, rgba(201, 168, 76, 0.08) 0%, transparent 35%)"
         }}
       />
 
-      <div className="container mx-auto px-6 max-w-7xl relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left: Copy */}
+      <div className="flex-1 flex flex-col justify-center px-6 md:px-12 lg:px-20 z-10 pt-8 pb-16 md:pt-10 md:pb-20">
+        <div className="max-w-[1400px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 relative items-center">
+
+
+          {/* Desktop stat cards sidebar — hidden on mobile */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-            className="flex flex-col items-start gap-7"
+            initial={{ opacity: 0, scale: 0.8, x: 20 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-2 hidden lg:flex flex-col justify-center items-end gap-6 relative z-10"
           >
-            <span className="inline-flex items-center gap-2 rounded-full border border-overlay/10 bg-overlay/5 px-4 py-1.5 text-xs font-medium text-primary tracking-wide uppercase">
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              Design & Copywriting Agency
-            </span>
-
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-[3.5rem] xl:text-6xl font-extrabold leading-[1.05] text-accent-foreground max-w-xl">
-              Your Brand Looks Like an Amateur. <span className="text-primary">Let's Fix That.</span>
-            </h1>
-
-            <p className="font-body text-lg md:text-xl text-accent-foreground/70 max-w-lg leading-relaxed">
-              You don't need just a "pretty website" or text copies. You need a{" "}
-              <strong className="text-accent-foreground">sales engine</strong>. We combine elite Design with
-              Psychological Copywriting to turn your visitors into obsessive buyers.
-            </p>
-
-            {/* Buttons: visible on desktop only */}
-            <div className="hidden lg:block">{buttons}</div>
+            {[
+              { label: "Projects Delivered", value: "23+" },
+              { label: "Global Presence", value: "6 Countries" },
+              { label: "Client Satisfaction", value: "100%" },
+            ].map((stat, i) => (
+              <div key={i} className="bg-[#0B1F0F]/80 backdrop-blur-md border border-white/5 px-6 py-8 rounded-2xl w-[220px] shadow-2xl hover:-translate-x-2 transition-transform duration-500 relative overflow-hidden group">
+                <div className="absolute inset-0 bg-[#22C55E] opacity-0 group-hover:opacity-5 transition-opacity duration-500" />
+                <p className="font-display text-4xl text-[#C9A84C] mb-2">{stat.value}</p>
+                <p className="font-ui uppercase tracking-widest text-[10px] text-white/50">{stat.label}</p>
+              </div>
+            ))}
           </motion.div>
 
-          {/* Right: Creative image composition */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="relative flex justify-center lg:justify-end"
-          >
-            {/* Glow behind image */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="w-[80%] h-[80%] rounded-3xl bg-primary/15 blur-[60px]" />
-            </div>
+          <div className="lg:col-span-10 flex flex-col gap-8 relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+              <h2 className="font-ui uppercase tracking-widest text-[#C9A84C] text-[11px] mb-8 flex items-center gap-4">
+                <span className="w-8 h-[1px] bg-[#C9A84C]"></span>
+                WE ARE LEWAY CREATIVES
+              </h2>
 
-            {/* Main image card */}
-            <div className="relative w-full max-w-md lg:max-w-lg">
-              {/* Primary image container — tilted for dynamism */}
-              <div className="relative rounded-3xl overflow-hidden rotate-1 hover:rotate-0 transition-transform duration-500">
-                <Image
-                  src="/images/leway-creatives-web-design-agency-kenya.webp"
-                  alt="LEWAY Creatives — laptop, tablet and phone showcasing web design, visual identity and personal branding work for clients in Kenya and worldwide"
-                  className="w-full h-auto object-cover"
-                  priority
-                  width={600}
-                  height={450}
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-                {/* Gradient edges for seamless blend into dark hero background */}
-                <div
-                  className="absolute inset-0 pointer-events-none rounded-3xl"
-                  style={{
-                    background: `
-                      radial-gradient(ellipse at center, transparent 30%, hsl(var(--accent) / 0.4) 60%, hsl(var(--accent)) 85%),
-                      linear-gradient(to bottom, transparent 40%, hsl(var(--accent)) 90%),
-                      linear-gradient(to top, transparent 70%, hsl(var(--accent)) 95%),
-                      linear-gradient(to right, transparent 70%, hsl(var(--accent)) 95%),
-                      linear-gradient(to left, transparent 70%, hsl(var(--accent)) 95%)
-                    `,
-                  }}
-                />
-              </div>
+              <h1 className="font-display text-[2.75rem] sm:text-6xl md:text-[5.5rem] lg:text-[7.5rem] leading-[1] md:leading-[0.95] font-normal tracking-tight text-white mb-8 md:mb-10 max-w-5xl">
+                Your Brand <br />
+                Looks Like An <br />
+                <span className="relative inline-block mt-2 md:mt-4 mb-2 pl-8 md:pl-0">
+                  <span className="absolute left-0 md:-left-16 top-1/2 -translate-y-1/2 text-leway-green opacity-80 text-2xl md:text-5xl">→</span>
+                  <em className="italic text-white font-medium px-1 md:px-2">Amateur.</em>
+                  <span className="absolute bottom-1 left-0 w-full h-[2px] md:h-[5px] bg-leway-green/40 -z-10"></span>
+                </span>
+                <br />
+                <span className="text-white/80">Let's Fix That.</span>
+              </h1>
 
-              {/* Floating accent cards */}
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-                className="absolute -left-6 top-[18%] rounded-xl border border-overlay/10 bg-accent/90 backdrop-blur-md px-4 py-3 shadow-lg shadow-overlay-shadow/20 -rotate-3"
+              <p className="font-body text-lg md:text-xl text-leway-light/70 max-w-xl leading-relaxed">
+                You don't need just a "pretty website" or text copies. You need a <strong className="text-white font-medium">sales engine</strong>. We combine elite Design with Psychological Copywriting to turn your visitors into obsessive buyers.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="flex flex-col gap-6 mt-2"
+            >
+              <button
+                onClick={() => scrollTo("#contact")}
+                className="group relative overflow-hidden bg-leway-green w-full sm:w-auto sm:self-start px-8 py-4 md:py-5 text-leway-dark font-ui font-bold uppercase tracking-widest text-sm transition-all hover:scale-[1.02] text-center"
               >
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                    <Globe className="w-4 h-4 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-display font-bold text-accent-foreground">Web Design</p>
-                    <p className="text-[10px] text-accent-foreground/50">Sites that convert</p>
-                  </div>
-                </div>
-              </motion.div>
+                <span className="relative z-10 flex items-center justify-center gap-3">
+                  Get My Free Audit
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </span>
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out" />
+              </button>
 
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.65 }}
-                className="absolute -right-4 top-[8%] rounded-xl border border-overlay/10 bg-accent/90 backdrop-blur-md px-4 py-3 shadow-lg shadow-overlay-shadow/20 rotate-2"
-              >
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                    <PenTool className="w-4 h-4 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-display font-bold text-accent-foreground">Copywriting</p>
-                    <p className="text-[10px] text-accent-foreground/50">Words that sell</p>
-                  </div>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.75 }}
-                className="absolute -left-4 top-[55%] rounded-xl border border-overlay/10 bg-accent/90 backdrop-blur-md px-4 py-3 shadow-lg shadow-overlay-shadow/20 rotate-2"
-              >
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                    <Palette className="w-4 h-4 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-display font-bold text-accent-foreground">Graphic Design</p>
-                    <p className="text-[10px] text-accent-foreground/50">Visuals that pop</p>
-                  </div>
-                </div>
-              </motion.div>
-
+              {/* Mobile stat cards — visible only below lg */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.8 }}
-                className="absolute -bottom-4 left-1/2 -translate-x-1/2 rounded-xl border border-overlay/10 bg-accent/90 backdrop-blur-md px-5 py-3 shadow-lg shadow-overlay-shadow/20"
+                transition={{ duration: 0.7, delay: 0.6 }}
+                className="grid grid-cols-3 gap-3 lg:hidden"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                    <UserCheck className="w-4 h-4 text-primary" />
+                {[
+                  { label: "Projects", value: "23+" },
+                  { label: "Countries", value: "6" },
+                  { label: "Satisfaction", value: "100%" },
+                ].map((stat, i) => (
+                  <div key={i} className="bg-[#0B1F0F]/80 backdrop-blur-md border border-white/5 px-3 py-4 rounded-xl shadow-lg relative overflow-hidden text-center">
+                    <p className="font-display text-2xl text-[#C9A84C] mb-1">{stat.value}</p>
+                    <p className="font-ui uppercase tracking-wider text-[9px] text-white/50 leading-tight">{stat.label}</p>
                   </div>
-                  <div>
-                    <p className="text-xs font-display font-bold text-accent-foreground">Personal Branding</p>
-                    <p className="text-[10px] text-accent-foreground/50">Stand out to recruiters</p>
-                  </div>
-                </div>
+                ))}
               </motion.div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
 
-          {/* Buttons: visible on mobile only, after image */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="lg:hidden"
-          >
-            {buttons}
-          </motion.div>
         </div>
       </div>
+
+      <div className="w-full mt-auto relative z-10 bg-[#22C55E]">
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-white/30"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-black/20"></div>
+        <Marquee speed={30} className="py-6 font-ui uppercase tracking-widest text-sm text-[#0B1F0F] font-bold">
+          <span className="mx-4">Award-Winning Web Design</span>
+          <span className="mx-4 text-white">✦</span>
+          <span className="mx-4">Conversion Copywriting</span>
+          <span className="mx-4 text-white">✦</span>
+          <span className="mx-4">B2B Lead Generation</span>
+          <span className="mx-4 text-white">✦</span>
+          <span className="mx-4 text-[#0B1F0F]">Global Reach</span>
+          <span className="mx-4 text-white">✦</span>
+        </Marquee>
+      </div>
+
     </section>
   );
 }

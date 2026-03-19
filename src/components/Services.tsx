@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Globe, Palette, PenTool, UserCheck, ChevronRight, ChevronLeft, ImageIcon, ExternalLink } from "lucide-react";
-
+import { Globe, Palette, PenTool, UserCheck, Crosshair, ArrowRight } from "lucide-react";
 
 type ServiceImage = { src: string; alt: string; link?: string };
 
@@ -12,331 +11,187 @@ const categories = [
     id: "web",
     icon: Globe,
     title: "Web Design & Development",
-    description: "We don't just build websites — we engineer conversion machines. Every pixel, every word, every interaction is designed to turn visitors into paying customers.",
-    images: [
-      {
-        src: "/images/wordpress-design-orient.webp",
-        alt: "WordPress website design for Orient — responsive web design portfolio by LEWAY Creatives Kenya",
-        link: "http://orientcleaningservices.co.ke/",
-      },
-      {
-        src: "/images/safebox-landing-page.webp",
-        alt: "High-converting product landing page for safe box company in Kenya — conversion-focused web design by LEWAY Creatives",
-        link: "https://premiumsafeboxes.netlify.app/",
-      },
-    ] as ServiceImage[],
+    badge: "Get Clients Online",
+    description: "We don\u2019t just build websites \u2014 we engineer conversion machines. Every pixel, every word, every interaction is designed to turn visitors into paying customers.",
     services: [
       { name: "Landing Pages", desc: "High-converting pages built to maximize traffic and conversion for your marketing campaigns." },
       { name: "Complete Website Design", desc: "Custom-designed websites that are responsive, user-friendly, and aligned with your brand identity." },
       { name: "Personal Portfolio Websites", desc: "Professional portfolio sites to showcase your skills, projects, and achievements beautifully." },
     ],
-  },
-  {
-    id: "graphic",
-    icon: Palette,
-    title: "Graphic & Creative Design",
-    description: "Visual identity that demands attention. From scroll-stopping ads to brand systems that make competitors nervous — we design assets that work as hard as you do.",
-    images: [
-      {
-        src: "/images/meta-ad-graphic-design--headphones.webp",
-        alt: "Meta Facebook ad banner graphic design for headphones brand — professional ad design services by LEWAY Creatives Kenya",
-      },
-    ] as ServiceImage[],
-    services: [
-      { name: "Ads Banners", desc: "Visually engaging banners for Meta and other platforms to boost ad performance." },
-      { name: "Flyer & Poster Design", desc: "Catchy promotional materials for both online and print marketing." },
-      { name: "Logo Design", desc: "Unique and memorable brand logos that capture your identity." },
-      { name: "Presentation Design", desc: "Sleek, branded presentations for pitches, reports, and webinars." },
-      { name: "Ebook Design & Writing", desc: "Professionally designed lead-magnet ebooks that inform and convert." },
-    ],
+    image: "/images/service_web_design.png"
   },
   {
     id: "content",
     icon: PenTool,
-    title: "Content Creation & Copywriting",
-    description: "Words that sell, stories that stick. We craft copy that doesn't just inform — it persuades, converts, and builds lasting brand authority across every channel.",
-    images: [
-      {
-        src: "/images/social-media-carousel-design.webp",
-        alt: "Social media carousel content design for brand growth — social media management and copywriting by LEWAY Creatives",
-      },
-    ] as ServiceImage[],
+    title: "Content & Copywriting",
+    badge: "Get Found & Trusted",
+    description: "Words that sell, stories that stick. We craft copy that doesn\u2019t just inform \u2014 it persuades, converts, and builds lasting brand authority across every channel.",
     services: [
-      { name: "Social Media Content", desc: "Posts crafted to engage audiences while staying consistent with your brand voice, plus visual design." },
-      { name: "Social Media Management", desc: "Content scheduling, posting, and engagement strategies to grow your online presence." },
-      { name: "Blog & Article Writing", desc: "SEO-friendly articles and blogs tailored to your brand's goals and audience." },
-      { name: "Email & Newsletter Copywriting", desc: "Compelling email campaigns that nurture leads and drive conversions." },
+      { name: "Social Media Content", desc: "We write the copy AND create the visuals for every post \u2014 so your social media looks sharp and reads even sharper." },
+      { name: "Social Media Management", desc: "Content scheduling, posting, and engagement strategies to grow your online presence consistently." },
+      { name: "Blog & Article Writing", desc: "SEO-optimised articles and blogs tailored to your brand\u2019s goals \u2014 written to rank and written to convert." },
+      { name: "Email & Newsletter Copywriting", desc: "Compelling email campaigns that nurture your leads, build trust, and drive consistent conversions." },
+      { name: "Ebook Writing & Design", desc: "We write the content AND design the layout \u2014 a complete lead-magnet ebook, done for you from start to finish." },
     ],
+    image: "/images/service_content.png"
+  },
+  {
+    id: "graphic",
+    icon: Palette,
+    title: "Marketing Design",
+    badge: "Look the Part",
+    description: "Visual identity that demands attention. From scroll-stopping ads to brand systems that make competitors nervous \u2014 we design assets that work as hard as you do.",
+    services: [
+      { name: "Ads & Social Banners", desc: "Scroll-stopping visuals for Meta, LinkedIn, and Google ads \u2014 designed to boost click-through rates." },
+      { name: "Flyer & Poster Design", desc: "Catchy promotional materials for both online and print marketing campaigns." },
+      { name: "Logo & Brand Identity", desc: "Distinctive, scalable logos and cohesive brand systems \u2014 colours, fonts, and guidelines that make your business instantly recognisable." },
+      { name: "Presentation Design", desc: "Sleek, branded presentations for pitches, investor decks, reports, and webinars." },
+    ],
+    image: "/images/service_marketing.png"
+  },
+  {
+    id: "leadgen",
+    icon: Crosshair,
+    title: "Lead Generation",
+    badge: "Fill Your Pipeline",
+    description: "We find your ideal clients before you even pick up the phone. Verified contact lists, deep prospect research, and outreach setup \u2014 so your pipeline is never empty and your time is never wasted.",
+    services: [
+      { name: "Prospect & Contact List Building", desc: "Targeted lists of verified leads \u2014 emails, LinkedIn profiles, and decision-maker contacts built specifically for your niche and ideal client profile." },
+      { name: "B2B Research & Data", desc: "Company research, market research, niche research, and web research to help you understand and reach your ideal buyers with precision." },
+      { name: "LinkedIn & Email Outreach Setup", desc: "We set up your outreach sequences \u2014 the messaging, the targeting, and the follow-up flow \u2014 so you can start conversations with qualified prospects." },
+      { name: "Sales Lead Lists", desc: "Targeted B2B lead lists, segmented by industry, company size, or geography \u2014 ready to import into your CRM or outreach tool." },
+    ],
+    image: "/images/service_lead_gen.png"
   },
   {
     id: "career",
     icon: UserCheck,
     title: "Career & Personal Branding",
-    description: "Your career materials should open doors, not collect dust. We build personal brands that get interviews, attract opportunities, and position you as the obvious choice.",
-    images: [
-      {
-        src: "/images/cv-writing-design.webp",
-        alt: "ATS-optimized resume and CV design — professional resume writing and personal branding services by LEWAY Creatives Kenya",
-      },
-    ] as ServiceImage[],
+    badge: "Get Hired or Noticed",
+    description: "Your skills are world-class. Your online presence should say so. We build personal brands that open doors \u2014 whether you\u2019re chasing a promotion, a new role, or high-profile clients.",
     services: [
-      { name: "ATS-Optimized Resumes", desc: "Professionally written resumes designed to pass Applicant Tracking Systems." },
-      { name: "Creative Resume/CV Design", desc: "Beautifully designed resumes that stand out to recruiters." },
-      { name: "Cover Letter Writing", desc: "Tailored, persuasive cover letters that complement your resume." },
-      { name: "LinkedIn Profile Optimization", desc: "Professional profile revamps to attract recruiters and build authority." },
+      { name: "LinkedIn Profile Optimisation", desc: "Professional profile revamps to attract recruiters and build authority." },
+      { name: "Resume/CV Writing", desc: "Professionally written resumes designed to pass Applicant Tracking Systems and stand out to recruiters." },
+      { name: "Personal Portfolio Websites", desc: "Professional portfolio sites to showcase your skills, projects, and achievements beautifully." },
+      { name: "Personal Brand Strategy", desc: "We define your positioning, your message, and your content direction \u2014 so you become the obvious choice in your industry." },
     ],
+    image: "/images/service_career.png"
   },
 ];
-
-function ImageCarousel({ images, title }: { images: ServiceImage[]; title: string }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState<1 | -1>(1); // 1 = left (forward), -1 = right (backward)
-  const isPaused = useRef(false);
-
-  const goTo = useCallback((nextIndex: number, dir: 1 | -1) => {
-    setDirection(dir);
-    setCurrentIndex(nextIndex);
-  }, []);
-
-  const next = useCallback(() => {
-    goTo((currentIndex + 1) % images.length, 1);
-  }, [currentIndex, images.length, goTo]);
-
-  const prev = useCallback(() => {
-    goTo((currentIndex - 1 + images.length) % images.length, -1);
-  }, [currentIndex, images.length, goTo]);
-
-  // Auto-scroll: advances right-to-left every 3 seconds, pauses on hover
-  useEffect(() => {
-    if (images.length <= 1) return;
-    const interval = setInterval(() => {
-      if (!isPaused.current) {
-        setDirection(1);
-        setCurrentIndex((i) => (i + 1) % images.length);
-      }
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [images.length]);
-
-  // Slide variants: direction 1 → slides in from right (left-ward motion)
-  const variants = {
-    enter: (dir: number) => ({ x: dir > 0 ? "100%" : "-100%", opacity: 0 }),
-    center: { x: 0, opacity: 1 },
-    exit: (dir: number) => ({ x: dir > 0 ? "-100%" : "100%", opacity: 0 }),
-  };
-
-  // Placeholder state when no images
-  if (images.length === 0) {
-    return (
-      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-overlay/10 bg-overlay/5">
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-          <div className="rounded-xl bg-primary/10 p-4">
-            <ImageIcon size={32} className="text-primary" />
-          </div>
-          <p className="font-body text-sm text-accent-foreground/40">{title} showcase</p>
-        </div>
-        {/* Decorative grid */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: `radial-gradient(circle, hsl(var(--overlay)) 1px, transparent 1px)`,
-            backgroundSize: "24px 24px",
-          }}
-        />
-      </div>
-    );
-  }
-
-  return (
-    <div
-      className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-overlay/10"
-      onMouseEnter={() => { isPaused.current = true; }}
-      onMouseLeave={() => { isPaused.current = false; }}
-    >
-      <AnimatePresence mode="popLayout" custom={direction}>
-        <motion.div
-          key={currentIndex}
-          custom={direction}
-          variants={variants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="absolute inset-0 h-full w-full group"
-        >
-          {images[currentIndex].link ? (
-            <a
-              href={images[currentIndex].link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block relative w-full h-full overflow-hidden"
-            >
-              <img
-                src={images[currentIndex].src}
-                alt={images[currentIndex].alt}
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-accent/60 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center backdrop-blur-[2px]">
-                <span className="bg-primary text-primary-foreground px-5 py-2.5 rounded-full font-display font-semibold shadow-lg flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                  See Project <ExternalLink size={16} />
-                </span>
-              </div>
-            </a>
-          ) : (
-            <img
-              src={images[currentIndex].src}
-              alt={images[currentIndex].alt}
-              className="h-full w-full object-cover"
-            />
-          )}
-        </motion.div>
-      </AnimatePresence>
-
-      {images.length > 1 && (
-        <>
-          <button
-            onClick={prev}
-            className="absolute left-3 top-1/2 -translate-y-1/2 z-10 rounded-full bg-accent/80 backdrop-blur-sm p-2 text-accent-foreground/80 hover:text-accent-foreground transition-colors"
-            aria-label="Previous image"
-          >
-            <ChevronLeft size={18} />
-          </button>
-          <button
-            onClick={next}
-            className="absolute right-3 top-1/2 -translate-y-1/2 z-10 rounded-full bg-accent/80 backdrop-blur-sm p-2 text-accent-foreground/80 hover:text-accent-foreground transition-colors"
-            aria-label="Next image"
-          >
-            <ChevronRight size={18} />
-          </button>
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex gap-1.5">
-            {images.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => goTo(i, i > currentIndex ? 1 : -1)}
-                className={`h-1.5 rounded-full transition-all ${i === currentIndex ? "w-6 bg-primary" : "w-1.5 bg-overlay/40"
-                  }`}
-                aria-label={`Go to image ${i + 1}`}
-              />
-            ))}
-          </div>
-        </>
-      )}
-    </div>
-  );
-}
 
 export default function Services() {
   const [active, setActive] = useState("web");
   const current = categories.find((c) => c.id === active)!;
 
   return (
-    <section id="services" className="py-24 md:py-32 bg-accent" aria-label="Our services">
-      <div className="w-full px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-32 mx-auto">
+    <section id="services" className="py-24 md:py-32 bg-background text-leway-dark noise-bg relative z-0">
+      <div className="container mx-auto px-6 max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="mb-16 md:mb-24 lg:mb-32"
         >
-          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold text-accent-foreground mb-4">
-            What We <span className="text-primary">Build</span> For You
+          <h2 className="font-ui uppercase tracking-widest text-[#8A9E8E] text-[11px] mb-6 md:mb-8 flex items-center gap-4">
+            <span className="w-8 h-[2px] bg-[#0D6B35]"></span>
+            OUR SERVICES
           </h2>
-          <p className="font-body text-accent-foreground/60 text-lg max-w-xl mx-auto">
-            Four pillars of creative firepower — each designed to move the needle.
-          </p>
+          <h3 className="font-display text-4xl md:text-7xl lg:text-[6rem] font-medium leading-[1.05] md:leading-[1] max-w-4xl tracking-tight">
+            Everything You Need to <span className="italic text-leway-dark">Win</span> Online
+          </h3>
         </motion.div>
 
-        {/* Category tabs */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {categories.map((cat) => {
-            const Icon = cat.icon;
-            const isActive = cat.id === active;
-            return (
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-24 items-start relative">
+
+          {/* Mobile: Stacked category pills — full title, wraps to next line */}
+          <div className="lg:hidden flex flex-wrap gap-2">
+            {categories.map((cat, index) => (
               <button
                 key={cat.id}
                 onClick={() => setActive(cat.id)}
-                className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${isActive
-                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
-                  : "bg-overlay/5 border border-overlay/10 text-accent-foreground/70 hover:border-overlay/20"
+                className={`flex items-center gap-2 px-4 py-2.5 border transition-all duration-300 text-xs font-ui font-bold uppercase tracking-wider ${cat.id === active
+                    ? 'bg-leway-dark text-white border-leway-dark'
+                    : 'bg-transparent text-leway-dark/60 border-leway-dark/20 hover:border-leway-dark/50'
                   }`}
-                aria-pressed={isActive}
               >
-                <Icon size={16} />
-                <span className="hidden sm:inline">{cat.title}</span>
-                <span className="sm:hidden">{cat.title.split(" ")[0]}</span>
+                <span className="text-[9px] opacity-50">{(index + 1).toString().padStart(2, '0')}</span>
+                <span>{cat.title}</span>
               </button>
-            );
-          })}
-        </div>
+            ))}
+          </div>
 
-        {/* Split content: Image left, services right */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={active}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.35 }}
-            className="grid gap-8 lg:grid-cols-2 items-start"
-          >
-            {/* Left — Image / Carousel */}
-            <div className="relative">
-              <ImageCarousel images={current.images} title={current.title} />
-              {/* Glow behind image */}
-              <div className="absolute -inset-4 -z-10 rounded-3xl bg-primary/5 blur-2xl" />
-            </div>
-
-            {/* Right — Description + Services */}
-            <div className="flex flex-col gap-6">
-              {/* Category header */}
-              <div>
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="rounded-lg bg-primary/10 p-2">
-                    <current.icon size={20} className="text-primary" />
-                  </div>
-                  <h3 className="font-display text-xl md:text-2xl font-bold text-accent-foreground">
-                    {current.title}
-                  </h3>
+          {/* Desktop: Sticky sidebar */}
+          <div className="hidden lg:flex lg:col-span-5 flex-col gap-8 lg:sticky lg:top-32">
+            {categories.map((cat, index) => (
+              <button
+                key={cat.id}
+                onClick={() => setActive(cat.id)}
+                className={`text-left group transition-all duration-500 flex flex-col gap-2 ${cat.id === active ? 'opacity-100' : 'opacity-30 hover:opacity-60'}`}
+              >
+                <div className="flex items-baseline gap-4">
+                  <span className="font-ui text-xs tracking-widest font-bold text-leway-dark/50 w-6">{(index + 1).toString().padStart(2, '0')}</span>
+                  <span className="font-display text-3xl md:text-4xl lg:text-5xl leading-tight transition-transform duration-500 group-hover:translate-x-2">
+                    {cat.title}
+                  </span>
                 </div>
-                <p className="font-body text-accent-foreground/60 leading-relaxed">
-                  {current.description}
-                </p>
-              </div>
+              </button>
+            ))}
+          </div>
 
-              {/* Divider */}
-              <div className="h-px bg-overlay/10" />
+          {/* Right — Content area */}
+          <div className="lg:col-span-7 relative min-h-[400px] md:min-h-[500px]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={active}
+                initial={{ opacity: 0, scale: 0.98, filter: "blur(10px)" }}
+                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, scale: 0.98, filter: "blur(10px)" }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="flex flex-col gap-8 md:gap-10"
+              >
+                <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden group/image border border-leway-dark/10 shadow-lg">
+                  <div className="absolute inset-0 z-10 bg-black/15 transition-colors duration-500 group-hover/image:bg-transparent"></div>
+                  <div className="absolute inset-0 z-10 opacity-0 group-hover/image:opacity-100 transition-opacity duration-500 shadow-[inset_0_0_0_2px_rgba(34,197,94,0.5),0_0_40px_rgba(34,197,94,0.2)] rounded-xl pointer-events-none"></div>
+                  <img src={current.image} alt={current.title} className="w-full h-full object-cover transition-transform duration-700 group-hover/image:scale-105" />
+                </div>
 
-              {/* Services list */}
-              <div className="flex flex-col gap-3">
-                {current.services.map((s, i) => (
-                  <motion.div
-                    key={s.name}
-                    initial={{ opacity: 0, x: 10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: i * 0.08 }}
-                    className="group rounded-xl border border-overlay/10 bg-overlay/5 p-4 transition-all hover:border-primary/30 hover:bg-overlay/[0.08]"
-                  >
-                    <div className="flex items-start gap-3">
-                      <ChevronRight
-                        size={16}
-                        className="text-primary mt-0.5 shrink-0 transition-transform group-hover:translate-x-1"
-                      />
-                      <div>
-                        <h4 className="font-display text-sm font-bold text-accent-foreground mb-0.5">
+                <div className="mb-2">
+                  <p className="font-body text-xl md:text-2xl lg:text-3xl text-leway-dark/80 leading-relaxed font-light">
+                    {current.description}
+                  </p>
+                </div>
+
+                <div className="h-px w-full bg-leway-dark/10" />
+
+                <div className="flex flex-col gap-6 md:gap-8">
+                  <p className="font-ui tracking-widest uppercase text-xs text-leway-dark/40">Included</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 md:gap-x-12 gap-y-8 md:gap-y-10">
+                    {current.services.map((s, i) => (
+                      <motion.div
+                        key={s.name}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.4, delay: i * 0.1 }}
+                        className="flex flex-col gap-2 group"
+                      >
+                        <h4 className="font-display text-lg md:text-xl font-bold text-leway-dark flex items-start gap-2">
+                          <ArrowRight size={15} className="mt-1 opacity-20 group-hover:opacity-100 group-hover:translate-x-1 transition-all shrink-0" />
                           {s.name}
                         </h4>
-                        <p className="font-body text-xs text-accent-foreground/50 leading-relaxed">
+                        <p className="font-body text-sm md:text-base text-leway-dark/60 leading-relaxed font-light">
                           {s.desc}
                         </p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        </AnimatePresence>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+        </div>
       </div>
     </section>
   );

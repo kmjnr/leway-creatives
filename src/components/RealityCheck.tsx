@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { AlertTriangle, X, TrendingDown } from "lucide-react";
 
 const silentKillers = [
   {
@@ -20,140 +19,84 @@ const silentKillers = [
 
 export default function RealityCheck() {
   return (
-    <section className="py-24 md:py-32 bg-background" aria-label="The reality check">
-      <div className="container mx-auto px-6 max-w-6xl">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <span className="inline-block rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-primary mb-4">
-            The Reality Check
-          </span>
-          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
-            Why your current site is{" "}
-            <span className="text-destructive">costing you money</span>
-          </h2>
-          <p className="font-body text-muted-foreground text-lg max-w-2xl mx-auto">
-            It's not just pixels. It's the silent sound of potential clients hitting the 'back' button.
-          </p>
-        </motion.div>
+    <section className="relative pt-40 pb-56 md:pb-64 bg-background-dark text-leway-light overflow-hidden bg-radial-dark noise-bg-dark clip-diagonal-top -mt-10 z-20 w-full">
+      <div className="absolute top-10 right-10 pointer-events-none select-none opacity-[0.03] md:opacity-[0.02] leading-none mix-blend-screen">
+        <span className="font-display text-[15rem] md:text-[25rem] font-bold text-white">02</span>
+      </div>
 
-        {/* Two-column layout */}
-        <div className="grid gap-10 lg:grid-cols-2 items-start">
-          {/* Left — Silent Killers card */}
+      <div className="container mx-auto px-6 max-w-7xl relative z-10 overflow-x-hidden w-full">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.5 }}
-            className="relative"
+            transition={{ duration: 0.6 }}
+            className="flex flex-col gap-4 md:gap-6 max-w-2xl"
           >
-            <div className="rounded-2xl border border-overlay/10 bg-accent p-6 md:p-8 shadow-lg shadow-overlay-shadow/5">
-              <div className="flex items-center gap-2.5 mb-6">
-                <AlertTriangle size={20} className="text-primary" />
-                <h3 className="font-display text-xl font-bold text-accent-foreground">
-                  The Silent Killers
-                </h3>
-              </div>
-
-              <div className="flex flex-col gap-5">
-                {silentKillers.map((item, i) => (
-                  <motion.div
-                    key={item.title}
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.3, delay: i * 0.1 }}
-                    className="flex items-start gap-3"
-                  >
-                    <div className="mt-1 shrink-0 rounded-full bg-destructive/10 p-1">
-                      <X size={12} className="text-destructive" />
-                    </div>
-                    <div>
-                      <p className="font-display text-sm font-bold text-accent-foreground mb-0.5">
-                        {item.title}
-                      </p>
-                      <p className="font-body text-xs text-accent-foreground/50 leading-relaxed">
-                        {item.desc}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* Left accent bar */}
-            <div className="absolute left-0 top-6 bottom-6 w-1 rounded-full bg-gradient-to-b from-primary via-primary/50 to-transparent" />
-
-            {/* Quote below the card */}
-            <motion.blockquote
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="mt-8 pl-4 border-l-2 border-overlay/10 font-body text-sm italic text-muted-foreground leading-relaxed max-w-md"
-            >
-              "I sent out 50 proposals last month. The silence was deafening. It feels like shouting into the void, knowing you're qualified, but watching less experienced people get the contracts simply because they looked the part."
-            </motion.blockquote>
+            <h2 className="font-ui uppercase tracking-widest text-[#C9A84C] text-[11px] flex items-center gap-4">
+              <span className="w-8 h-[1px] bg-[#C9A84C]"></span>
+              REALITY CHECK
+            </h2>
+            <h3 className="font-display text-3xl md:text-5xl lg:text-7xl font-medium leading-[1.05]">
+              Why your current site is <span className="italic text-white">costing you money</span>
+            </h3>
           </motion.div>
 
-          {/* Right — Cost of Inaction card */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="rounded-2xl border border-overlay/10 bg-secondary p-6 md:p-8 shadow-lg shadow-overlay-shadow/10"
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="md:text-right"
           >
-            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">
-              The Cost of Inaction
-            </p>
-
-            <div className="flex items-baseline gap-2 mb-6">
-              <span className="font-display text-5xl md:text-6xl font-extrabold text-destructive">
-                -$7,000
-              </span>
-              <span className="font-body text-muted-foreground text-sm">/ month</span>
+            <p className="font-ui text-[0.65rem] tracking-[0.2em] text-paper/50 uppercase mb-2">The Cost of Inaction</p>
+            <div className="font-display text-5xl md:text-7xl lg:text-9xl font-normal text-white tracking-tighter leading-none inline-block relative">
+              -$7k
+              <span className="absolute -bottom-2 -right-4 text-xs md:text-sm font-ui tracking-widest text-leway-gold uppercase rotate-[-9deg]">Alert</span>
             </div>
+            <p className="font-body text-paper/60 text-base md:text-lg mt-4 font-light">/ month lost to amateurs.</p>
+          </motion.div>
+        </div>
 
-            {/* Stat rows */}
-            <div className="flex flex-col gap-3 mb-6">
-              <div className="flex items-center justify-between rounded-xl border border-overlay/10 bg-accent px-5 py-3.5">
-                <span className="font-body text-sm text-accent-foreground/70">
-                  Missed Client Opportunities
-                </span>
-                <span className="font-display text-sm font-bold text-accent-foreground">
-                  3 Leads
-                </span>
-              </div>
-              <div className="flex items-center justify-between rounded-xl border border-overlay/10 bg-accent px-5 py-3.5">
-                <span className="font-body text-sm text-accent-foreground/70">
-                  Avg. Project Value
-                </span>
-                <span className="font-display text-sm font-bold text-accent-foreground">
-                  $2,350
-                </span>
-              </div>
-            </div>
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 item-start border-t border-white/10 pt-16">
 
-            {/* Annual total */}
-            <div className="flex items-center justify-between px-2 mb-6">
-              <span className="font-body text-sm text-muted-foreground">Annual Revenue Lost</span>
-              <span className="font-display text-lg font-bold text-destructive">$84,000</span>
-            </div>
-
-            {/* Warning callout */}
-            <div className="rounded-xl bg-destructive/10 border border-destructive/20 px-5 py-4 flex items-start gap-3">
-              <TrendingDown size={18} className="text-destructive mt-0.5 shrink-0" />
-              <p className="font-body text-xs text-destructive leading-relaxed">
-                Your current portfolio isn't just sitting there. It is actively repelling high-ticket clients.
-              </p>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="col-span-12 lg:col-span-5"
+          >
+            <h4 className="font-display text-2xl lg:text-3xl mb-8 border-l-2 border-leway-green pl-6 py-1">The Silent Killers</h4>
+            <div className="flex flex-col gap-10">
+              {silentKillers.map((item) => (
+                <div key={item.title} className="flex flex-col gap-2 relative">
+                  <div className="absolute -left-4 top-2 w-[4px] h-[4px] bg-leway-gold/50 rounded-full" />
+                  <p className="font-display text-lg md:text-2xl text-white break-words w-full">{item.title}</p>
+                  <p className="font-body text-paper/60 leading-relaxed font-light text-base md:text-lg">
+                    {item.desc}
+                  </p>
+                </div>
+              ))}
             </div>
           </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="col-span-12 lg:col-span-7 flex flex-col justify-center"
+          >
+            <blockquote className="font-display text-xl md:text-3xl lg:text-[2.75rem] leading-[1.3] md:leading-[1.25] text-white/95 break-words">
+              "I sent out 50 proposals last month. The silence was deafening. It feels like shouting into the void, knowing you're qualified, but watching less experienced people get the contracts simply because they <span className="italic text-leway-gold opacity-90">looked the part</span>."
+            </blockquote>
+            <p className="font-ui uppercase tracking-widest text-sm text-leway-green mt-8 flex items-center gap-4">
+              <span className="w-12 h-[1px] bg-leway-green"></span>
+              Real Client Experience
+            </p>
+          </motion.div>
+
         </div>
       </div>
     </section>
