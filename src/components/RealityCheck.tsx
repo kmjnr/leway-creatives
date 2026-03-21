@@ -24,7 +24,7 @@ export default function RealityCheck() {
         <span className="font-display text-[15rem] md:text-[25rem] font-bold text-white">02</span>
       </div>
 
-      <div className="container mx-auto px-6 max-w-7xl relative z-10 overflow-x-hidden w-full">
+      <div className="container mx-auto px-6 max-w-7xl relative z-10 w-full">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -58,24 +58,26 @@ export default function RealityCheck() {
           </motion.div>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 item-start border-t border-white/10 pt-16">
+        <div className="flex flex-col lg:grid lg:grid-cols-12 gap-12 lg:gap-20 lg:items-start border-t border-white/10 pt-16 w-full">
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="col-span-12 lg:col-span-5"
+            className="w-full lg:col-span-5 min-w-0"
           >
             <h4 className="font-display text-2xl lg:text-3xl mb-8 border-l-2 border-leway-green pl-6 py-1">The Silent Killers</h4>
-            <div className="flex flex-col gap-10">
+            <div className="flex flex-col gap-8 md:gap-10">
               {silentKillers.map((item) => (
-                <div key={item.title} className="flex flex-col gap-2 relative">
-                  <div className="absolute -left-4 top-2 w-[4px] h-[4px] bg-leway-gold/50 rounded-full" />
-                  <p className="font-display text-lg md:text-2xl text-white break-words w-full">{item.title}</p>
-                  <p className="font-body text-paper/60 leading-relaxed font-light text-base md:text-lg">
-                    {item.desc}
-                  </p>
+                <div key={item.title} className="flex items-start gap-4">
+                  <div className="mt-[0.6rem] w-[5px] h-[5px] shrink-0 bg-leway-gold/50 rounded-full" />
+                  <div className="flex flex-col gap-2 flex-1 min-w-0">
+                    <p className="font-display text-lg md:text-2xl text-white break-words w-full pr-4 lg:pr-2">{item.title}</p>
+                    <p className="font-body text-paper/60 leading-relaxed font-light text-base md:text-lg pr-6 lg:pr-0">
+                      {item.desc}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -86,9 +88,9 @@ export default function RealityCheck() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="col-span-12 lg:col-span-7 flex flex-col justify-center"
+            className="w-full lg:col-span-7 flex flex-col justify-center min-w-0 mt-8 lg:mt-0"
           >
-            <blockquote className="font-display text-xl md:text-3xl lg:text-[2.75rem] leading-[1.3] md:leading-[1.25] text-white/95 break-words">
+            <blockquote className="font-display text-xl md:text-3xl lg:text-[2.75rem] leading-[1.3] md:leading-[1.25] text-white/95 break-words w-full pr-4 lg:pr-0">
               "I sent out 50 proposals last month. The silence was deafening. It feels like shouting into the void, knowing you're qualified, but watching less experienced people get the contracts simply because they <span className="italic text-leway-gold opacity-90">looked the part</span>."
             </blockquote>
             <p className="font-ui uppercase tracking-widest text-sm text-leway-green mt-8 flex items-center gap-4">
