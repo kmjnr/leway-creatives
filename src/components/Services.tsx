@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { Globe, Palette, PenTool, UserCheck, Crosshair, ArrowRight } from "lucide-react";
 
 type ServiceImage = { src: string; alt: string; link?: string };
@@ -111,8 +112,8 @@ export default function Services() {
                 key={cat.id}
                 onClick={() => setActive(cat.id)}
                 className={`flex items-center gap-2 px-4 py-2.5 border transition-all duration-300 text-xs font-ui font-bold uppercase tracking-wider ${cat.id === active
-                    ? 'bg-leway-dark text-white border-leway-dark'
-                    : 'bg-transparent text-leway-dark/60 border-leway-dark/20 hover:border-leway-dark/50'
+                  ? 'bg-leway-dark text-white border-leway-dark'
+                  : 'bg-transparent text-leway-dark/60 border-leway-dark/20 hover:border-leway-dark/50'
                   }`}
               >
                 <span className="text-[9px] opacity-50">{(index + 1).toString().padStart(2, '0')}</span>
@@ -144,16 +145,16 @@ export default function Services() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={active}
-                initial={{ opacity: 0, scale: 0.98, filter: "blur(10px)" }}
-                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, scale: 0.98, filter: "blur(10px)" }}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.98 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className="flex flex-col gap-8 md:gap-10"
               >
                 <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden group/image border border-leway-dark/10 shadow-lg">
                   <div className="absolute inset-0 z-10 bg-black/15 transition-colors duration-500 group-hover/image:bg-transparent"></div>
                   <div className="absolute inset-0 z-10 opacity-0 group-hover/image:opacity-100 transition-opacity duration-500 shadow-[inset_0_0_0_2px_rgba(34,197,94,0.5),0_0_40px_rgba(34,197,94,0.2)] rounded-xl pointer-events-none"></div>
-                  <img src={current.image} alt={current.title} className="w-full h-full object-cover transition-transform duration-700 group-hover/image:scale-105" />
+                  <Image src={current.image} alt={current.title} fill sizes="(max-width: 1024px) 100vw, 60vw" className="object-cover transition-transform duration-700 group-hover/image:scale-105" />
                 </div>
 
                 <div className="mb-2">

@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const navLinks = [
@@ -72,12 +73,13 @@ export default function Navbar() {
             href="/"
             className="flex items-center gap-2 group"
             aria-label="LEWAY Creatives Home">
-            <img
+            <Image
               src="/images/leway-creatives-logo.png"
               alt="LEWAY Creatives"
               className="h-8 md:h-10 w-auto group-hover:opacity-80 transition-opacity"
               width={200}
               height={48}
+              priority
             />
           </Link>
 

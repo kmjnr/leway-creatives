@@ -70,7 +70,7 @@ export default function Hero() {
               </h1>
 
               <p className="font-body text-lg md:text-xl text-leway-light/70 max-w-xl leading-relaxed">
-                You don't need just a "pretty website" or text copies. You need a <strong className="text-white font-medium">sales engine</strong>. We combine elite Design with Psychological Copywriting to turn your visitors into obsessive buyers.
+                Most agencies do design OR copy. We do both — and we find your clients before you even pick up the phone. One team. One strategy. Three weapons: <strong className="text-white font-medium">Design, Copy, and Leads.</strong>
               </p>
             </motion.div>
 

@@ -55,7 +55,7 @@ export default function Footer() {
                   href="mailto:hello@lewaycreatives.com"
                   className="flex items-center gap-3 font-body text-sm text-leway-light/60 hover:text-leway-green transition-colors group"
                 >
-                  <Mail size={16} className="text-leway-light/40 group-hover:text-leway-green transition-colors" />
+                  <Mail size={16} className="text-leway-light/60 group-hover:text-leway-green transition-colors" />
                   hello@lewaycreatives.com
                 </a>
               </li>
@@ -66,7 +66,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 font-body text-sm text-leway-light/60 hover:text-leway-green transition-colors group"
                 >
-                  <MessageCircle size={16} className="text-leway-light/40 group-hover:text-leway-green transition-colors" />
+                  <MessageCircle size={16} className="text-leway-light/60 group-hover:text-leway-green transition-colors" />
                   +254 741 408 647
                 </a>
               </li>
@@ -76,17 +76,16 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom bar */}
       <div className="border-t border-white/5 py-8">
         <div className="container mx-auto px-6 max-w-7xl flex flex-col md:flex-row items-center justify-between gap-6">
-          <p className="font-body text-xs text-leway-light/40 font-light text-center md:text-left">
+          <p className="font-body text-xs text-leway-light/60 font-light text-center md:text-left">
             © {year} LEWAY Creatives. All rights reserved. Let's build something great.
           </p>
           <div className="flex flex-wrap justify-center gap-6">
-            <Link href="/privacy-policy" className="font-body text-xs text-leway-light/40 hover:text-leway-green transition-colors">
+            <Link href="/privacy-policy" className="font-body text-xs text-leway-light/60 hover:text-leway-green transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms-and-conditions" className="font-body text-xs text-leway-light/40 hover:text-leway-green transition-colors">
+            <Link href="/terms-and-conditions" className="font-body text-xs text-leway-light/60 hover:text-leway-green transition-colors">
               Terms &amp; Conditions
             </Link>
           </div>
