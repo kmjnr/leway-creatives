@@ -56,7 +56,7 @@ export default function Footer() {
                   className="flex items-center gap-3 font-body text-sm text-leway-light/60 hover:text-leway-green transition-colors group"
                 >
                   <Mail size={16} className="text-leway-light/60 group-hover:text-leway-green transition-colors" />
-                  hello@lewaycreatives.com
+                  LewayCreative@protonmail.com
                 </a>
               </li>
               <li>
