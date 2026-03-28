@@ -37,6 +37,8 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const servicesRef = useRef<HTMLDivElement>(null);
+  const scrolledRef = useRef(false);
+  const rafScheduled = useRef(false);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -46,11 +48,20 @@ export default function Navbar() {
     };
 
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      if (rafScheduled.current) return;
+      rafScheduled.current = true;
+      requestAnimationFrame(() => {
+        rafScheduled.current = false;
+        const next = window.scrollY > 50;
+        if (next !== scrolledRef.current) {
+          scrolledRef.current = next;
+          setScrolled(next);
+        }
+      });
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     // Initial check
     handleScroll();

@@ -1,7 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
-
 export default function Comparison() {
   return (
     <section className="relative py-32 bg-background text-leway-dark overflow-hidden noise-bg clip-diagonal-bottom z-10">
@@ -29,7 +27,7 @@ export default function Comparison() {
             <ul className="flex flex-col gap-6 md:gap-10">
               <li className="font-body text-lg md:text-xl lg:text-2xl text-leway-dark/80 font-light flex gap-4 md:gap-6 items-center"><span className="text-leway-dark/20 text-sm shrink-0">—</span> Design OR Copy (Never Both)</li>
               <li className="font-body text-lg md:text-xl lg:text-2xl text-leway-dark/80 font-light flex gap-4 md:gap-6 items-center"><span className="text-leway-dark/20 text-sm shrink-0">—</span> Slow, bloated timelines</li>
-              <li className="font-body text-lg md:text-xl lg:text-2xl text-leway-dark/80 font-light flex gap-4 md:gap-6 items-center"><span className="text-leway-dark/20 text-sm shrink-0">—</span> Focuses on "pretty" pixels</li>
+              <li className="font-body text-lg md:text-xl lg:text-2xl text-leway-dark/80 font-light flex gap-4 md:gap-6 items-center"><span className="text-leway-dark/20 text-sm shrink-0">—</span> Focuses on &quot;pretty&quot; pixels</li>
               <li className="font-body text-lg md:text-xl lg:text-2xl text-leway-dark/80 font-light flex gap-4 md:gap-6 items-center"><span className="text-leway-dark/20 text-sm shrink-0">—</span> Handed off to juniors</li>
               <li className="font-body text-lg md:text-xl lg:text-2xl text-leway-dark/80 font-light flex gap-4 md:gap-6 items-center"><span className="text-leway-dark/20 text-sm shrink-0">—</span> Premium prices for basic work</li>
             </ul>
@@ -40,40 +38,49 @@ export default function Comparison() {
             <p className="font-ui tracking-widest uppercase text-leway-dark text-xs mb-12 z-10">LEWAY Creatives</p>
             <div className="flex flex-col gap-4 z-10">
 
-              <div className="group/card relative bg-transparent hover:bg-[#22C55E] p-6 rounded-xl transition-all duration-300 hover:-translate-y-2 border border-leway-dark/5 hover:border-[#22C55E] shadow-none hover:shadow-2xl cursor-default">
-                <h4 className="font-display text-2xl md:text-3xl text-leway-dark font-medium transition-colors">Design + Copy + Leads</h4>
-                <div className="grid grid-rows-[0fr] group-hover/card:grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-out">
-                  <p className="overflow-hidden font-body text-leway-dark/70 group-hover/card:text-leway-dark/90 pt-0 group-hover/card:pt-4 text-lg">We provide comprehensive marketing weapons under one single roof.</p>
+              {[
+                {
+                  title: "Design + Copy + Leads",
+                  desc: "We provide comprehensive marketing weapons under one single roof.",
+                },
+                {
+                  title: "Fast, sprint-based delivery",
+                  desc: "No bloated timelines. Clear goals and rapid execution from day one.",
+                },
+                {
+                  title: "Obsessed with conversion",
+                  desc: "Every pixel and word is strategically placed to turn clicks into clients.",
+                },
+                {
+                  title: "Direct senior talent",
+                  desc: "No junior hand-offs. You work directly with experienced directors.",
+                },
+                {
+                  title: "Accessible, ROI-driven pricing",
+                  desc: "Transparent pricing designed to yield positive returns quickly.",
+                },
+              ].map((card) => (
+                <div
+                  key={card.title}
+                  className="group/card relative bg-transparent hover:bg-[#22C55E] p-6 rounded-xl border border-leway-dark/5 hover:border-[#22C55E] cursor-default
+                    transition-[background-color,border-color,transform,filter] duration-300
+                    hover:-translate-y-2 hover:drop-shadow-2xl"
+                >
+                  <h4 className="font-display text-2xl md:text-3xl text-leway-dark font-medium">
+                    {card.title}
+                  </h4>
+                  {/* Reveal description using max-height + opacity — both composited */}
+                  <p
+                    className="font-body text-leway-dark/70 group-hover/card:text-leway-dark/90 text-lg
+                      overflow-hidden
+                      max-h-0 opacity-0 pt-0
+                      group-hover/card:max-h-24 group-hover/card:opacity-100 group-hover/card:pt-4
+                      transition-[max-height,opacity,padding-top] duration-500 ease-out"
+                  >
+                    {card.desc}
+                  </p>
                 </div>
-              </div>
-
-              <div className="group/card relative bg-transparent hover:bg-[#22C55E] p-6 rounded-xl transition-all duration-300 hover:-translate-y-2 border border-leway-dark/5 hover:border-[#22C55E] shadow-none hover:shadow-2xl cursor-default">
-                <h4 className="font-display text-2xl md:text-3xl text-leway-dark font-medium transition-colors">Fast, sprint-based delivery</h4>
-                <div className="grid grid-rows-[0fr] group-hover/card:grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-out">
-                  <p className="overflow-hidden font-body text-leway-dark/70 group-hover/card:text-leway-dark/90 pt-0 group-hover/card:pt-4 text-lg">No bloated timelines. Clear goals and rapid execution from day one.</p>
-                </div>
-              </div>
-
-              <div className="group/card relative bg-transparent hover:bg-[#22C55E] p-6 rounded-xl transition-all duration-300 hover:-translate-y-2 border border-leway-dark/5 hover:border-[#22C55E] shadow-none hover:shadow-2xl cursor-default">
-                <h4 className="font-display text-2xl md:text-3xl text-leway-dark font-medium transition-colors">Obsessed with conversion</h4>
-                <div className="grid grid-rows-[0fr] group-hover/card:grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-out">
-                  <p className="overflow-hidden font-body text-leway-dark/70 group-hover/card:text-leway-dark/90 pt-0 group-hover/card:pt-4 text-lg">Every pixel and word is strategically placed to turn clicks into clients.</p>
-                </div>
-              </div>
-
-              <div className="group/card relative bg-transparent hover:bg-[#22C55E] p-6 rounded-xl transition-all duration-300 hover:-translate-y-2 border border-leway-dark/5 hover:border-[#22C55E] shadow-none hover:shadow-2xl cursor-default">
-                <h4 className="font-display text-2xl md:text-3xl text-leway-dark font-medium transition-colors">Direct senior talent</h4>
-                <div className="grid grid-rows-[0fr] group-hover/card:grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-out">
-                  <p className="overflow-hidden font-body text-leway-dark/70 group-hover/card:text-leway-dark/90 pt-0 group-hover/card:pt-4 text-lg">No junior hand-offs. You work directly with experienced directors.</p>
-                </div>
-              </div>
-
-              <div className="group/card relative bg-transparent hover:bg-[#22C55E] p-6 rounded-xl transition-all duration-300 hover:-translate-y-2 border border-leway-dark/5 hover:border-[#22C55E] shadow-none hover:shadow-2xl cursor-default">
-                <h4 className="font-display text-2xl md:text-3xl text-leway-dark font-medium transition-colors">Accessible, ROI-driven pricing</h4>
-                <div className="grid grid-rows-[0fr] group-hover/card:grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-out">
-                  <p className="overflow-hidden font-body text-leway-dark/70 group-hover/card:text-leway-dark/90 pt-0 group-hover/card:pt-4 text-lg">Transparent pricing designed to yield positive returns quickly.</p>
-                </div>
-              </div>
+              ))}
 
             </div>
           </div>

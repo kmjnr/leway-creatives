@@ -82,7 +82,6 @@
     -moz-osx-font-smoothing: grayscale;
     /* Hide default cursor on desktop since we have a custom cursor */
     cursor: none;
-    scroll-behavior: smooth;
   }
 
   /* Only hide cursor when hover is supported */

@@ -2,39 +2,51 @@
 
 import { useEffect, useRef, useState } from "react";
 
+// Brand gold color — used for the cursor arrow fill
+const CURSOR_COLOR = "#C9A84C";
+
+// SVG arrow cursor path (standard OS arrow pointing top-left)
+// Drawn at 24×24 viewBox, no external assets needed
+const ARROW_PATH =
+    "M 4 2 L 4 20 L 8.5 15.5 L 12.5 22 L 14.5 21 L 10.5 14.5 L 17 14.5 Z";
+
 export default function CustomCursor() {
     const [isVisible, setIsVisible] = useState(false);
-    const cursorRef = useRef<HTMLDivElement>(null);
+    const cursorRef = useRef<SVGSVGElement>(null);
     const rafRef = useRef<number | null>(null);
 
-    // Position state mutated directly, no React re-renders, tracks at 60fps
     const mousePos = useRef({ x: -100, y: -100 });
+    const scale = useRef(1);
+    const targetScale = useRef(1);
+    const opacity = useRef(1);
+    const targetOpacity = useRef(1);
 
     useEffect(() => {
-        // Check if it's a touch device, if so, disable the cursor
-        if (window.matchMedia("(pointer: coarse)").matches) {
-            return;
-        }
+        if (window.matchMedia("(pointer: coarse)").matches) return;
 
         setIsVisible(true);
 
+        const LERP = 0.18;
+
         const updateCursor = () => {
             if (cursorRef.current) {
-                cursorRef.current.style.transform = `translate3d(${mousePos.current.x}px, ${mousePos.current.y}px, 0)`;
+                scale.current += (targetScale.current - scale.current) * LERP;
+                opacity.current += (targetOpacity.current - opacity.current) * LERP;
+
+                cursorRef.current.style.transform = `translate3d(${mousePos.current.x}px, ${mousePos.current.y}px, 0) scale(${scale.current})`;
+                cursorRef.current.style.opacity = String(opacity.current);
             }
             rafRef.current = requestAnimationFrame(updateCursor);
         };
 
-        // Start RAF loop
         rafRef.current = requestAnimationFrame(updateCursor);
 
         const moveCursor = (e: MouseEvent) => {
-            mousePos.current.x = e.clientX - 10;
-            mousePos.current.y = e.clientY - 10;
+            // Offset of 0,0 so the arrow tip sits exactly at the pointer position
+            mousePos.current.x = e.clientX;
+            mousePos.current.y = e.clientY;
         };
 
-        // Use capturing phase so this runs top-down through the DOM hierarchy
-        // Without bubbling up wildly and triggering repeatedly
         const handleMouseEnterCapture = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
             if (!target || !target.closest) return;
@@ -47,14 +59,12 @@ export default function CustomCursor() {
                 target.tagName.toLowerCase() === "textarea" ||
                 target.closest("[data-cursor-hover]");
 
-            if (cursorRef.current) {
-                if (shouldHover) {
-                    cursorRef.current.style.transform = `translate3d(${mousePos.current.x}px, ${mousePos.current.y}px, 0) scale(3)`;
-                    cursorRef.current.style.opacity = "0.8";
-                } else {
-                    cursorRef.current.style.transform = `translate3d(${mousePos.current.x}px, ${mousePos.current.y}px, 0) scale(1)`;
-                    cursorRef.current.style.opacity = "1";
-                }
+            if (shouldHover) {
+                targetScale.current = 1.6;
+                targetOpacity.current = 0.8;
+            } else {
+                targetScale.current = 1;
+                targetOpacity.current = 1;
             }
         };
 
@@ -65,9 +75,7 @@ export default function CustomCursor() {
             if (cursorRef.current) cursorRef.current.style.display = "block";
         };
 
-        // Passive true optimizations
         window.addEventListener("mousemove", moveCursor, { passive: true });
-        // Third argument 'true' captures the event on the way DOWN the DOM tree
         document.addEventListener("mouseenter", handleMouseEnterCapture, true);
         document.addEventListener("mouseleave", handleMouseLeaveGlobal);
         document.addEventListener("mouseenter", handleMouseEnterGlobal);
@@ -84,15 +92,30 @@ export default function CustomCursor() {
     if (!isVisible) return null;
 
     return (
-        <div
+        <svg
             ref={cursorRef}
-            className="fixed top-0 left-0 pointer-events-none rounded-full z-[9999] mix-blend-difference hidden md:block transition-[scale,opacity] duration-300 ease-out"
-            style={{
-                width: 20,
-                height: 20,
-                backgroundColor: "#22C55E", // Bright accent green
-                willChange: "transform",
-            }}
-        />
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            // No CSS transition — RAF loop handles all animation
+            className="fixed top-0 left-0 pointer-events-none z-[9999] hidden md:block"
+            aria-hidden="true"
+            focusable="false"
+            style={{ willChange: "transform" }}
+        >
+            {/* Arrow fill */}
+            <path
+                d={ARROW_PATH}
+                fill={CURSOR_COLOR}
+            />
+            {/* Crisp dark outline for visibility on any background */}
+            <path
+                d={ARROW_PATH}
+                fill="none"
+                stroke="#0B1F0F"
+                strokeWidth="1.2"
+                strokeLinejoin="round"
+            />
+        </svg>
     );
 }

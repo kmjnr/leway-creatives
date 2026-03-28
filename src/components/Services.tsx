@@ -145,10 +145,10 @@ export default function Services() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={active}
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.35, ease: "easeOut" }}
                 className="flex flex-col gap-8 md:gap-10"
               >
                 <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden group/image border border-leway-dark/10 shadow-lg">
@@ -169,11 +169,8 @@ export default function Services() {
                   <p className="font-ui tracking-widest uppercase text-xs text-leway-dark/40">Included</p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 md:gap-x-12 gap-y-8 md:gap-y-10">
                     {current.services.map((s, i) => (
-                      <motion.div
+                      <div
                         key={s.name}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.4, delay: i * 0.1 }}
                         className="flex flex-col gap-2 group"
                       >
                         <h4 className="font-display text-lg md:text-xl font-bold text-leway-dark flex items-start gap-2">
@@ -183,7 +180,7 @@ export default function Services() {
                         <p className="font-body text-sm md:text-base text-leway-dark/60 leading-relaxed font-light">
                           {s.desc}
                         </p>
-                      </motion.div>
+                      </div>
                     ))}
                   </div>
                 </div>

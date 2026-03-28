@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import Marquee from "@/components/ui/Marquee";
-import RotatingBadge from "@/components/ui/RotatingBadge";
 
 const scrollTo = (id: string) => {
   document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
@@ -24,7 +23,6 @@ export default function Hero() {
 
       <div className="flex-1 flex flex-col justify-center px-6 md:px-12 lg:px-20 z-10 pt-8 pb-16 md:pt-10 md:pb-20">
         <div className="max-w-[1400px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 relative items-center">
-
 
           {/* Desktop stat cards sidebar — hidden on mobile */}
           <motion.div
