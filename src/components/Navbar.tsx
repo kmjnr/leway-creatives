@@ -101,7 +101,7 @@ export default function Navbar() {
               <div ref={servicesRef} className="relative">
                 <button
                   onClick={() => setServicesOpen((o) => !o)}
-                  className={`flex items-center gap-1 font-ui uppercase tracking-[0.15em] text-[11px] font-bold transition-colors ${scrolled ? "text-leway-dark/70 hover:text-leway-dark" : "text-white/70 hover:text-white"}`}
+                  className={`flex items-center gap-1 font-ui uppercase tracking-[0.15em] text-xs font-bold transition-colors ${scrolled ? "text-leway-dark/70 hover:text-leway-dark" : "text-white/70 hover:text-white"}`}
                 >
                   Services
                   <ChevronDown size={14} className={`transition-transform ${servicesOpen ? "rotate-180" : ""}`} />
@@ -127,7 +127,7 @@ export default function Navbar() {
                           <span className="font-display text-base font-medium text-white/90 group-hover:text-leway-green transition-colors mb-1">
                             {item.label}
                           </span>
-                          <span className="font-ui tracking-widest uppercase text-[9px] text-white/40">
+                          <span className="font-ui tracking-widest uppercase text-xs text-white/40">
                             {item.sublabel}
                           </span>
                         </button>
@@ -141,7 +141,7 @@ export default function Navbar() {
               <li key={l.href}>
                 <button
                   onClick={() => scrollTo(l.href, pathname)}
-                  className={`font-ui uppercase tracking-[0.15em] text-[11px] font-bold transition-colors ${scrolled ? "text-leway-dark/70 hover:text-leway-dark" : "text-white/70 hover:text-white"}`}>
+                  className={`font-ui uppercase tracking-[0.15em] text-xs font-bold transition-colors ${scrolled ? "text-leway-dark/70 hover:text-leway-dark" : "text-white/70 hover:text-white"}`}>
                   {l.label}
                 </button>
               </li>
@@ -149,7 +149,7 @@ export default function Navbar() {
             <li>
               <button
                 onClick={() => scrollTo("/#contact", pathname)}
-                className={`flex items-center justify-center px-8 py-3 ui uppercase tracking-[0.15em] text-[11px] font-bold transition-colors duration-300 ${scrolled ? "bg-leway-green text-leway-dark hover:bg-leway-dark hover:text-leway-light" : "bg-white text-leway-dark hover:bg-leway-green hover:text-leway-dark"}`}>
+                className={`flex items-center justify-center px-8 py-3 ui uppercase tracking-[0.15em] text-xs font-bold transition-colors duration-300 ${scrolled ? "bg-leway-green text-leway-dark hover:bg-leway-dark hover:text-leway-light" : "bg-white text-leway-dark hover:bg-leway-green hover:text-leway-dark"}`}>
                 Let's Talk
               </button>
             </li>
@@ -206,7 +206,7 @@ export default function Navbar() {
                         <span className="font-display text-xl font-medium text-white/70 hover:text-leway-green transition-colors">
                           {item.label}
                         </span>
-                        <span className="font-ui tracking-widest uppercase text-[10px] text-white/30 mt-1">
+                        <span className="font-ui tracking-widest uppercase text-xs text-white/30 mt-1">
                           {item.sublabel}
                         </span>
                       </button>

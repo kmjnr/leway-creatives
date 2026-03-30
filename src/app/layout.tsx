@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Fraunces, Syne, Outfit } from 'next/font/google';
 import './globals.css';
-import { Providers } from '@/components/Providers';
 import ScrollToTop from '@/components/ScrollToTop';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import Navbar from '@/components/Navbar';
@@ -67,13 +66,11 @@ export default function RootLayout({
         <html lang="en" suppressHydrationWarning className={`${fraunces.variable} ${syne.variable} ${outfit.variable} dark`}>
             <body className="antialiased font-body min-h-screen bg-background text-foreground tracking-wide selection:bg-primary selection:text-primary-foreground relative">
                 <CustomCursor />
-                <Providers>
-                    <Navbar />
-                    {children}
-                    <Footer />
-                    <ScrollToTop />
-                    <WhatsAppButton />
-                </Providers>
+                <Navbar />
+                {children}
+                <Footer />
+                <ScrollToTop />
+                <WhatsAppButton />
             </body>
         </html>
     );

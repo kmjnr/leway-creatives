@@ -1,194 +1,420 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import Image from "next/image";
-import { Globe, Palette, PenTool, UserCheck, Crosshair, ArrowRight } from "lucide-react";
+import { Globe, Palette, PenTool, UserCheck, Crosshair } from "lucide-react";
 
-type ServiceImage = { src: string; alt: string; link?: string };
-
-const categories = [
+// ---------------------------------------------------------------------------
+// Data — all copy sourced directly from brand strategy
+// ---------------------------------------------------------------------------
+const services = [
   {
     id: "web",
+    num: "01",
     icon: Globe,
     title: "Web Design & Development",
     badge: "Get Clients Online",
-    description: "We don\u2019t just build websites \u2014 we engineer conversion machines. Every pixel, every word, every interaction is designed to turn visitors into paying customers.",
-    services: [
-      { name: "Landing Pages", desc: "High-converting pages built to maximize traffic and conversion for your marketing campaigns." },
-      { name: "Complete Website Design", desc: "Custom-designed websites that are responsive, user-friendly, and aligned with your brand identity." },
-      { name: "Personal Portfolio Websites", desc: "Professional portfolio sites to showcase your skills, projects, and achievements beautifully." },
+    description:
+      "We don't just build websites — we engineer conversion machines. Every pixel, every word, every interaction is designed to turn visitors into paying customers.",
+    items: [
+      "Landing Pages",
+      "Complete Website Design",
+      "Personal Portfolio Websites",
     ],
-    image: "/images/service_web_design.png"
+    image: "/images/service_web_design.png",
+    imageAlt:
+      "Custom web design and development for high-converting websites — Leway Creatives",
   },
   {
     id: "content",
+    num: "02",
     icon: PenTool,
     title: "Content & Copywriting",
     badge: "Get Found & Trusted",
-    description: "Words that sell, stories that stick. We craft copy that doesn\u2019t just inform \u2014 it persuades, converts, and builds lasting brand authority across every channel.",
-    services: [
-      { name: "Social Media Content", desc: "We write the copy AND create the visuals for every post \u2014 so your social media looks sharp and reads even sharper." },
-      { name: "Social Media Management", desc: "Content scheduling, posting, and engagement strategies to grow your online presence consistently." },
-      { name: "Blog & Article Writing", desc: "SEO-optimised articles and blogs tailored to your brand\u2019s goals \u2014 written to rank and written to convert." },
-      { name: "Email & Newsletter Copywriting", desc: "Compelling email campaigns that nurture your leads, build trust, and drive consistent conversions." },
-      { name: "Ebook Writing & Design", desc: "We write the content AND design the layout \u2014 a complete lead-magnet ebook, done for you from start to finish." },
+    description:
+      "Words that sell, stories that stick. We craft copy that doesn't just inform — it persuades, converts, and builds lasting brand authority across every channel.",
+    items: [
+      "Social Media Content",
+      "Blog & Article Writing",
+      "Email & Newsletter Copywriting",
+      "Ebook Writing & Design",
     ],
-    image: "/images/service_content.png"
+    image: "/images/service_content.png",
+    imageAlt:
+      "Professional content writing and copywriting services — Leway Creatives",
   },
   {
     id: "graphic",
+    num: "03",
     icon: Palette,
     title: "Marketing Design",
     badge: "Look the Part",
-    description: "Visual identity that demands attention. From scroll-stopping ads to brand systems that make competitors nervous \u2014 we design assets that work as hard as you do.",
-    services: [
-      { name: "Ads & Social Banners", desc: "Scroll-stopping visuals for Meta, LinkedIn, and Google ads \u2014 designed to boost click-through rates." },
-      { name: "Flyer & Poster Design", desc: "Catchy promotional materials for both online and print marketing campaigns." },
-      { name: "Logo & Brand Identity", desc: "Distinctive, scalable logos and cohesive brand systems \u2014 colours, fonts, and guidelines that make your business instantly recognisable." },
-      { name: "Presentation Design", desc: "Sleek, branded presentations for pitches, investor decks, reports, and webinars." },
+    description:
+      "Visual identity that demands attention. From scroll-stopping ads to brand systems that make competitors nervous — we design assets that work as hard as you do.",
+    items: [
+      "Ads & Social Banners",
+      "Logo & Brand Identity",
+      "Flyer & Poster Design",
+      "Presentation Design",
     ],
-    image: "/images/service_marketing.png"
+    image: "/images/service_marketing.png",
+    imageAlt:
+      "Marketing design, logo, and brand identity services — Leway Creatives",
   },
   {
     id: "leadgen",
+    num: "04",
     icon: Crosshair,
     title: "Lead Generation",
     badge: "Fill Your Pipeline",
-    description: "We find your ideal clients before you even pick up the phone. Verified contact lists, deep prospect research, and outreach setup \u2014 so your pipeline is never empty and your time is never wasted.",
-    services: [
-      { name: "Prospect & Contact List Building", desc: "Targeted lists of verified leads \u2014 emails, LinkedIn profiles, and decision-maker contacts built specifically for your niche and ideal client profile." },
-      { name: "B2B Research & Data", desc: "Company research, market research, niche research, and web research to help you understand and reach your ideal buyers with precision." },
-      { name: "LinkedIn & Email Outreach Setup", desc: "We set up your outreach sequences \u2014 the messaging, the targeting, and the follow-up flow \u2014 so you can start conversations with qualified prospects." },
-      { name: "Sales Lead Lists", desc: "Targeted B2B lead lists, segmented by industry, company size, or geography \u2014 ready to import into your CRM or outreach tool." },
+    description:
+      "We find your ideal clients before you even pick up the phone. Verified contact lists, deep prospect research, and outreach setup — so your pipeline is never empty.",
+    items: [
+      "Prospect & Contact List Building",
+      "B2B Research & Data",
+      "LinkedIn & Email Outreach Setup",
+      "Sales Lead Lists",
     ],
-    image: "/images/service_lead_gen.png"
+    image: "/images/service_lead_gen.png",
+    imageAlt:
+      "B2B lead generation and prospect research services — Leway Creatives",
   },
   {
     id: "career",
+    num: "05",
     icon: UserCheck,
     title: "Career & Personal Branding",
     badge: "Get Hired or Noticed",
-    description: "Your skills are world-class. Your online presence should say so. We build personal brands that open doors \u2014 whether you\u2019re chasing a promotion, a new role, or high-profile clients.",
-    services: [
-      { name: "LinkedIn Profile Optimisation", desc: "Professional profile revamps to attract recruiters and build authority." },
-      { name: "Resume/CV Writing", desc: "Professionally written resumes designed to pass Applicant Tracking Systems and stand out to recruiters." },
-      { name: "Personal Portfolio Websites", desc: "Professional portfolio sites to showcase your skills, projects, and achievements beautifully." },
-      { name: "Personal Brand Strategy", desc: "We define your positioning, your message, and your content direction \u2014 so you become the obvious choice in your industry." },
+    description:
+      "Your skills are world-class. Your online presence should say so. We build personal brands that open doors — whether you're chasing a promotion, a new role, or high-profile clients.",
+    items: [
+      "LinkedIn Profile Optimisation",
+      "Resume / CV Writing",
+      "Personal Portfolio Websites",
+      "Personal Brand Strategy",
     ],
-    image: "/images/service_career.png"
+    image: "/images/service_career.png",
+    imageAlt:
+      "Career coaching, LinkedIn optimisation, and personal branding services — Leway Creatives",
   },
-];
+] as const;
 
-export default function Services() {
-  const [active, setActive] = useState("web");
-  const current = categories.find((c) => c.id === active)!;
+// ---------------------------------------------------------------------------
+// FeaturedCard — full-width row, horizontal split (image left | text right)
+// Used exclusively for the primary flagship service: Web Design & Development
+// ---------------------------------------------------------------------------
+function FeaturedCard({ service }: { service: (typeof services)[number] }) {
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const Icon = service.icon;
 
   return (
-    <section id="services" className="py-24 md:py-32 bg-background text-leway-dark noise-bg relative z-0">
-      <div className="container mx-auto px-6 max-w-7xl">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6 }}
-          className="mb-16 md:mb-24 lg:mb-32"
+    <motion.article
+      ref={ref}
+      id={`service-${service.id}`}
+      aria-label={`Service: ${service.title}`}
+      initial={{ opacity: 0, y: 24 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
+      className="group relative flex flex-col md:flex-row border border-leway-dark/10 rounded-lg overflow-hidden bg-background"
+    >
+      {/* Hover ring — opacity only, GPU composited */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-10 rounded-lg ring-1 ring-leway-dark/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+      />
+
+      {/* ── IMAGE — left 55% on desktop, full-width on mobile ── */}
+      <div className="relative w-full md:w-[55%] shrink-0 aspect-[16/9] md:aspect-auto md:min-h-[380px] lg:min-h-[440px] overflow-hidden">
+        <Image
+          src={service.image}
+          alt={service.imageAlt}
+          fill
+          sizes="(max-width: 768px) 100vw, 55vw"
+          className="object-cover will-change-transform transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.03]"
+          loading="eager"
+          decoding="async"
+          priority
+        />
+      </div>
+
+      {/* ── VERTICAL DIVIDER (desktop) / HORIZONTAL DIVIDER (mobile) ── */}
+      <div
+        aria-hidden="true"
+        className="md:hidden h-px w-full bg-leway-dark/8"
+      />
+      <div
+        aria-hidden="true"
+        className="hidden md:block w-px bg-leway-dark/8 shrink-0"
+      />
+
+      {/* ── TEXT — right 45% on desktop, full-width on mobile ── */}
+      <div className="flex flex-col justify-center gap-4 p-6 md:p-10 lg:p-12 grow">
+        {/* Number + Icon */}
+        <div className="flex items-center justify-between">
+          <span
+            className="font-ui text-[10px] font-bold tracking-[0.2em] uppercase text-[#6B8C6E]"
+            aria-hidden="true"
+          >
+            {service.num}
+          </span>
+          <Icon
+            size={16}
+            strokeWidth={1.5}
+            className="text-leway-dark/25 transition-colors duration-150 group-hover:text-[#6B8C6E]"
+            aria-hidden="true"
+          />
+        </div>
+
+        {/* Title */}
+        <h3 className="font-display text-2xl md:text-3xl lg:text-4xl leading-tight text-leway-dark font-medium tracking-[-0.02em]">
+          {service.title}
+        </h3>
+
+        {/* Badge */}
+        <p className="font-body text-base italic text-[#6B8C6E] leading-snug">
+          {service.badge}
+        </p>
+
+        {/* Sub-services */}
+        <ul
+          className="flex flex-col gap-2 mt-1"
+          aria-label={`Services included in ${service.title}`}
         >
-          <h2 className="font-ui uppercase tracking-widest text-[#8A9E8E] text-[11px] mb-6 md:mb-8 flex items-center gap-4">
-            <span className="w-8 h-[2px] bg-[#0D6B35]"></span>
-            OUR SERVICES
-          </h2>
-          <h3 className="font-display text-4xl md:text-7xl lg:text-[6rem] font-medium leading-[1.05] md:leading-[1] max-w-4xl tracking-tight">
-            Everything You Need to <span className="italic text-leway-dark">Win</span> Online
-          </h3>
-        </motion.div>
+          {service.items.map((item) => (
+            <li
+              key={item}
+              className="flex items-start gap-2 font-body text-base text-leway-dark/65 leading-snug"
+            >
+              <span
+                className="mt-[0.35em] shrink-0 w-[5px] h-[5px] rounded-full bg-[#6B8C6E]/50"
+                aria-hidden="true"
+              />
+              {item}
+            </li>
+          ))}
+        </ul>
 
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-24 items-start relative">
+        {/* Description — always in DOM, opacity-only reveal */}
+        <p
+          className="font-body text-base text-leway-dark/40 leading-relaxed mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-out"
+          aria-label={`More about ${service.title}`}
+        >
+          {service.description}
+        </p>
+      </div>
+    </motion.article>
+  );
+}
 
-          {/* Mobile: Stacked category pills — full title, wraps to next line */}
-          <div className="lg:hidden flex flex-wrap gap-2">
-            {categories.map((cat, index) => (
-              <button
-                key={cat.id}
-                onClick={() => setActive(cat.id)}
-                className={`flex items-center gap-2 px-4 py-2.5 border transition-all duration-300 text-xs font-ui font-bold uppercase tracking-wider ${cat.id === active
-                  ? 'bg-leway-dark text-white border-leway-dark'
-                  : 'bg-transparent text-leway-dark/60 border-leway-dark/20 hover:border-leway-dark/50'
-                  }`}
-              >
-                <span className="text-[9px] opacity-50">{(index + 1).toString().padStart(2, '0')}</span>
-                <span>{cat.title}</span>
-              </button>
-            ))}
+// ---------------------------------------------------------------------------
+// ServiceCard — standard card, image on top, text below
+// Used for the 4 supporting services in the 2x2 grid
+// ---------------------------------------------------------------------------
+function ServiceCard({
+  service,
+  index,
+}: {
+  service: (typeof services)[number];
+  index: number;
+}) {
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const Icon = service.icon;
+
+  return (
+    <motion.article
+      ref={ref}
+      id={`service-${service.id}`}
+      aria-label={`Service: ${service.title}`}
+      initial={{ opacity: 0, y: 24 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{
+        duration: 0.5,
+        delay: index * 0.07,
+        ease: [0.25, 1, 0.5, 1],
+      }}
+      className="group relative flex flex-col border border-leway-dark/10 rounded-lg overflow-hidden bg-background"
+    >
+      {/* Hover ring */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-10 rounded-lg ring-1 ring-leway-dark/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+      />
+
+      {/* IMAGE ZONE */}
+      <div className="relative w-full aspect-[16/9] overflow-hidden shrink-0">
+        <Image
+          src={service.image}
+          alt={service.imageAlt}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 35vw"
+          className="object-cover will-change-transform transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.03]"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+
+      {/* DIVIDER */}
+      <div className="h-px w-full bg-leway-dark/8" aria-hidden="true" />
+
+      {/* TEXT ZONE */}
+      <div className="flex flex-col gap-3 p-5 md:p-6 grow">
+        <div className="flex items-center justify-between">
+          <span
+            className="font-ui text-[10px] font-bold tracking-[0.2em] uppercase text-[#6B8C6E]"
+            aria-hidden="true"
+          >
+            {service.num}
+          </span>
+          <Icon
+            size={14}
+            strokeWidth={1.5}
+            className="text-leway-dark/25 transition-colors duration-150 group-hover:text-[#6B8C6E]"
+            aria-hidden="true"
+          />
+        </div>
+
+        <h3 className="font-display text-xl md:text-2xl leading-tight text-leway-dark font-medium tracking-[-0.02em]">
+          {service.title}
+        </h3>
+
+        <p className="font-body text-base italic text-[#6B8C6E] leading-snug">
+          {service.badge}
+        </p>
+
+        <ul
+          className="flex flex-col gap-1.5 mt-1"
+          aria-label={`Services included in ${service.title}`}
+        >
+          {service.items.map((item) => (
+            <li
+              key={item}
+              className="flex items-start gap-2 font-body text-base text-leway-dark/65 leading-snug"
+            >
+              <span
+                className="mt-[0.3em] shrink-0 w-[5px] h-[5px] rounded-full bg-[#6B8C6E]/50"
+                aria-hidden="true"
+              />
+              {item}
+            </li>
+          ))}
+        </ul>
+
+        <p
+          className="font-body text-base text-leway-dark/40 leading-relaxed mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-out"
+          aria-label={`More about ${service.title}`}
+        >
+          {service.description}
+        </p>
+      </div>
+    </motion.article>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Section header — semantic, accessible, SEO-friendly
+// ---------------------------------------------------------------------------
+function SectionHeader() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+
+  return (
+    <div ref={ref} className="mb-12 md:mb-16 lg:mb-20">
+      <motion.p
+        initial={{ opacity: 0, y: 12 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.5 }}
+        className="font-ui uppercase tracking-[0.2em] text-[#6B8C6E] text-[11px] mb-5 flex items-center gap-4"
+        aria-hidden="true"
+      >
+        <span className="w-8 h-[1.5px] bg-[#0D6B35]" />
+        Our Services
+      </motion.p>
+
+      {/* h2 — the single primary heading for this section, crawled by Google */}
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, delay: 0.08, ease: [0.25, 1, 0.5, 1] }}
+        className="font-display text-4xl md:text-6xl lg:text-[5.5rem] font-medium leading-[1.05] tracking-tight max-w-3xl"
+      >
+        Everything You Need to{" "}
+        <em className="italic text-leway-dark">Win Online</em>
+      </motion.h2>
+
+      <motion.p
+        initial={{ opacity: 0, y: 12 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.5, delay: 0.18 }}
+        className="mt-4 font-body text-base md:text-lg text-leway-dark/55 max-w-xl leading-relaxed"
+      >
+        Five specialist services. One team. Every deliverable designed to grow
+        your business online.
+      </motion.p>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Services section
+// Layout:
+//   Row 1 — FeaturedCard (Web Design, full width, horizontal split)
+//   Row 2 — ServiceCard × 2 (Content & Copywriting | Marketing Design)
+//   Row 3 — ServiceCard × 2 (Lead Generation | Career & Personal Branding)
+// ---------------------------------------------------------------------------
+export default function Services() {
+  const [featured, ...rest] = services;
+  // rest[0] = Content & Copywriting
+  // rest[1] = Marketing Design
+  // rest[2] = Lead Generation
+  // rest[3] = Career & Personal Branding
+
+  return (
+    <section
+      id="services"
+      aria-labelledby="services-heading"
+      className="py-24 md:py-32 bg-background noise-bg relative z-0"
+    >
+      <span id="services-heading" className="sr-only">
+        Our Services
+      </span>
+
+      <div className="container mx-auto px-6 max-w-7xl">
+        <SectionHeader />
+
+        <div className="flex flex-col gap-4 md:gap-5">
+
+          {/* ── ROW 1: Featured flagship service — full width ── */}
+          <FeaturedCard service={featured} />
+
+          {/* ── ROW 2: Content + Marketing — 2 equal columns ── */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
+            <ServiceCard service={rest[0]} index={1} />
+            <ServiceCard service={rest[1]} index={2} />
           </div>
 
-          {/* Desktop: Sticky sidebar */}
-          <div className="hidden lg:flex lg:col-span-5 flex-col gap-8 lg:sticky lg:top-32">
-            {categories.map((cat, index) => (
-              <button
-                key={cat.id}
-                onClick={() => setActive(cat.id)}
-                className={`text-left group transition-all duration-500 flex flex-col gap-2 ${cat.id === active ? 'opacity-100' : 'opacity-30 hover:opacity-60'}`}
-              >
-                <div className="flex items-baseline gap-4">
-                  <span className="font-ui text-xs tracking-widest font-bold text-leway-dark/50 w-6">{(index + 1).toString().padStart(2, '0')}</span>
-                  <span className="font-display text-3xl md:text-4xl lg:text-5xl leading-tight transition-transform duration-500 group-hover:translate-x-2">
-                    {cat.title}
-                  </span>
-                </div>
-              </button>
-            ))}
+          {/* ── ROW 3: Lead Gen + Career — 2 equal columns ── */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
+            <ServiceCard service={rest[2]} index={3} />
+            <ServiceCard service={rest[3]} index={4} />
           </div>
 
-          {/* Right — Content area */}
-          <div className="lg:col-span-7 relative min-h-[400px] md:min-h-[500px]">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={active}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.35, ease: "easeOut" }}
-                className="flex flex-col gap-8 md:gap-10"
-              >
-                <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden group/image border border-leway-dark/10 shadow-lg">
-                  <div className="absolute inset-0 z-10 bg-black/15 transition-colors duration-500 group-hover/image:bg-transparent"></div>
-                  <div className="absolute inset-0 z-10 opacity-0 group-hover/image:opacity-100 transition-opacity duration-500 shadow-[inset_0_0_0_2px_rgba(34,197,94,0.5),0_0_40px_rgba(34,197,94,0.2)] rounded-xl pointer-events-none"></div>
-                  <Image src={current.image} alt={current.title} fill sizes="(max-width: 1024px) 100vw, 60vw" className="object-cover transition-transform duration-700 group-hover/image:scale-105" />
-                </div>
+        </div>
 
-                <div className="mb-2">
-                  <p className="font-body text-xl md:text-2xl lg:text-3xl text-leway-dark/80 leading-relaxed font-light">
-                    {current.description}
-                  </p>
-                </div>
-
-                <div className="h-px w-full bg-leway-dark/10" />
-
-                <div className="flex flex-col gap-6 md:gap-8">
-                  <p className="font-ui tracking-widest uppercase text-xs text-leway-dark/40">Included</p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 md:gap-x-12 gap-y-8 md:gap-y-10">
-                    {current.services.map((s, i) => (
-                      <div
-                        key={s.name}
-                        className="flex flex-col gap-2 group"
-                      >
-                        <h4 className="font-display text-lg md:text-xl font-bold text-leway-dark flex items-start gap-2">
-                          <ArrowRight size={15} className="mt-1 opacity-20 group-hover:opacity-100 group-hover:translate-x-1 transition-all shrink-0" />
-                          {s.name}
-                        </h4>
-                        <p className="font-body text-sm md:text-base text-leway-dark/60 leading-relaxed font-light">
-                          {s.desc}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
+        {/* SEO-crawlable structured content */}
+        <div className="sr-only" aria-hidden="true">
+          <h3>Web Design and Development Services in Kenya</h3>
+          <p>Leway Creatives offers professional web design, landing pages, and complete website development to help businesses win online.</p>
+          <h3>Content Writing and Copywriting Services</h3>
+          <p>Expert content creation including social media content, blog writing, email copywriting, and ebook writing for brands.</p>
+          <h3>Marketing Design and Brand Identity</h3>
+          <p>Creative marketing design services including logo design, brand identity, social media ads, flyers, and presentation design.</p>
+          <h3>B2B Lead Generation Services</h3>
+          <p>Targeted prospect list building, B2B research, LinkedIn outreach setup, and sales lead lists for business growth.</p>
+          <h3>Career Coaching and Personal Branding</h3>
+          <p>LinkedIn profile optimisation, professional CV writing, personal portfolio websites, and personal brand strategy.</p>
         </div>
       </div>
     </section>

@@ -39,7 +39,7 @@ export default function Hero() {
               <div key={i} className="bg-[#0B1F0F]/80 backdrop-blur-md border border-white/5 px-6 py-8 rounded-2xl w-[220px] shadow-2xl hover:-translate-x-2 transition-transform duration-500 relative overflow-hidden group">
                 <div className="absolute inset-0 bg-[#22C55E] opacity-0 group-hover:opacity-5 transition-opacity duration-500" />
                 <p className="font-display text-4xl text-[#C9A84C] mb-2">{stat.value}</p>
-                <p className="font-ui uppercase tracking-widest text-[10px] text-white/50">{stat.label}</p>
+                <p className="font-ui uppercase tracking-widest text-xs text-white/50">{stat.label}</p>
               </div>
             ))}
           </motion.div>
@@ -106,7 +106,7 @@ export default function Hero() {
                 ].map((stat, i) => (
                   <div key={i} className="bg-[#0B1F0F]/80 backdrop-blur-md border border-white/5 px-3 py-4 rounded-xl shadow-lg relative overflow-hidden text-center">
                     <p className="font-display text-2xl text-[#C9A84C] mb-1">{stat.value}</p>
-                    <p className="font-ui uppercase tracking-wider text-[9px] text-white/50 leading-tight">{stat.label}</p>
+                    <p className="font-ui uppercase tracking-wider text-xs text-white/50 leading-tight">{stat.label}</p>
                   </div>
                 ))}
               </motion.div>

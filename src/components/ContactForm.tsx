@@ -107,7 +107,7 @@ export default function ContactForm() {
             </p>
 
             <div className="p-8 border border-white/5 bg-white/[0.02] backdrop-blur-md inline-block shadow-2xl relative">
-              <span className="font-ui text-[10px] tracking-[0.2em] uppercase text-leway-gold mb-3 block">— Status</span>
+              <span className="font-ui text-[0.8125rem] tracking-[0.2em] uppercase text-leway-gold mb-3 block">— Status</span>
               <p className="font-display font-medium text-white text-2xl pr-4">Taking new clients for <span className="text-leway-green italic">{followingMonth}</span>.</p>
               {/* Blinking indicator */}
               <div className="absolute top-8 right-8 w-2 h-2 rounded-full bg-leway-green animate-pulse"></div>
@@ -160,18 +160,18 @@ export default function ContactForm() {
                     noValidate
                   >
                     <div>
-                      <label htmlFor="name" className="font-ui uppercase tracking-widest text-[10px] text-leway-light/60 mb-2 block">Name</label>
+                      <label htmlFor="name" className="font-ui uppercase tracking-widest text-[0.8125rem] text-leway-light/60 mb-2 block">Name</label>
                       <Input
                         id="name"
                         placeholder="John Doe"
                         {...register("name")}
                         className="bg-transparent border-0 border-b border-white/20 rounded-none text-white px-0 py-4 text-2xl md:text-3xl focus-visible:ring-0 focus-visible:border-[#C9A84C] placeholder:text-white/20 transition-colors font-display"
                       />
-                      {errors.name && <p className="text-xs text-leway-gold mt-2 font-ui uppercase tracking-widest">{errors.name.message}</p>}
+                      {errors.name && <p className="text-sm text-leway-gold mt-2 font-ui uppercase tracking-widest">{errors.name.message}</p>}
                     </div>
 
                     <div>
-                      <label htmlFor="email" className="font-ui uppercase tracking-widest text-[10px] text-leway-light/60 mb-2 block">Email</label>
+                      <label htmlFor="email" className="font-ui uppercase tracking-widest text-[0.8125rem] text-leway-light/60 mb-2 block">Email</label>
                       <Input
                         id="email"
                         type="email"
@@ -179,11 +179,11 @@ export default function ContactForm() {
                         {...register("email")}
                         className="bg-transparent border-0 border-b border-white/20 rounded-none text-white px-0 py-4 text-2xl md:text-3xl focus-visible:ring-0 focus-visible:border-[#C9A84C] placeholder:text-white/20 transition-colors font-display"
                       />
-                      {errors.email && <p className="text-xs text-leway-gold mt-2 font-ui uppercase tracking-widest">{errors.email.message}</p>}
+                      {errors.email && <p className="text-sm text-leway-gold mt-2 font-ui uppercase tracking-widest">{errors.email.message}</p>}
                     </div>
 
                     <div>
-                      <label htmlFor="whatsapp" className="font-ui uppercase tracking-widest text-[10px] text-leway-light/60 mb-2 block">WhatsApp Number</label>
+                      <label htmlFor="whatsapp" className="font-ui uppercase tracking-widest text-[0.8125rem] text-leway-light/60 mb-2 block">WhatsApp Number</label>
                       <Input
                         id="whatsapp"
                         type="tel"
@@ -191,11 +191,11 @@ export default function ContactForm() {
                         {...register("whatsapp")}
                         className="bg-transparent border-0 border-b border-white/20 rounded-none text-white px-0 py-4 text-2xl md:text-3xl focus-visible:ring-0 focus-visible:border-[#C9A84C] placeholder:text-white/20 transition-colors font-display"
                       />
-                      {errors.whatsapp && <p className="text-xs text-leway-gold mt-2 font-ui uppercase tracking-widest">{errors.whatsapp.message}</p>}
+                      {errors.whatsapp && <p className="text-sm text-leway-gold mt-2 font-ui uppercase tracking-widest">{errors.whatsapp.message}</p>}
                     </div>
 
                     <div>
-                      <label className="font-ui uppercase tracking-widest text-[10px] text-leway-light/60 mb-2 block">
+                      <label className="font-ui uppercase tracking-widest text-[0.8125rem] text-leway-light/60 mb-2 block">
                         Services You're Interested In <span className="text-leway-light/30 ml-2">(Optional)</span>
                       </label>
                       <Controller
@@ -253,7 +253,7 @@ export default function ContactForm() {
                     </div>
 
                     <div>
-                      <label htmlFor="service" className="font-ui uppercase tracking-widest text-[10px] text-leway-light/60 mb-2 block">
+                      <label htmlFor="service" className="font-ui uppercase tracking-widest text-[0.8125rem] text-leway-light/60 mb-2 block">
                         What service are you looking for?
                       </label>
                       <Textarea
@@ -263,7 +263,7 @@ export default function ContactForm() {
                         {...register("service")}
                         className="bg-transparent border-0 border-b border-white/20 rounded-none text-white px-0 py-4 text-xl md:text-2xl focus-visible:ring-0 focus-visible:border-[#C9A84C] placeholder:text-white/20 transition-colors font-display resize-none"
                       />
-                      {errors.service && <p className="text-xs text-leway-gold mt-2 font-ui uppercase tracking-widest">{errors.service.message}</p>}
+                      {errors.service && <p className="text-sm text-leway-gold mt-2 font-ui uppercase tracking-widest">{errors.service.message}</p>}
                     </div>
 
                     {submitError && (
