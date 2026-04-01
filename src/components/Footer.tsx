@@ -1,5 +1,6 @@
 import { Mail, MessageCircle } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 const serviceLinks = [
   "Web Design & Development",
@@ -19,10 +20,15 @@ export default function Footer() {
 
           {/* Brand Info */}
           <div className="md:col-span-5 lg:col-span-6 flex flex-col gap-6">
-            <Link href="/" className="inline-block group w-fit">
-              <span className="font-display font-medium text-3xl md:text-4xl tracking-tighter text-white group-hover:opacity-80 transition-opacity">
-                LEWAY<span className="text-leway-green">.</span>
-              </span>
+            <Link href="/" className="inline-block group w-fit" aria-label="LEWAY Creatives Home">
+              <Image
+                src="/images/leway-logo-main.png"
+                alt="LEWAY Creatives - Web Design, Copywriting & Lead Generation Agency"
+                title="LEWAY Creatives Logo"
+                className="h-8 md:h-10 w-auto group-hover:opacity-80 transition-opacity"
+                width={200}
+                height={48}
+              />
             </Link>
             <p className="font-body text-base lg:text-lg text-leway-light/60 font-light max-w-sm leading-relaxed">
               Design, Copywriting, and Lead Generation for businesses that out-perform their competition. Based in Kenya, Partnering Worldwide.

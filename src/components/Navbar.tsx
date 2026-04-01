@@ -85,8 +85,9 @@ export default function Navbar() {
             className="flex items-center gap-2 group"
             aria-label="LEWAY Creatives Home">
             <Image
-              src="/images/leway-creatives-logo.png"
-              alt="LEWAY Creatives"
+              src="/images/leway-logo-main.png"
+              alt="LEWAY Creatives - Web Design, Copywriting & Lead Generation Agency"
+              title="LEWAY Creatives Logo"
               className="h-8 md:h-10 w-auto group-hover:opacity-80 transition-opacity"
               width={200}
               height={48}
