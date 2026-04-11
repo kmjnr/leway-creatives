@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useScrollReveal } from "@/lib/useScrollReveal";
 
 const silentKillers = [
   {
@@ -18,6 +18,11 @@ const silentKillers = [
 ];
 
 export default function RealityCheck() {
+  const { ref: headRef, isVisible: headVisible } = useScrollReveal<HTMLDivElement>({ margin: "-80px" });
+  const { ref: statRef, isVisible: statVisible } = useScrollReveal<HTMLDivElement>({ margin: "-80px" });
+  const { ref: killersRef, isVisible: killersVisible } = useScrollReveal<HTMLDivElement>({ margin: "-50px" });
+  const { ref: quoteRef, isVisible: quoteVisible } = useScrollReveal<HTMLDivElement>({ margin: "-50px" });
+
   return (
     <section className="relative pt-40 pb-56 md:pb-64 bg-background-dark text-leway-light overflow-hidden bg-radial-dark noise-bg-dark clip-diagonal-top -mt-10 z-20 w-full">
       <div className="absolute top-10 right-10 pointer-events-none select-none opacity-[0.03] md:opacity-[0.02] leading-none mix-blend-screen">
@@ -26,12 +31,9 @@ export default function RealityCheck() {
 
       <div className="container mx-auto px-6 max-w-7xl relative z-10 w-full">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6 }}
-            className="flex flex-col gap-4 md:gap-6 max-w-2xl"
+          <div
+            ref={headRef}
+            className={`flex flex-col gap-4 md:gap-6 max-w-2xl ${headVisible ? "animate-reveal-left" : "opacity-0"}`}
           >
             <h2 className="font-ui uppercase tracking-widest text-[#C9A84C] text-[11px] flex items-center gap-4">
               <span className="w-8 h-[1px] bg-[#C9A84C]"></span>
@@ -40,14 +42,11 @@ export default function RealityCheck() {
             <h3 className="font-display text-3xl md:text-5xl lg:text-7xl font-medium leading-[1.05]">
               Why your current site is <span className="italic text-white">costing you money</span>
             </h3>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="md:text-right"
+          <div
+            ref={statRef}
+            className={`md:text-right ${statVisible ? "animate-reveal-right" : "opacity-0"}`}
           >
             <p className="font-ui text-[0.65rem] tracking-[0.2em] text-paper/50 uppercase mb-2">The Cost of Inaction</p>
             <div className="font-display text-5xl md:text-7xl lg:text-9xl font-normal text-white tracking-tighter leading-none inline-block relative">
@@ -55,17 +54,14 @@ export default function RealityCheck() {
               <span className="absolute -bottom-2 -right-4 text-xs md:text-sm font-ui tracking-widest text-leway-gold uppercase rotate-[-9deg]">Alert</span>
             </div>
             <p className="font-body text-paper/60 text-base md:text-lg mt-4 font-light">/ month lost to amateurs.</p>
-          </motion.div>
+          </div>
         </div>
 
         <div className="flex flex-col lg:grid lg:grid-cols-12 gap-12 lg:gap-20 lg:items-start border-t border-white/10 pt-16 w-full">
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="w-full lg:col-span-5 min-w-0"
+          <div
+            ref={killersRef}
+            className={`w-full lg:col-span-5 min-w-0 ${killersVisible ? "animate-reveal-up" : "opacity-0"}`}
           >
             <h4 className="font-display text-2xl lg:text-3xl mb-8 border-l-2 border-leway-green pl-6 py-1">The Silent Killers</h4>
             <div className="flex flex-col gap-8 md:gap-10">
@@ -81,14 +77,12 @@ export default function RealityCheck() {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="w-full lg:col-span-7 flex flex-col justify-center min-w-0 mt-8 lg:mt-0"
+          <div
+            ref={quoteRef}
+            className={`w-full lg:col-span-7 flex flex-col justify-center min-w-0 mt-8 lg:mt-0 ${quoteVisible ? "animate-reveal-up" : "opacity-0"}`}
+            style={{ animationDelay: "0.15s" }}
           >
             <blockquote className="font-display text-xl md:text-3xl lg:text-[2.75rem] leading-[1.3] md:leading-[1.25] text-white/95 break-words w-full pr-4 lg:pr-0">
               "I sent out 50 proposals last month. The silence was deafening. It feels like shouting into the void, knowing you're qualified, but watching less experienced people get the contracts simply because they <span className="italic text-leway-gold opacity-90">looked the part</span>."
@@ -97,7 +91,7 @@ export default function RealityCheck() {
               <span className="w-12 h-[1px] bg-leway-green"></span>
               Real Client Experience
             </p>
-          </motion.div>
+          </div>
 
         </div>
       </div>

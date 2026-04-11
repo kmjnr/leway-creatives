@@ -1,13 +1,14 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { z } from "zod";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle2, ArrowLeft, ChevronDown, Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useScrollReveal } from "@/lib/useScrollReveal";
 
 const SERVICE_OPTIONS = [
   "Web Design & Development",
@@ -42,6 +43,9 @@ export default function ContactForm() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const { ref: leftRef, isVisible: leftVisible } = useScrollReveal<HTMLDivElement>({ margin: "-80px" });
+  const { ref: formRef, isVisible: formVisible } = useScrollReveal<HTMLDivElement>({ margin: "-80px" });
 
   const {
     register,
@@ -87,12 +91,9 @@ export default function ContactForm() {
       <div className="container mx-auto px-6 max-w-7xl relative z-10 pt-6 md:pt-10">
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
 
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6 }}
-            className="lg:w-5/12 lg:sticky lg:top-40"
+          <div
+            ref={leftRef}
+            className={`lg:w-5/12 lg:sticky lg:top-40 ${leftVisible ? "animate-reveal-left" : "opacity-0"}`}
           >
             <h2 className="font-ui uppercase tracking-widest text-[#C9A84C] text-[11px] mb-6 flex items-center gap-4">
               <span className="w-8 h-[1px] bg-[#C9A84C]"></span>
@@ -106,24 +107,23 @@ export default function ContactForm() {
               The market is crowded. Your competitors are noisy. Let's make you the only logical choice.
             </p>
 
-            <div className="p-8 border border-white/5 bg-white/[0.02] backdrop-blur-md inline-block shadow-2xl relative">
+            <div className="p-8 border border-white/5 bg-white/[0.02] inline-block shadow-2xl relative">
               <span className="font-ui text-[0.8125rem] tracking-[0.2em] uppercase text-leway-gold mb-3 block">— Status</span>
               <p className="font-display font-medium text-white text-2xl pr-4">Taking new clients for <span className="text-leway-green italic">{followingMonth}</span>.</p>
               {/* Blinking indicator */}
               <div className="absolute top-8 right-8 w-2 h-2 rounded-full bg-leway-green animate-pulse"></div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Form Area */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="lg:w-7/12 w-full max-w-2xl mx-auto"
+          <div
+            ref={formRef}
+            className={`lg:w-7/12 w-full max-w-2xl mx-auto ${formVisible ? "animate-reveal-up" : "opacity-0"}`}
+            style={{ animationDelay: "0.2s" }}
           >
-            <div className="rounded-none md:border border-white/5 md:bg-white/[0.01] md:backdrop-blur-sm p-0 md:p-14 shadow-none md:shadow-2xl">
+            <div className="rounded-none md:border border-white/5 md:bg-white/[0.01] p-0 md:p-14 shadow-none md:shadow-2xl">
 
+              {/* AnimatePresence retained for form ↔ success state transition (T3) */}
               <AnimatePresence mode="wait">
                 {submitted ? (
                   <motion.div
@@ -221,31 +221,23 @@ export default function ContactForm() {
                                 </span>
                                 <ChevronDown size={20} className={`text-white/50 transition-transform ${dropdownOpen ? "rotate-180" : ""}`} />
                               </button>
-                              <AnimatePresence>
-                                {dropdownOpen && (
-                                  <motion.div
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: 10 }}
-                                    transition={{ duration: 0.2 }}
-                                    className="absolute w-full mt-2 border border-white/10 bg-[#0F2714] shadow-2xl z-50 p-2"
-                                  >
-                                    {SERVICE_OPTIONS.map((opt) => (
-                                      <button
-                                        key={opt}
-                                        type="button"
-                                        onClick={() => toggle(opt)}
-                                        className="flex w-full items-center gap-4 px-4 py-4 text-base md:text-lg text-white/80 transition-colors hover:bg-white/5 hover:text-white font-body font-light text-left"
-                                      >
-                                        <span className={`flex h-5 w-5 shrink-0 items-center justify-center border ${selected.includes(opt) ? "border-leway-green bg-leway-green text-forest" : "border-white/20 rounded-sm"}`}>
-                                          {selected.includes(opt) && <Check size={14} strokeWidth={3} />}
-                                        </span>
-                                        {opt}
-                                      </button>
-                                    ))}
-                                  </motion.div>
-                                )}
-                              </AnimatePresence>
+                              {dropdownOpen && (
+                                <div className="absolute w-full mt-2 border border-white/10 bg-[#0F2714] shadow-2xl z-50 p-2">
+                                  {SERVICE_OPTIONS.map((opt) => (
+                                    <button
+                                      key={opt}
+                                      type="button"
+                                      onClick={() => toggle(opt)}
+                                      className="flex w-full items-center gap-4 px-4 py-4 text-base md:text-lg text-white/80 transition-colors hover:bg-white/5 hover:text-white font-body font-light text-left"
+                                    >
+                                      <span className={`flex h-5 w-5 shrink-0 items-center justify-center border ${selected.includes(opt) ? "border-leway-green bg-leway-green text-forest" : "border-white/20 rounded-sm"}`}>
+                                        {selected.includes(opt) && <Check size={14} strokeWidth={3} />}
+                                      </span>
+                                      {opt}
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
                             </div>
                           );
                         }}
@@ -282,7 +274,7 @@ export default function ContactForm() {
                 )}
               </AnimatePresence>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

@@ -52,7 +52,7 @@ export default function Navbar() {
       rafScheduled.current = true;
       requestAnimationFrame(() => {
         rafScheduled.current = false;
-        const next = window.scrollY > 50;
+        const next = window.scrollY > 10;
         if (next !== scrolledRef.current) {
           scrolledRef.current = next;
           setScrolled(next);
@@ -74,7 +74,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-[70] transition-all duration-500 ${scrolled ? "bg-[#F8F6F1]/95 backdrop-blur-xl border-b border-leway-dark/10" : "bg-gradient-to-b from-black/80 via-black/40 to-transparent border-transparent"}`}>
+      <header className="fixed top-0 left-0 right-0 z-[70] bg-leway-dark/85 border-b border-white/5 backdrop-blur-sm">
         <nav
           className="container mx-auto flex items-center justify-between px-6 py-4 md:py-5 max-w-7xl"
           aria-label="Main navigation">
@@ -102,7 +102,7 @@ export default function Navbar() {
               <div ref={servicesRef} className="relative">
                 <button
                   onClick={() => setServicesOpen((o) => !o)}
-                  className={`flex items-center gap-1 font-ui uppercase tracking-[0.15em] text-xs font-bold transition-colors ${scrolled ? "text-leway-dark/70 hover:text-leway-dark" : "text-white/70 hover:text-white"}`}
+                  className="flex items-center gap-1 font-ui uppercase tracking-[0.15em] text-xs font-bold transition-colors text-white/70 hover:text-white"
                 >
                   Services
                   <ChevronDown size={14} className={`transition-transform ${servicesOpen ? "rotate-180" : ""}`} />
@@ -142,7 +142,7 @@ export default function Navbar() {
               <li key={l.href}>
                 <button
                   onClick={() => scrollTo(l.href, pathname)}
-                  className={`font-ui uppercase tracking-[0.15em] text-xs font-bold transition-colors ${scrolled ? "text-leway-dark/70 hover:text-leway-dark" : "text-white/70 hover:text-white"}`}>
+                  className="font-ui uppercase tracking-[0.15em] text-xs font-bold transition-colors text-white/70 hover:text-white">
                   {l.label}
                 </button>
               </li>
@@ -150,7 +150,7 @@ export default function Navbar() {
             <li>
               <button
                 onClick={() => scrollTo("/#contact", pathname)}
-                className={`flex items-center justify-center px-8 py-3 ui uppercase tracking-[0.15em] text-xs font-bold transition-colors duration-300 ${scrolled ? "bg-leway-green text-leway-dark hover:bg-leway-dark hover:text-leway-light" : "bg-white text-leway-dark hover:bg-leway-green hover:text-leway-dark"}`}>
+                className={`flex items-center justify-center px-8 py-3 font-ui uppercase tracking-[0.15em] text-xs font-bold transition-colors duration-300 ${scrolled ? "bg-leway-green text-leway-dark hover:bg-white hover:text-leway-dark" : "bg-white text-leway-dark hover:bg-leway-green hover:text-leway-dark"}`}>
                 Let's Talk
               </button>
             </li>
@@ -158,7 +158,7 @@ export default function Navbar() {
 
           {/* Mobile hamburger */}
           <button
-            className={`md:hidden relative z-[80] p-1 ${scrolled ? "text-leway-dark" : "text-white"}`}
+            className="md:hidden relative z-[80] p-1 text-white"
             onClick={() => setOpen(!open)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}>

@@ -69,16 +69,19 @@ export default function Comparison() {
                   <h4 className="font-display text-2xl md:text-3xl text-leway-dark font-medium">
                     {card.title}
                   </h4>
-                  {/* Reveal description using max-height + opacity — both composited */}
-                  <p
-                    className="font-body text-leway-dark/70 group-hover/card:text-leway-dark/90 text-lg
-                      overflow-hidden
-                      max-h-0 opacity-0 pt-0
-                      group-hover/card:max-h-24 group-hover/card:opacity-100 group-hover/card:pt-4
-                      transition-[max-height,opacity,padding-top] duration-500 ease-out"
+                  {/* Reveal description using grid-rows — GPU-safe, no layout reflow */}
+                  <div
+                    className="grid transition-[grid-template-rows,opacity] duration-500 ease-out
+                      grid-rows-[0fr] opacity-0
+                      group-hover/card:grid-rows-[1fr] group-hover/card:opacity-100"
                   >
-                    {card.desc}
-                  </p>
+                    <p
+                      className="font-body text-leway-dark/70 group-hover/card:text-leway-dark/90 text-lg
+                        overflow-hidden pt-0 group-hover/card:pt-4 transition-[padding-top] duration-500 ease-out"
+                    >
+                      {card.desc}
+                    </p>
+                  </div>
                 </div>
               ))}
 

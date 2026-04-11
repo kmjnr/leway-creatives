@@ -10,6 +10,10 @@ const CURSOR_COLOR = "#C9A84C";
 const ARROW_PATH =
     "M 4 2 L 4 20 L 8.5 15.5 L 12.5 22 L 14.5 21 L 10.5 14.5 L 17 14.5 Z";
 
+// Convergence threshold — stop RAF when values are within this range of target
+const EPSILON = 0.005;
+const LERP = 0.18;
+
 export default function CustomCursor() {
     const [isVisible, setIsVisible] = useState(false);
     const cursorRef = useRef<SVGSVGElement>(null);
@@ -20,44 +24,75 @@ export default function CustomCursor() {
     const targetScale = useRef(1);
     const opacity = useRef(1);
     const targetOpacity = useRef(1);
+    const isAnimating = useRef(false);
+    const lastTarget = useRef<EventTarget | null>(null);
 
     useEffect(() => {
         if (window.matchMedia("(pointer: coarse)").matches) return;
 
         setIsVisible(true);
 
-        const LERP = 0.18;
-
-        const updateCursor = () => {
-            if (cursorRef.current) {
-                scale.current += (targetScale.current - scale.current) * LERP;
-                opacity.current += (targetOpacity.current - opacity.current) * LERP;
-
-                cursorRef.current.style.transform = `translate3d(${mousePos.current.x}px, ${mousePos.current.y}px, 0) scale(${scale.current})`;
-                cursorRef.current.style.opacity = String(opacity.current);
-            }
+        const startLoop = () => {
+            if (isAnimating.current) return;
+            isAnimating.current = true;
             rafRef.current = requestAnimationFrame(updateCursor);
         };
 
-        rafRef.current = requestAnimationFrame(updateCursor);
+        const updateCursor = () => {
+            const el = cursorRef.current;
+            if (!el) {
+                isAnimating.current = false;
+                return;
+            }
+
+            const scaleDelta = Math.abs(targetScale.current - scale.current);
+            const opacityDelta = Math.abs(targetOpacity.current - opacity.current);
+
+            if (scaleDelta > EPSILON || opacityDelta > EPSILON) {
+                scale.current += (targetScale.current - scale.current) * LERP;
+                opacity.current += (targetOpacity.current - opacity.current) * LERP;
+            } else {
+                // Snap to target — converged
+                scale.current = targetScale.current;
+                opacity.current = targetOpacity.current;
+            }
+
+            el.style.transform = `translate3d(${mousePos.current.x}px, ${mousePos.current.y}px, 0) scale(${scale.current})`;
+            el.style.opacity = String(opacity.current);
+
+            // Only continue the loop if values haven't converged
+            if (scaleDelta > EPSILON || opacityDelta > EPSILON) {
+                rafRef.current = requestAnimationFrame(updateCursor);
+            } else {
+                isAnimating.current = false;
+            }
+        };
 
         const moveCursor = (e: MouseEvent) => {
-            // Offset of 0,0 so the arrow tip sits exactly at the pointer position
             mousePos.current.x = e.clientX;
             mousePos.current.y = e.clientY;
+            // Direct position update — no need for a loop for position changes
+            if (cursorRef.current) {
+                cursorRef.current.style.transform = `translate3d(${mousePos.current.x}px, ${mousePos.current.y}px, 0) scale(${scale.current})`;
+            }
         };
 
         const handleMouseEnterCapture = (e: MouseEvent) => {
-            const target = e.target as HTMLElement;
-            if (!target || !target.closest) return;
+            const target = e.target;
+            // Skip if we already processed this element
+            if (target === lastTarget.current) return;
+            lastTarget.current = target;
+
+            const el = target as HTMLElement;
+            if (!el || !el.closest) return;
 
             const shouldHover =
-                target.closest("a") ||
-                target.closest("button") ||
-                target.closest("[role='button']") ||
-                target.tagName.toLowerCase() === "input" ||
-                target.tagName.toLowerCase() === "textarea" ||
-                target.closest("[data-cursor-hover]");
+                el.closest("a") ||
+                el.closest("button") ||
+                el.closest("[role='button']") ||
+                el.tagName.toLowerCase() === "input" ||
+                el.tagName.toLowerCase() === "textarea" ||
+                el.closest("[data-cursor-hover]");
 
             if (shouldHover) {
                 targetScale.current = 1.6;
@@ -66,6 +101,8 @@ export default function CustomCursor() {
                 targetScale.current = 1;
                 targetOpacity.current = 1;
             }
+            // Restart the animation loop for scale/opacity change
+            startLoop();
         };
 
         const handleMouseLeaveGlobal = () => {
@@ -97,7 +134,6 @@ export default function CustomCursor() {
             width="24"
             height="24"
             viewBox="0 0 24 24"
-            // No CSS transition — RAF loop handles all animation
             className="fixed top-0 left-0 pointer-events-none z-[9999] hidden md:block"
             aria-hidden="true"
             focusable="false"

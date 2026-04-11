@@ -1,8 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
 import Image from "next/image";
+import { useScrollReveal } from "@/lib/useScrollReveal";
 
 const testimonials = [
   {
@@ -55,7 +55,56 @@ const testimonials = [
   },
 ];
 
+function TestimonialCard({ t, index }: { t: (typeof testimonials)[number]; index: number }) {
+  const { ref, isVisible } = useScrollReveal<HTMLQuoteElement>({ margin: "-40px" });
+
+  return (
+    <blockquote
+      ref={ref}
+      className={`break-inside-avoid relative p-6 md:p-8 lg:p-10 flex flex-col gap-5 md:gap-6 group bg-white/[0.02] border-l-[3px] border-leway-green hover:bg-white/[0.05] transition-colors duration-500 shadow-xl shadow-forest/5 ${isVisible ? "animate-reveal-up" : "opacity-0"}`}
+      style={{ animationDelay: `${(index % 3) * 0.15}s` }}
+    >
+      {/* Massive decorative quote mark */}
+      <div className="absolute top-4 right-6 opacity-10 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none">
+        <Quote size={80} className="text-leway-dark fill-current" />
+      </div>
+
+      <div className="flex gap-1.5 relative z-10">
+        {Array.from({ length: t.stars }).map((_, j) => (
+          <Star key={j} size={16} className="fill-leway-gold text-leway-gold" />
+        ))}
+      </div>
+
+      <p className="font-body text-lg md:text-xl text-leway-dark/80 leading-relaxed font-light relative z-10">
+        &quot;{t.quote}&quot;
+      </p>
+
+      <div className="flex items-center gap-5 mt-4 relative z-10">
+        <div className="h-14 w-14 rounded-full bg-background flex items-center justify-center shadow-inner overflow-hidden shrink-0 border border-leway-green grayscale group-hover:grayscale-0 transition-all duration-500">
+          {t.avatar ? (
+            <Image src={t.avatar} alt={t.name} width={56} height={56} className="w-full h-full object-cover" />
+          ) : (
+            <span className="font-display font-bold text-leway-dark text-xl">
+              {t.name[0]}
+            </span>
+          )}
+        </div>
+        <div className="flex flex-col">
+          <cite className="font-display font-medium text-leway-dark not-italic text-lg">
+            {t.name}
+          </cite>
+          <span className="font-ui text-xs tracking-[0.15em] uppercase text-leway-green mt-1">
+            {t.role}
+          </span>
+        </div>
+      </div>
+    </blockquote>
+  );
+}
+
 export default function Testimonials() {
+  const { ref: headRef, isVisible: headVisible } = useScrollReveal<HTMLDivElement>({ margin: "-80px" });
+
   return (
     <section
       id="testimonials"
@@ -64,12 +113,9 @@ export default function Testimonials() {
     >
       <div className="container mx-auto px-6 max-w-7xl">
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6 }}
-          className="mb-20 text-center flex flex-col items-center"
+        <div
+          ref={headRef}
+          className={`mb-20 text-center flex flex-col items-center ${headVisible ? "animate-reveal-up" : "opacity-0"}`}
         >
           <h2 className="font-ui uppercase tracking-widest text-[#8A9E8E] text-[11px] mb-6 flex items-center justify-center gap-4 w-full">
             <span className="w-8 h-[2px] bg-[#0D6B35]"></span>
@@ -79,53 +125,11 @@ export default function Testimonials() {
           <h3 className="font-display text-4xl md:text-7xl lg:text-[5.5rem] font-medium leading-[1.05] md:leading-[1.05] max-w-4xl tracking-tight">
             See What They <br className="hidden md:block" /> <span className="italic text-leway-dark">Think About Us</span>
           </h3>
-        </motion.div>
+        </div>
 
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 md:gap-8 space-y-6 md:space-y-8">
           {testimonials.map((t, i) => (
-            <motion.blockquote
-              key={t.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.5, delay: (i % 3) * 0.15 }}
-              className="break-inside-avoid relative p-6 md:p-8 lg:p-10 flex flex-col gap-5 md:gap-6 group bg-white/[0.02] backdrop-blur-sm border-l-[3px] border-leway-green hover:bg-white/[0.05] transition-colors duration-500 shadow-xl shadow-forest/5"
-            >
-              {/* Massive decorative quote mark */}
-              <div className="absolute top-4 right-6 opacity-10 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none">
-                <Quote size={80} className="text-leway-dark fill-current" />
-              </div>
-
-              <div className="flex gap-1.5 relative z-10">
-                {Array.from({ length: t.stars }).map((_, j) => (
-                  <Star key={j} size={16} className="fill-leway-gold text-leway-gold" />
-                ))}
-              </div>
-
-              <p className="font-body text-lg md:text-xl text-leway-dark/80 leading-relaxed font-light relative z-10">
-                "{t.quote}"
-              </p>
-
-              <div className="flex items-center gap-5 mt-4 relative z-10">
-                <div className="h-14 w-14 rounded-full bg-background flex items-center justify-center shadow-inner overflow-hidden shrink-0 border border-leway-green grayscale group-hover:grayscale-0 transition-all duration-500">
-                  {t.avatar ? (
-                    <Image src={t.avatar} alt={t.name} width={56} height={56} className="w-full h-full object-cover" />
-                  ) : (
-                    <span className="font-display font-bold text-leway-dark text-xl">
-                      {t.name[0]}
-                    </span>
-                  )}
-                </div>
-                <div className="flex flex-col">
-                  <cite className="font-display font-medium text-leway-dark not-italic text-lg">
-                    {t.name}
-                  </cite>
-                  <span className="font-ui text-xs tracking-[0.15em] uppercase text-leway-green mt-1">
-                    {t.role}
-                  </span>
-                </div>
-              </div>
-            </motion.blockquote>
+            <TestimonialCard key={t.name} t={t} index={i} />
           ))}
         </div>
       </div>

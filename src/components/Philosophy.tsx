@@ -1,8 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useScrollReveal } from "@/lib/useScrollReveal";
 
 export default function Philosophy() {
+  const { ref, isVisible } = useScrollReveal<HTMLDivElement>({ margin: "-80px" });
+
   return (
     <section className="relative py-24 md:py-32 bg-background text-leway-dark overflow-hidden noise-bg" id="philosophy">
       <div className="absolute top-0 right-0 pointer-events-none select-none opacity-5 md:opacity-10 leading-none">
@@ -10,12 +12,9 @@ export default function Philosophy() {
       </div>
 
       <div className="container mx-auto px-6 max-w-4xl relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="flex flex-col items-center text-center"
+        <div
+          ref={ref}
+          className={`flex flex-col items-center text-center ${isVisible ? "animate-reveal-up" : "opacity-0"}`}
         >
           <h2 className="font-ui uppercase tracking-widest text-[11px] text-[#8A9E8E] mb-8 flex items-center justify-center gap-4 w-full">
             <span className="w-8 h-[2px] bg-[#0D6B35]"></span>
@@ -35,7 +34,7 @@ export default function Philosophy() {
             <span className="font-display text-xl md:text-3xl lg:text-4xl text-leway-dark block my-6 md:my-8 italic leading-tight">"Design without copy is a Ferrari without an engine."</span>
             Copy without design is a Ferrari hidden in a garage. At LEWAY Creatives, you get both — the engine and the showroom.
           </p>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

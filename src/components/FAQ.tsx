@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useScrollReveal } from "@/lib/useScrollReveal";
 import {
   Accordion,
   AccordionContent,
@@ -52,18 +52,18 @@ const faqs = [
 ];
 
 export default function FAQ() {
+  const { ref: headRef, isVisible: headVisible } = useScrollReveal<HTMLDivElement>({ margin: "-80px" });
+  const { ref: listRef, isVisible: listVisible } = useScrollReveal<HTMLDivElement>({ margin: "-60px" });
+
   return (
     <section id="faq" className="py-24 md:py-32 bg-background text-leway-dark noise-bg border-t border-leway-dark/5" aria-label="Frequently asked questions">
       <div className="container mx-auto px-6 max-w-7xl">
         <div className="grid md:grid-cols-[1fr_1fr] gap-16 md:gap-20 items-start">
 
           {/* Left — sticky heading */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6 }}
-            className="md:sticky md:top-40"
+          <div
+            ref={headRef}
+            className={`md:sticky md:top-40 ${headVisible ? "animate-reveal-left" : "opacity-0"}`}
           >
             <h2 className="font-ui uppercase tracking-widest text-[#8A9E8E] text-[11px] mb-6 flex items-center gap-4">
               <span className="w-8 h-[2px] bg-[#0D6B35]"></span>
@@ -76,15 +76,12 @@ export default function FAQ() {
             <p className="font-body text-lg md:text-xl text-leway-dark/70 mt-6 md:mt-8 max-w-sm font-light leading-relaxed">
               No fluff. No fine print. Just exactly what you need to know before we get to work.
             </p>
-          </motion.div>
+          </div>
 
-          {/* Right — accordion list: single entrance on the wrapper, no per-item motion */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="relative"
+          {/* Right — accordion list */}
+          <div
+            ref={listRef}
+            className={`relative ${listVisible ? "animate-reveal-up" : "opacity-0"}`}
           >
             <Accordion type="single" collapsible className="flex flex-col gap-2">
               {faqs.map((faq, i) => (
@@ -102,7 +99,7 @@ export default function FAQ() {
                 </AccordionItem>
               ))}
             </Accordion>
-          </motion.div>
+          </div>
 
         </div>
       </div>

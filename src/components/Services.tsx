@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import { Globe, Palette, PenTool, UserCheck, Crosshair } from "lucide-react";
+import { useScrollReveal } from "@/lib/useScrollReveal";
 
 // ---------------------------------------------------------------------------
 // Data — all copy sourced directly from brand strategy
@@ -102,22 +102,17 @@ const services = [
 
 // ---------------------------------------------------------------------------
 // FeaturedCard — full-width row, horizontal split (image left | text right)
-// Used exclusively for the primary flagship service: Web Design & Development
 // ---------------------------------------------------------------------------
 function FeaturedCard({ service }: { service: (typeof services)[number] }) {
-  const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const { ref, isVisible } = useScrollReveal<HTMLElement>({ margin: "-60px" });
   const Icon = service.icon;
 
   return (
-    <motion.article
+    <article
       ref={ref}
       id={`service-${service.id}`}
       aria-label={`Service: ${service.title}`}
-      initial={{ opacity: 0, y: 24 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
-      className="group relative flex flex-col md:flex-row border border-leway-dark/10 rounded-lg overflow-hidden bg-background"
+      className={`group relative flex flex-col md:flex-row border border-leway-dark/10 rounded-lg overflow-hidden bg-background ${isVisible ? "animate-reveal-up" : "opacity-0"}`}
     >
       {/* Hover ring — opacity only, GPU composited */}
       <span
@@ -132,7 +127,7 @@ function FeaturedCard({ service }: { service: (typeof services)[number] }) {
           alt={service.imageAlt}
           fill
           sizes="(max-width: 768px) 100vw, 55vw"
-          className="object-cover will-change-transform transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.03]"
+          className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.03]"
           loading="eager"
           decoding="async"
           priority
@@ -204,13 +199,12 @@ function FeaturedCard({ service }: { service: (typeof services)[number] }) {
           {service.description}
         </p>
       </div>
-    </motion.article>
+    </article>
   );
 }
 
 // ---------------------------------------------------------------------------
 // ServiceCard — standard card, image on top, text below
-// Used for the 4 supporting services in the 2x2 grid
 // ---------------------------------------------------------------------------
 function ServiceCard({
   service,
@@ -219,23 +213,16 @@ function ServiceCard({
   service: (typeof services)[number];
   index: number;
 }) {
-  const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const { ref, isVisible } = useScrollReveal<HTMLElement>({ margin: "-60px" });
   const Icon = service.icon;
 
   return (
-    <motion.article
+    <article
       ref={ref}
       id={`service-${service.id}`}
       aria-label={`Service: ${service.title}`}
-      initial={{ opacity: 0, y: 24 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{
-        duration: 0.5,
-        delay: index * 0.07,
-        ease: [0.25, 1, 0.5, 1],
-      }}
-      className="group relative flex flex-col border border-leway-dark/10 rounded-lg overflow-hidden bg-background"
+      className={`group relative flex flex-col border border-leway-dark/10 rounded-lg overflow-hidden bg-background ${isVisible ? "animate-reveal-up" : "opacity-0"}`}
+      style={{ animationDelay: `${index * 0.07}s` }}
     >
       {/* Hover ring */}
       <span
@@ -250,7 +237,7 @@ function ServiceCard({
           alt={service.imageAlt}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 35vw"
-          className="object-cover will-change-transform transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.03]"
+          className="object-cover transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.03]"
           loading="lazy"
           decoding="async"
         />
@@ -309,7 +296,7 @@ function ServiceCard({
           {service.description}
         </p>
       </div>
-    </motion.article>
+    </article>
   );
 }
 
@@ -317,59 +304,43 @@ function ServiceCard({
 // Section header — semantic, accessible, SEO-friendly
 // ---------------------------------------------------------------------------
 function SectionHeader() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const { ref, isVisible } = useScrollReveal<HTMLDivElement>({ margin: "-80px" });
 
   return (
     <div ref={ref} className="mb-12 md:mb-16 lg:mb-20">
-      <motion.p
-        initial={{ opacity: 0, y: 12 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.5 }}
-        className="font-ui uppercase tracking-[0.2em] text-[#6B8C6E] text-[11px] mb-5 flex items-center gap-4"
+      <p
+        className={`font-ui uppercase tracking-[0.2em] text-[#6B8C6E] text-[11px] mb-5 flex items-center gap-4 ${isVisible ? "animate-reveal-up" : "opacity-0"}`}
         aria-hidden="true"
       >
         <span className="w-8 h-[1.5px] bg-[#0D6B35]" />
         Our Services
-      </motion.p>
+      </p>
 
       {/* h2 — the single primary heading for this section, crawled by Google */}
-      <motion.h2
-        initial={{ opacity: 0, y: 20 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, delay: 0.08, ease: [0.25, 1, 0.5, 1] }}
-        className="font-display text-4xl md:text-6xl lg:text-[5.5rem] font-medium leading-[1.05] tracking-tight max-w-3xl"
+      <h2
+        className={`font-display text-4xl md:text-6xl lg:text-[5.5rem] font-medium leading-[1.05] tracking-tight max-w-3xl ${isVisible ? "animate-reveal-up" : "opacity-0"}`}
+        style={{ animationDelay: "0.08s" }}
       >
         Everything You Need to{" "}
         <em className="italic text-leway-dark">Win Online</em>
-      </motion.h2>
+      </h2>
 
-      <motion.p
-        initial={{ opacity: 0, y: 12 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.5, delay: 0.18 }}
-        className="mt-4 font-body text-base md:text-lg text-leway-dark/55 max-w-xl leading-relaxed"
+      <p
+        className={`mt-4 font-body text-base md:text-lg text-leway-dark/55 max-w-xl leading-relaxed ${isVisible ? "animate-reveal-up" : "opacity-0"}`}
+        style={{ animationDelay: "0.18s" }}
       >
         Five specialist services. One team. Every deliverable designed to grow
         your business online.
-      </motion.p>
+      </p>
     </div>
   );
 }
 
 // ---------------------------------------------------------------------------
 // Services section
-// Layout:
-//   Row 1 — FeaturedCard (Web Design, full width, horizontal split)
-//   Row 2 — ServiceCard × 2 (Content & Copywriting | Marketing Design)
-//   Row 3 — ServiceCard × 2 (Lead Generation | Career & Personal Branding)
 // ---------------------------------------------------------------------------
 export default function Services() {
   const [featured, ...rest] = services;
-  // rest[0] = Content & Copywriting
-  // rest[1] = Marketing Design
-  // rest[2] = Lead Generation
-  // rest[3] = Career & Personal Branding
 
   return (
     <section

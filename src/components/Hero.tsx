@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useScrollReveal } from "@/lib/useScrollReveal";
 import Marquee from "@/components/ui/Marquee";
 
 const scrollTo = (id: string) => {
@@ -8,6 +8,11 @@ const scrollTo = (id: string) => {
 };
 
 export default function Hero() {
+  const { ref: statsRef, isVisible: statsVisible } = useScrollReveal<HTMLDivElement>({ margin: "-40px" });
+  const { ref: headingRef, isVisible: headingVisible } = useScrollReveal<HTMLDivElement>({ margin: "-40px" });
+  const { ref: ctaRef, isVisible: ctaVisible } = useScrollReveal<HTMLDivElement>({ margin: "-40px" });
+  const { ref: mobileStatsRef, isVisible: mobileStatsVisible } = useScrollReveal<HTMLDivElement>({ margin: "-40px" });
+
   return (
     <section
       className="relative w-full min-h-screen bg-leway-dark text-leway-light overflow-hidden flex flex-col noise-bg-dark font-body select-none pt-20 md:pt-24"
@@ -25,11 +30,9 @@ export default function Hero() {
         <div className="max-w-[1400px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 relative items-center">
 
           {/* Desktop stat cards sidebar — hidden on mobile */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8, x: 20 }}
-            animate={{ opacity: 1, scale: 1, x: 0 }}
-            transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-2 hidden lg:flex flex-col justify-center items-end gap-6 relative z-10"
+          <div
+            ref={statsRef}
+            className={`lg:col-span-2 hidden lg:flex flex-col justify-center items-end gap-6 relative z-10 ${statsVisible ? "animate-reveal-scale" : "opacity-0"}`}
           >
             {[
               { label: "Projects Delivered", value: "23+" },
@@ -42,13 +45,12 @@ export default function Hero() {
                 <p className="font-ui uppercase tracking-widest text-xs text-white/50">{stat.label}</p>
               </div>
             ))}
-          </motion.div>
+          </div>
 
           <div className="lg:col-span-10 flex flex-col gap-8 relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+            <div
+              ref={headingRef}
+              className={headingVisible ? "animate-reveal-up" : "opacity-0"}
             >
               <h2 className="font-ui uppercase tracking-widest text-[#C9A84C] text-[11px] mb-8 flex items-center gap-4">
                 <span className="w-8 h-[1px] bg-[#C9A84C]"></span>
@@ -70,13 +72,12 @@ export default function Hero() {
               <p className="font-body text-lg md:text-xl text-leway-light/70 max-w-xl leading-relaxed">
                 Most agencies do design OR copy. We do both — and we find your clients before you even pick up the phone. One team. One strategy. Three weapons: <strong className="text-white font-medium">Design, Copy, and Leads.</strong>
               </p>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-col gap-6 mt-2"
+            <div
+              ref={ctaRef}
+              className={`flex flex-col gap-6 mt-2 ${ctaVisible ? "animate-reveal-up" : "opacity-0"}`}
+              style={{ animationDelay: "0.2s" }}
             >
               <button
                 onClick={() => scrollTo("#contact")}
@@ -93,11 +94,10 @@ export default function Hero() {
               </button>
 
               {/* Mobile stat cards — visible only below lg */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.6 }}
-                className="grid grid-cols-3 gap-3 lg:hidden"
+              <div
+                ref={mobileStatsRef}
+                className={`grid grid-cols-3 gap-3 lg:hidden ${mobileStatsVisible ? "animate-reveal-up" : "opacity-0"}`}
+                style={{ animationDelay: "0.3s" }}
               >
                 {[
                   { label: "Projects", value: "23+" },
@@ -109,8 +109,8 @@ export default function Hero() {
                     <p className="font-ui uppercase tracking-wider text-xs text-white/50 leading-tight">{stat.label}</p>
                   </div>
                 ))}
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           </div>
 
         </div>

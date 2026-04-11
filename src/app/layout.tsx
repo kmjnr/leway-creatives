@@ -37,22 +37,19 @@ export const metadata: Metadata = {
 
 const fraunces = Fraunces({
     subsets: ['latin'],
-    weight: ['400', '500', '600', '700'],
-    style: ['normal', 'italic'],
+    axes: ['opsz'],
     variable: '--font-display',
     display: 'swap',
 });
 
 const syne = Syne({
     subsets: ['latin'],
-    weight: ['400', '500', '600', '700', '800'],
     variable: '--font-ui',
     display: 'swap',
 });
 
 const outfit = Outfit({
     subsets: ['latin'],
-    weight: ['300', '400', '500', '600'],
     variable: '--font-body',
     display: 'swap',
 });

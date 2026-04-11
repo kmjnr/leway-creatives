@@ -155,7 +155,7 @@ export default function WhatsAppButton() {
         </AnimatePresence>
         {!open && (
           <span className="absolute -top-0.5 -right-0.5 flex h-3.5 w-3.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" style={{ animationIterationCount: 3 }} />
             <span className="relative inline-flex h-3.5 w-3.5 rounded-full bg-red-500" />
           </span>
         )}
