@@ -1,92 +1,100 @@
 "use client";
 
+import { motion } from "framer-motion";
+import { Eyebrow } from "@/components/ui/Eyebrow";
+
+const theirItems = [
+  'Design OR copy. Never both.',
+  'Slow timelines, bloated by process.',
+  'Pretty pixels. No strategy behind them.',
+  'Handed off to juniors after you sign.',
+  'Premium pricing for mediocre output.',
+];
+
+const ourItems = [
+  { title: "Design + Copy + Leads", desc: "Everything you need to grow, under one roof." },
+  { title: "Sprint-based delivery", desc: "Clear goals, rapid execution, no waiting months." },
+  { title: "Conversion obsessed", desc: "Every element is designed to turn visitors into clients." },
+  { title: "Direct senior talent", desc: "You work with us — not a junior team." },
+];
+
 export default function Comparison() {
   return (
-    <section className="relative py-32 bg-background text-leway-dark overflow-hidden noise-bg clip-diagonal-bottom z-10">
-      <div className="container mx-auto px-6 max-w-7xl relative z-10">
+    <section className="relative py-[clamp(4rem,3rem+5vw,8rem)] bg-leway-stone/40 overflow-hidden">
+      <div className="container mx-auto px-6 max-w-7xl">
 
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 md:mb-20 gap-6 md:gap-8">
-          <div className="max-w-3xl">
-            <h2 className="font-ui uppercase tracking-widest text-[#8A9E8E] text-[11px] mb-6 md:mb-8 flex items-center gap-4">
-              <span className="w-8 h-[2px] bg-[#0D6B35]"></span>
-              THEM VS US
-            </h2>
-            <h3 className="font-display text-4xl md:text-7xl lg:text-[5.5rem] font-medium leading-[1.05]">
-              Why Other <br /> <span className="italic text-leway-dark">Agencies Fail</span>
-            </h3>
-          </div>
-        </div>
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+          className="mb-12 md:mb-16"
+        >
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-leway-dark max-w-xl">
+            Why other agencies fall short.
+          </h2>
+        </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-0 relative border-t border-b border-leway-dark/10 group">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
 
-          <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-[1px] bg-leway-dark/10 -translate-x-1/2 z-20"></div>
-
-          {/* Left panel: Them */}
-          <div className="p-6 md:p-10 lg:p-16 flex flex-col justify-center relative transition-opacity duration-500 border-b lg:border-b-0 border-leway-dark/10">
-            <p className="font-ui tracking-widest uppercase text-leway-dark/40 text-xs mb-8 md:mb-12">The Standard Agency</p>
-            <ul className="flex flex-col gap-6 md:gap-10">
-              <li className="font-body text-lg md:text-xl lg:text-2xl text-leway-dark/80 font-light flex gap-4 md:gap-6 items-center"><span className="text-leway-dark/20 text-sm shrink-0">—</span> Design OR Copy (Never Both)</li>
-              <li className="font-body text-lg md:text-xl lg:text-2xl text-leway-dark/80 font-light flex gap-4 md:gap-6 items-center"><span className="text-leway-dark/20 text-sm shrink-0">—</span> Slow, bloated timelines</li>
-              <li className="font-body text-lg md:text-xl lg:text-2xl text-leway-dark/80 font-light flex gap-4 md:gap-6 items-center"><span className="text-leway-dark/20 text-sm shrink-0">—</span> Focuses on &quot;pretty&quot; pixels</li>
-              <li className="font-body text-lg md:text-xl lg:text-2xl text-leway-dark/80 font-light flex gap-4 md:gap-6 items-center"><span className="text-leway-dark/20 text-sm shrink-0">—</span> Handed off to juniors</li>
-              <li className="font-body text-lg md:text-xl lg:text-2xl text-leway-dark/80 font-light flex gap-4 md:gap-6 items-center"><span className="text-leway-dark/20 text-sm shrink-0">—</span> Premium prices for basic work</li>
-            </ul>
-          </div>
-
-          {/* Right panel: Us (LEWAY) with Hover Reveal Cards */}
-          <div className="p-10 lg:p-16 flex flex-col justify-center bg-transparent relative overflow-hidden">
-            <p className="font-ui tracking-widest uppercase text-leway-dark text-xs mb-12 z-10">LEWAY Creatives</p>
-            <div className="flex flex-col gap-4 z-10">
-
-              {[
-                {
-                  title: "Design + Copy + Leads",
-                  desc: "We provide comprehensive marketing weapons under one single roof.",
-                },
-                {
-                  title: "Fast, sprint-based delivery",
-                  desc: "No bloated timelines. Clear goals and rapid execution from day one.",
-                },
-                {
-                  title: "Obsessed with conversion",
-                  desc: "Every pixel and word is strategically placed to turn clicks into clients.",
-                },
-                {
-                  title: "Direct senior talent",
-                  desc: "No junior hand-offs. You work directly with experienced directors.",
-                },
-                {
-                  title: "Accessible, ROI-driven pricing",
-                  desc: "Transparent pricing designed to yield positive returns quickly.",
-                },
-              ].map((card) => (
-                <div
-                  key={card.title}
-                  className="group/card relative bg-transparent hover:bg-[#22C55E] p-6 rounded-xl border border-leway-dark/5 hover:border-[#22C55E] cursor-default
-                    transition-[background-color,border-color,transform,filter] duration-300
-                    hover:-translate-y-2 hover:drop-shadow-2xl"
-                >
-                  <h4 className="font-display text-2xl md:text-3xl text-leway-dark font-medium">
-                    {card.title}
-                  </h4>
-                  {/* Reveal description using grid-rows — GPU-safe, no layout reflow */}
-                  <div
-                    className="grid transition-[grid-template-rows,opacity] duration-500 ease-out
-                      grid-rows-[0fr] opacity-0
-                      group-hover/card:grid-rows-[1fr] group-hover/card:opacity-100"
-                  >
-                    <p
-                      className="font-body text-leway-dark/70 group-hover/card:text-leway-dark/90 text-lg
-                        overflow-hidden pt-0 group-hover/card:pt-4 transition-[padding-top] duration-500 ease-out"
-                    >
-                      {card.desc}
-                    </p>
-                  </div>
+          {/* Them */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
+            className="flex flex-col gap-4"
+          >
+            <Eyebrow className="text-leway-dark/40 mb-2">The Standard Agency</Eyebrow>
+            {theirItems.map((item, i) => (
+              <motion.div
+                key={item}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08, duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
+                className="group card-warm p-5 md:p-6 flex items-start gap-4 transition-colors duration-300 cursor-default"
+              >
+                <div className="w-8 h-8 rounded-full bg-leway-dark/5 flex items-center justify-center flex-shrink-0 transition-colors duration-300">
+                  <span className="text-leway-dark/30 font-bold text-xs">—</span>
                 </div>
-              ))}
+                <div className="pt-1 md:pt-1.5">
+                  <p className="font-display text-base md:text-lg text-leway-dark/70 leading-tight">{item}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
 
-            </div>
-          </div>
+          {/* Us */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
+            className="flex flex-col gap-4"
+          >
+            <Eyebrow className="text-leway-green mb-2">LEWAY Creatives</Eyebrow>
+            {ourItems.map((item, i) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08, duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
+                className="group card-warm p-5 md:p-6 flex items-start gap-4 hover:bg-leway-green transition-colors duration-300 cursor-default"
+              >
+                <div className="w-8 h-8 rounded-full bg-leway-mint group-hover:bg-leway-dark/10 flex items-center justify-center flex-shrink-0 transition-colors duration-300">
+                  <span className="text-leway-green group-hover:text-leway-dark font-bold text-xs">✓</span>
+                </div>
+                <div>
+                  <h3 className="font-display text-lg md:text-xl text-leway-dark group-hover:text-leway-dark">{item.title}</h3>
+                  <p className="font-body text-sm text-leway-dark/60 group-hover:text-leway-dark/80 mt-1">{item.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+
         </div>
       </div>
     </section>

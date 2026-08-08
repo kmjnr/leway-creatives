@@ -1,21 +1,14 @@
 "use client";
 
-import { useScrollReveal } from "@/lib/useScrollReveal";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Plus, Minus } from "lucide-react";
+import Image from "next/image";
 
 const faqs = [
   {
     q: "I'm just starting out. Is this too expensive?",
     a: "We have packages built for bootstrapped founders and growing businesses alike. The real question isn't whether you can afford good design and copy — it's how much a weak website or empty pipeline is already costing you every month. Start small. Scale as you grow.",
-  },
-  {
-    q: "Do you work with international clients?",
-    a: "Yes — the majority of our clients are based in the US, UK, Canada, and Australia. We work fully remotely, communicate via WhatsApp, Email, or Zoom, and deliver on tight timelines regardless of time zone.",
   },
   {
     q: "Do you use AI?",
@@ -26,81 +19,119 @@ const faqs = [
     a: "A landing page: 2–4 days. A full website: 1–2 weeks. We move at the speed of business — not agency bureaucracy. Timeline is confirmed before we kick off so there are no surprises.",
   },
   {
-    q: "How quickly can you deliver a lead list?",
-    a: "Most prospect and contact lists are delivered within 2–5 business days depending on size and complexity. Every lead is manually verified — we don't sell you scraped junk. Quality over quantity, always.",
-  },
-  {
     q: "How many revisions do I get?",
     a: "Every project includes 2 rounds of revisions. Most clients don't need both — because we get the brief right before we start building. Additional revisions are available at a flat fee, agreed upfront.",
-  },
-  {
-    q: "What are your payment terms?",
-    a: "50% upfront to kick off, 50% on delivery. For larger projects, we offer milestone-based billing. We accept M-Pesa, bank transfer, PayPal, and Wise for international clients.",
   },
   {
     q: "Do you offer a satisfaction guarantee?",
     a: "We're not happy until you are. Our revision process exists precisely so you never receive something that misses the mark. We've maintained a 100% project completion rate — and we intend to keep it that way.",
   },
-  {
-    q: "Can you work with my existing brand guidelines?",
-    a: "Absolutely. Send us your brand kit and we'll work entirely within your identity. No brand guidelines yet? We can build that too — logo, colour system, typography, the full package.",
-  },
-  {
-    q: "Do you offer ongoing support after launch?",
-    a: "Yes. Monthly retainer plans are available for website maintenance, content updates, ongoing design, and lead generation. Think of us as your creative and growth department — on speed dial.",
-  },
 ];
 
-export default function FAQ() {
-  const { ref: headRef, isVisible: headVisible } = useScrollReveal<HTMLDivElement>({ margin: "-80px" });
-  const { ref: listRef, isVisible: listVisible } = useScrollReveal<HTMLDivElement>({ margin: "-60px" });
+function FAQItem({ faq, index }: { faq: typeof faqs[0]; index: number }) {
+  const [open, setOpen] = useState(false);
 
   return (
-    <section id="faq" className="py-24 md:py-32 bg-background text-leway-dark noise-bg border-t border-leway-dark/5" aria-label="Frequently asked questions">
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ delay: index * 0.04, duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
+    >
+      <button
+        onClick={() => setOpen(!open)}
+        className={`w-full flex items-center justify-between gap-6 text-left p-5 md:p-6 rounded-2xl transition-all duration-300 ${
+          open
+            ? "bg-white shadow-badge"
+            : "bg-white/60 hover:bg-white hover:shadow-card"
+        }`}
+        aria-expanded={open}
+      >
+        <span className="font-display text-base md:text-lg text-leway-dark leading-snug flex-1">
+          {faq.q}
+        </span>
+        <span
+          className={`w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center transition-all duration-300 ${
+            open ? "bg-leway-green text-leway-dark" : "bg-leway-stone text-leway-dark/50"
+          }`}
+        >
+          {open ? <Minus size={14} strokeWidth={2.5} /> : <Plus size={14} strokeWidth={2.5} />}
+        </span>
+      </button>
+
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="px-5 md:px-6 py-4 font-body text-base text-leway-dark/70 leading-relaxed">
+              {faq.a}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
+export default function FAQ() {
+  return (
+    <section id="faq" className="relative py-[clamp(4rem,3rem+5vw,8rem)] bg-leway-light overflow-hidden" aria-label="Frequently asked questions">
       <div className="container mx-auto px-6 max-w-7xl">
-        <div className="grid md:grid-cols-[1fr_1fr] gap-16 md:gap-20 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.6fr] gap-12 lg:gap-20 items-start">
 
           {/* Left — sticky heading */}
-          <div
-            ref={headRef}
-            className={`md:sticky md:top-40 ${headVisible ? "animate-reveal-left" : "opacity-0"}`}
-          >
-            <h2 className="font-ui uppercase tracking-widest text-[#8A9E8E] text-[11px] mb-6 flex items-center gap-4">
-              <span className="w-8 h-[2px] bg-[#0D6B35]"></span>
-              FAQ
-            </h2>
-            <h3 className="font-display text-4xl md:text-6xl lg:text-7xl font-medium leading-[1.05]">
-              Straight <br />
-              <span className="italic text-leway-dark">Answers.</span>
-            </h3>
-            <p className="font-body text-lg md:text-xl text-leway-dark/70 mt-6 md:mt-8 max-w-sm font-light leading-relaxed">
-              No fluff. No fine print. Just exactly what you need to know before we get to work.
-            </p>
+          <div className="lg:sticky lg:top-32">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+            >
+              <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-leway-dark mb-5">
+                Frequently Asked Questions.
+              </h2>
+              <p className="font-body text-base md:text-lg text-leway-dark/60 max-w-sm leading-relaxed">
+                No fluff. No fine print. Just exactly what you need to know before we get to work.
+              </p>
+
+              {/* Decorative accent */}
+              <div className="mt-8 w-12 h-1 rounded-full bg-leway-green" />
+
+              {/* Added FAQ Image */}
+              <div className="relative w-full aspect-[4/5] md:aspect-[4/3] group z-0 mt-10 md:mt-12 mb-10 lg:mb-0">
+                {/* Wireframe offset stroke */}
+                <div className="absolute inset-0 translate-x-3 translate-y-3 rounded-[2rem] border-2 border-leway-gold -z-10 transition-transform duration-500 group-hover:translate-x-4 group-hover:translate-y-4" />
+
+                <div className="absolute inset-0 rounded-[2rem] overflow-hidden shadow-card">
+                  <Image
+                    src="/images/faq_image.webp"
+                    alt="Frequently Asked Questions"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+            </motion.div>
           </div>
 
-          {/* Right — accordion list */}
-          <div
-            ref={listRef}
-            className={`relative ${listVisible ? "animate-reveal-up" : "opacity-0"}`}
-          >
-            <Accordion type="single" collapsible className="flex flex-col gap-2">
-              {faqs.map((faq, i) => (
-                <AccordionItem
-                  key={i}
-                  value={`faq-${i}`}
-                  className="border-b border-leway-dark/10 pb-0 mb-3 md:mb-4 transition-[border-color,background-color] duration-300 data-[state=open]:border-l-[3px] data-[state=open]:border-l-[#22C55E] bg-transparent hover:bg-black/[0.02]"
-                >
-                  <AccordionTrigger className="font-display text-left text-lg md:text-2xl lg:text-3xl font-medium text-leway-dark hover:no-underline py-4 md:py-6 px-3 md:px-4 gap-4 md:gap-6 [&[data-state=open]]:text-leway-dark [&[data-state=open]]:italic">
-                    {faq.q}
-                  </AccordionTrigger>
-                  <AccordionContent className="font-body text-base md:text-lg lg:text-xl text-leway-dark/70 leading-relaxed px-3 md:px-4 pb-6 md:pb-8 font-light">
-                    {faq.a}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+          {/* Right — FAQ items */}
+          <div className="flex flex-col gap-3">
+            {faqs.map((faq, i) => (
+              <FAQItem key={faq.q} faq={faq} index={i} />
+            ))}
           </div>
 
+        </div>
+        
+        {/* Visual transition line */}
+        <div className="flex justify-center mt-16 md:mt-20">
+          <div className="w-16 h-0.5 bg-leway-gold/40 rounded-full" />
         </div>
       </div>
     </section>

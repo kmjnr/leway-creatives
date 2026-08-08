@@ -4,195 +4,172 @@
 
 @layer base {
   :root {
-    /* Brand Colors */
-    --color-bg-primary: #F8F6F1;
-    --color-bg-secondary: #EFECE3;
-    --color-bg-dark: #0B1F0F;
-    --color-bg-dark-secondary: #0F2714;
-    --color-bg-inverse: #0B1F0F;
+    /* ── Brand Colors ─────────────────────────────────── */
+    --color-bg-primary:          #FAF8F2; /* Soft Paper */
+    --color-bg-secondary:        #EDE7DB; /* Warm Stone */
+    --color-bg-mint:             #DDF5E6; /* Mint Haze  */
+    --color-bg-dark:             #102117; /* Deep Pine  */
+    --color-bg-dark-secondary:   #1B3327; /* Forest Slate */
 
-    --color-text-primary: #0B1F0F;
-    --color-text-secondary: rgba(11, 31, 15, 0.7);
-    --color-text-muted: rgba(11, 31, 15, 0.4);
-    --color-text-inverse: #F8F6F1;
-    --color-text-accent: #22C55E;
+    --color-text-primary:        #102117;
+    --color-text-secondary:      rgba(16, 33, 23, 0.65);
+    --color-text-muted:          rgba(16, 33, 23, 0.40);
+    --color-text-inverse:        #FAF8F2;
+    --color-text-accent:         #22C55E;
 
-    --color-accent-primary: #22C55E;
-    --color-accent-secondary: #0F1F13;
-    --color-accent-hover: #1EA650;
-    --color-gold: #C9A84C;
+    --color-accent-primary:      #22C55E; /* Signal Green */
+    --color-accent-secondary:    #DDF5E6; /* Mint Haze   */
+    --color-accent-hover:        #169B62; /* Emerald      */
+    --color-gold:                #C8A65A; /* Soft Gold    */
 
-    --color-border-default: rgba(11, 31, 15, 0.1);
-    --color-border-strong: rgba(11, 31, 15, 0.2);
-    --color-border-inverse: rgba(248, 246, 241, 0.1);
+    --color-border-default:      rgba(16, 33, 23, 0.08);
+    --color-border-strong:       rgba(16, 33, 23, 0.15);
+    --color-border-inverse:      rgba(250, 248, 242, 0.12);
 
-    /* Fluid Type Scale */
-    --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
-    --text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
-    --text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
-    --text-lg: clamp(1.25rem, 1rem + 1.25vw, 1.5rem);
-    --text-xl: clamp(1.5rem, 1rem + 2.5vw, 2.5rem);
-    --text-2xl: clamp(2rem, 1.25rem + 3.75vw, 3.5rem);
-    --text-3xl: clamp(2.5rem, 1.5rem + 5vw, 5rem);
-    --text-hero: clamp(3.5rem, 2rem + 6vw, 7.5rem);
-    --text-stat: clamp(4rem, 2.5rem + 8vw, 10rem);
+    /* ── Fluid Type Scale ────────────────────────────── */
+    --text-xs:    clamp(0.70rem,  0.65rem + 0.25vw,  0.80rem);
+    --text-sm:    clamp(0.875rem, 0.80rem + 0.375vw, 1rem);
+    --text-base:  clamp(1rem,     0.95rem + 0.25vw,  1.125rem);
+    --text-lg:    clamp(1.125rem, 1rem    + 0.625vw, 1.375rem);
+    --text-xl:    clamp(1.375rem, 1.1rem  + 1.375vw, 2rem);
+    --text-2xl:   clamp(1.75rem,  1.25rem + 2.5vw,   3rem);
+    --text-3xl:   clamp(2.25rem,  1.5rem  + 3.75vw,  4.5rem);
+    --text-hero:  clamp(3rem,     2rem    + 5vw,      6.5rem);
 
-    /* Spacing */
-    --space-2xs: 0.125rem;
-    --space-xs: 0.25rem;
-    --space-sm: 0.5rem;
-    --space-md: 1rem;
-    --space-lg: 1.5rem;
-    --space-xl: 2rem;
-    --space-2xl: 3rem;
-    --space-3xl: 4rem;
-    --space-4xl: 6rem;
-    --space-5xl: 8rem;
-    --space-section: clamp(4rem, 3rem + 5vw, 8rem);
+    /* ── Spacing ─────────────────────────────────────── */
+    --space-xs:      0.5rem;
+    --space-sm:      1rem;
+    --space-md:      1.5rem;
+    --space-lg:      2rem;
+    --space-xl:      3rem;
+    --space-2xl:     4rem;
+    --space-3xl:     6rem;
+    --space-section: clamp(5rem, 4rem + 5vw, 8rem);
 
-    /* Depth / Shadows */
-    --radius-sm: 0.25rem;
-    --radius-md: 0.5rem;
-    --radius-lg: 0.75rem;
-    --radius-xl: 1rem;
-    --radius-2xl: 1.5rem;
-    --radius-full: 9999px;
+    /* ── Radii — Soft Rounded System ─────────────────── */
+    --radius-sm:   0.5rem;    /*  8px — inputs, small elements  */
+    --radius-md:   0.75rem;   /* 12px — small cards             */
+    --radius-lg:   1rem;      /* 16px — floating badges         */
+    --radius-xl:   1.5rem;    /* 24px — main cards              */
+    --radius-2xl:  2rem;      /* 32px — image frames            */
+    --radius-full: 9999px;    /* pill — buttons, inputs         */
 
-    --shadow-glow: 0 0 40px rgba(34, 197, 94, 0.15);
+    /* ── Shadows ─────────────────────────────────────── */
+    --shadow-card:    0 2px 16px rgba(16, 33, 23, 0.06);
+    --shadow-badge:   0 4px 20px rgba(16, 33, 23, 0.10);
+    --shadow-hover:   0 8px 32px rgba(16, 33, 23, 0.12);
+    --shadow-green:   0 0 32px rgba(34, 197, 94, 0.15);
 
-    /* Z-Index */
-    --z-base: 0;
-    --z-dropdown: 100;
-    --z-sticky: 200;
-    --z-overlay: 300;
-    --z-modal: 400;
-    --z-cursor: 9999;
+    /* ── Z-Index ─────────────────────────────────────── */
+    --z-dropdown:  100;
+    --z-sticky:    200;
+    --z-overlay:   300;
+    --z-modal:     400;
   }
 
-  * {
-    @apply border-border;
+  /* ── Reset ───────────────────────────────────────── */
+  *, *::before, *::after {
     box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 
   body {
     background-color: var(--color-bg-primary);
     color: var(--color-text-primary);
-    font-family: var(--font-body), sans-serif;
+    font-family: var(--font-body), 'Outfit', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Hide default cursor on desktop since we have a custom cursor */
-    cursor: none;
   }
 
-  /* Only hide cursor when hover is supported */
-  @media (hover: none) and (pointer: coarse) {
-    body {
-      cursor: auto;
-    }
-  }
-
-  a,
-  button,
-  input,
-  textarea,
-  select,
-  [role="button"],
-  [tabindex="0"] {
-    cursor: none;
-  }
-
-  @media (hover: none) and (pointer: coarse) {
-
-    a,
-    button,
-    input,
-    textarea,
-    select,
-    [role="button"],
-    [tabindex="0"] {
-      cursor: auto;
-    }
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: var(--font-display), serif;
-    letter-spacing: -0.02em;
-    font-weight: 400;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display), 'Fraunces', serif;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
   }
 }
 
 @layer utilities {
-  .noise-bg {
-    position: relative;
+  /* ── Floating Pill Card ──────────────────────────── */
+  .badge-float {
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-badge);
+    padding: 0.625rem 1rem;
   }
 
-  .noise-bg::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 10;
-    pointer-events: none;
-    background-image: url("/images/noise-tile.png");
-    background-repeat: repeat;
-    background-size: 200px 200px;
-    opacity: 0.04;
+  /* ── Card Surface ────────────────────────────────── */
+  .card-warm {
+    background: white;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 0.35s cubic-bezier(0.32, 0.72, 0, 1),
+                transform    0.35s cubic-bezier(0.32, 0.72, 0, 1),
+                background   0.35s cubic-bezier(0.32, 0.72, 0, 1);
   }
-
-  .noise-bg-dark {
-    position: relative;
-  }
-
-  .noise-bg-dark::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 10;
-    pointer-events: none;
-    background-image: url("/images/noise-tile.png");
-    background-repeat: repeat;
-    background-size: 200px 200px;
-    opacity: 0.05;
-  }
-
-  .bg-radial-dark {
-    background: radial-gradient(circle at center, var(--color-bg-dark-secondary) 0%, var(--color-bg-dark) 100%);
-  }
-
-  .clip-diagonal {
-    clip-path: polygon(0 0, 100% 4vw, 100% 100%, 0 calc(100% - 4vw));
-  }
-
-  .clip-diagonal-top {
-    clip-path: polygon(0 0, 100% 4vw, 100% 100%, 0 100%);
-  }
-
-  .clip-diagonal-bottom {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 4vw));
-  }
-
-  .scrollbar-none {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  .scrollbar-none::-webkit-scrollbar {
-    display: none;
+  .card-warm:hover {
+    background: #F0FCF5; /* very light mint tint */
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-5px);
   }
 }
 
+/* ── Reduced Motion ──────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* ── Button Outward Ripple Wave Animation ───────── */
+.btn-ripple-wave {
+  position: relative !important;
+  display: inline-flex !important;
+  z-index: 0 !important;
+}
+
+.btn-ripple-wave::before,
+.btn-ripple-wave::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 9999px;
+  border: 2px solid #22C55E;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+  animation: ripple-outward-wave 2.4s infinite cubic-bezier(0.1, 0.4, 0.2, 1);
+}
+
+.btn-ripple-wave::after {
+  animation-delay: 1.2s;
+}
+
+@keyframes ripple-outward-wave {
+  0% {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.9;
+  }
+  60% {
+    opacity: 0.4;
+  }
+  100% {
+    top: -22px;
+    left: -22px;
+    right: -22px;
+    bottom: -22px;
+    opacity: 0;
   }
 }

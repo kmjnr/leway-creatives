@@ -1,96 +1,119 @@
 "use client";
 
-import { MessageSquare, Search, Hammer, Rocket } from "lucide-react";
-import { useScrollReveal } from "@/lib/useScrollReveal";
+import { motion } from "framer-motion";
 
 const steps = [
   {
-    icon: MessageSquare,
-    title: "Reach Out",
-    desc: "Tell us what you need via WhatsApp or Email — website, copy, leads, design, or all of the above. We respond within 1 hour, every time.",
+    num: "01",
+    title: "Say Hello",
+    desc: "Tell us what you need via WhatsApp or email. We respond within one hour — every time.",
   },
   {
-    icon: Search,
-    title: "The Deep Dive",
-    desc: "We dig into your business — your goals, your audience, your competitors, and your gaps. No assumptions. We build strategy before we build anything else.",
+    num: "02",
+    title: "We Deep-Dive",
+    desc: "We study your business, audience, and competitors before a single pixel is moved.",
   },
   {
-    icon: Hammer,
-    title: "The Build",
-    desc: "We execute — websites, copy, lead lists, design assets, research reports. Every deliverable is built to a brief, reviewed against your goals, and refined until it's right.",
+    num: "03",
+    title: "We Build",
+    desc: "Websites, copy, lead lists, design assets — built to brief and refined until perfect.",
   },
   {
-    icon: Rocket,
-    title: "The Launch",
-    desc: "We hand everything over — files, logins, instructions, and a clear plan for what to do next. You launch with confidence, not confusion. And we're still one message away.",
+    num: "04",
+    title: "You Launch",
+    desc: "Go live with confidence. Files, logins, clear instructions — and we're one message away.",
   },
 ];
 
-function StepCard({ step, index }: { step: (typeof steps)[number]; index: number }) {
-  const { ref, isVisible } = useScrollReveal<HTMLDivElement>({ margin: "-100px" });
-
-  return (
-    <div
-      ref={ref}
-      key={step.title}
-      className={`relative group flex ${index % 2 !== 0 ? 'lg:justify-end' : ''} ${isVisible ? "animate-reveal-up" : "opacity-0"}`}
-    >
-      {/* Faded step number */}
-      <span className={`absolute -top-6 left-0 font-display text-[6rem] md:text-[10rem] lg:text-[12rem] font-bold text-leway-dark/[0.04] select-none leading-none z-0 transition-colors duration-500 group-hover:text-leway-green/[0.15] overflow-hidden ${index % 2 !== 0 ? 'lg:-left-20' : ''}`}>
-        {String(index + 1).padStart(2, "0")}
-      </span>
-
-      <div className={`relative z-10 pl-5 md:pl-10 border-l border-leway-dark/10 group-hover:border-leway-green transition-colors duration-500 bg-background/80 p-4 md:p-6 rounded-2xl ${index % 2 !== 0 ? 'lg:max-w-lg' : ''}`}>
-        <div className="flex items-center gap-4 md:gap-6 mb-4 md:mb-6">
-          <div className="p-3 md:p-4 bg-leway-dark text-white rounded-full group-hover:bg-leway-green group-hover:text-leway-dark transition-colors duration-500 shadow-xl shadow-leway-dark/5 z-20 relative shrink-0">
-            <step.icon size={20} strokeWidth={1.5} />
-          </div>
-          <h4 className="font-display text-2xl md:text-3xl lg:text-5xl font-medium text-leway-dark z-20 relative">
-            {step.title}
-          </h4>
-        </div>
-        <p className="font-body text-base md:text-xl lg:text-2xl text-leway-dark/70 leading-relaxed font-light max-w-lg z-20 relative">
-          {step.desc}
-        </p>
-      </div>
-    </div>
-  );
-}
-
 export default function HowItWorks() {
-  const { ref: headRef, isVisible: headVisible } = useScrollReveal<HTMLDivElement>({ margin: "-80px" });
-
   return (
-    <section id="how-it-works" className="relative py-32 bg-background text-leway-dark overflow-hidden noise-bg z-10">
+    <section id="how-it-works" className="relative py-[clamp(4rem,3rem+5vw,8rem)] bg-leway-mint/50 overflow-hidden">
       <div className="container mx-auto px-6 max-w-7xl">
-        <div className="grid lg:grid-cols-12 gap-16 lg:gap-8 items-start">
 
-          {/* Sticky Left Column */}
-          <div
-            ref={headRef}
-            className={`lg:col-span-5 lg:sticky lg:top-40 ${headVisible ? "animate-reveal-left" : "opacity-0"}`}
-          >
-            <h2 className="font-ui uppercase tracking-widest text-[#8A9E8E] text-[11px] mb-6 flex items-center gap-4">
-              <span className="w-8 h-[2px] bg-[#0D6B35]"></span>
-              PROCESS
-            </h2>
-            <h3 className="font-display text-4xl md:text-5xl lg:text-7xl font-medium leading-[1.05]">
-              How It<br />
-              <span className="italic text-leway-dark">Works.</span>
-            </h3>
-            <p className="font-body text-lg md:text-xl text-leway-dark/70 mt-6 md:mt-8 max-w-md font-light leading-relaxed">
-              No confusion. No back-and-forth. No agency nonsense. Just a clear process from first message to final delivery.
-            </p>
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+          className="text-center mb-16 md:mb-20"
+        >
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-leway-dark">
+            Our simple process.
+          </h2>
+          <p className="font-body text-base md:text-lg text-leway-dark/60 mt-4 max-w-md mx-auto leading-relaxed">
+            No confusion, no endless back-and-forth. Just a clear path from first message to final launch.
+          </p>
+        </motion.div>
+
+        {/* Steps with organic connecting path */}
+        <div className="relative">
+
+          {/* Connecting SVG path — desktop only */}
+          <div className="hidden lg:block absolute top-12 left-[12.5%] right-[12.5%] pointer-events-none" aria-hidden="true">
+            <svg width="100%" height="40" viewBox="0 0 900 40" fill="none" preserveAspectRatio="none">
+              <path
+                d="M0 20 C150 5, 220 35, 300 20 C380 5, 450 35, 600 20 C700 5, 780 35, 900 20"
+                stroke="#22C55E"
+                strokeWidth="2"
+                strokeDasharray="6 4"
+                strokeLinecap="round"
+                opacity="0.5"
+              />
+            </svg>
           </div>
 
-          {/* Scrolling Right Column */}
-          <div className="lg:col-span-7 flex flex-col gap-16 md:gap-24 lg:gap-32 lg:pl-10 mt-8 lg:mt-0">
+          {/* Steps grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {steps.map((step, i) => (
-              <StepCard key={step.title} step={step} index={i} />
+              <motion.div
+                key={step.num}
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ delay: i * 0.1, duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+                className="card-warm p-6 md:p-8 flex flex-col gap-5 relative group cursor-default"
+              >
+                {/* Number circle */}
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-leway-dark flex items-center justify-center flex-shrink-0">
+                    <span className="font-display text-sm font-bold text-leway-gold">{step.num}</span>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="font-display text-xl md:text-2xl text-leway-dark mb-2">{step.title}</h3>
+                  <p className="font-body text-sm text-leway-dark/60 leading-relaxed">{step.desc}</p>
+                </div>
+
+                {/* Mobile connector dot */}
+                {i < steps.length - 1 && (
+                  <div className="sm:hidden flex justify-center mt-2">
+                    <div className="w-px h-6 bg-leway-green/40" />
+                  </div>
+                )}
+              </motion.div>
             ))}
           </div>
-
         </div>
+
+        {/* Micro-CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4, duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
+          className='text-center mt-16'
+        >
+          <p className='font-body text-base text-leway-dark/60 mb-4'>Ready to start?</p>
+          <button
+            onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
+            className='font-body text-sm text-leway-green hover:text-leway-dark underline underline-offset-4 decoration-leway-green/40 hover:decoration-leway-dark transition-colors py-2 px-3'
+          >
+            Let&apos;s talk →
+          </button>
+        </motion.div>
+
       </div>
     </section>
   );

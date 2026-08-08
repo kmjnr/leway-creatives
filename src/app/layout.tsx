@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
-import { Fraunces, Syne, Outfit } from 'next/font/google';
+import { Fraunces, Outfit, Syne } from 'next/font/google';
 import './globals.css';
 import ScrollToTop from '@/components/ScrollToTop';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import CustomCursor from '@/components/ui/CustomCursor';
 
 export const metadata: Metadata = {
     title: 'Web Design, Copywriting & Lead Generation | LEWAY Creatives | Kenya & Worldwide',
@@ -17,40 +16,45 @@ export const metadata: Metadata = {
     },
     openGraph: {
         title: 'Web Design + Copywriting + Lead Gen | LEWAY Creatives',
-        description: 'World-class web design, copywriting, and lead generation \u2014 at a fraction of Western agency rates. Serving the US, UK, Canada, Australia & Kenya. One team. Real results.',
+        description: 'World-class web design, copywriting, and lead generation. Serving the US, UK, Canada, Australia & Kenya. One team. Real results.',
         type: 'website',
         url: 'https://lewaycreatives.com',
         images: [{
             url: 'https://lewaycreatives.com/images/leway-creatives-web-design-agency-kenya.webp',
             width: 1200,
             height: 630,
-            alt: 'LEWAY Creatives \u2014 Web Design, Copywriting & Lead Generation Agency',
+            alt: 'LEWAY Creatives — Web Design, Copywriting & Lead Generation Agency',
         }],
     },
     twitter: {
         card: 'summary_large_image',
         title: 'Web Design + Copy + Lead Gen | LEWAY Creatives',
-        description: 'World-class web design, copywriting, and lead generation \u2014 at a fraction of Western agency rates. Serving the US, UK, Canada, Australia & Kenya.',
+        description: 'World-class web design, copywriting, and lead generation. Serving the US, UK, Canada, Australia & Kenya.',
         images: ['https://lewaycreatives.com/images/leway-creatives-web-design-agency-kenya.webp'],
     },
 };
 
+// Fraunces — friendly, high-x-height soft serif for H1/H2 headlines and display text
 const fraunces = Fraunces({
     subsets: ['latin'],
-    axes: ['opsz'],
+    weight: ['400', '500', '600', '700', '800'],
     variable: '--font-display',
     display: 'swap',
 });
 
-const syne = Syne({
+// Outfit — clean, readable sans-serif for body text and descriptions
+const outfit = Outfit({
     subsets: ['latin'],
-    variable: '--font-ui',
+    weight: ['300', '400', '500', '600', '700'],
+    variable: '--font-body',
     display: 'swap',
 });
 
-const outfit = Outfit({
+// Syne — geometric sans for UI labels, eyebrows, and category tags
+const syne = Syne({
     subsets: ['latin'],
-    variable: '--font-body',
+    weight: ['400', '500', '600', '700'],
+    variable: '--font-ui',
     display: 'swap',
 });
 
@@ -60,9 +64,8 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" suppressHydrationWarning className={`${fraunces.variable} ${syne.variable} ${outfit.variable} dark`}>
-            <body className="antialiased font-body min-h-screen bg-background text-foreground tracking-wide selection:bg-primary selection:text-primary-foreground relative">
-                <CustomCursor />
+        <html lang="en" suppressHydrationWarning className={`${fraunces.variable} ${outfit.variable} ${syne.variable}`}>
+            <body className="antialiased font-body min-h-screen bg-background text-foreground selection:bg-leway-green/20 selection:text-leway-dark relative">
                 <Navbar />
                 {children}
                 <Footer />

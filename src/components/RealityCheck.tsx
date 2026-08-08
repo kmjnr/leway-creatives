@@ -1,99 +1,99 @@
 "use client";
 
-import { useScrollReveal } from "@/lib/useScrollReveal";
+import Image from "next/image";
+import { motion } from "framer-motion";
 
-const silentKillers = [
+const features = [
   {
-    title: '"Your website looks DIY"',
-    desc: "First impressions happen in 0.05 seconds. If you look cheap, they assume your work is cheap.",
+    id: "strategy",
+    title: "Strategy & design, seamlessly integrated.",
+    desc: "We don't just make things look pretty. Every design decision is backed by conversion strategy — ensuring your brand doesn't just look the part, it wins business.",
+    image: "/images/strategy_design_image.webp",
+    alt: "Creative strategy desk setup — LEWAY Creatives",
+    reverse: false,
   },
   {
-    title: '"Resumes get buried"',
-    desc: "PDFs are static graveyards. Recruiters want to see live, interactive proof of competence.",
-  },
-  {
-    title: '"Confusion kills conversion"',
-    desc: "If they can't figure out what you do in 3 seconds, they're gone forever.",
+    id: "growth",
+    title: "Data-driven lead generation.",
+    desc: "A beautiful website is useless if no one sees it. We integrate B2B lead generation into our workflow — filling your pipeline while we grow your brand.",
+    image: "/images/growth_dashboard_laptop.webp",
+    alt: "Growth dashboard on laptop — LEWAY Creatives",
+    reverse: true,
   },
 ];
 
-export default function RealityCheck() {
-  const { ref: headRef, isVisible: headVisible } = useScrollReveal<HTMLDivElement>({ margin: "-80px" });
-  const { ref: statRef, isVisible: statVisible } = useScrollReveal<HTMLDivElement>({ margin: "-80px" });
-  const { ref: killersRef, isVisible: killersVisible } = useScrollReveal<HTMLDivElement>({ margin: "-50px" });
-  const { ref: quoteRef, isVisible: quoteVisible } = useScrollReveal<HTMLDivElement>({ margin: "-50px" });
-
+function FeatureRow({ feature, delay }: { feature: typeof features[0]; delay: number }) {
   return (
-    <section className="relative pt-40 pb-56 md:pb-64 bg-background-dark text-leway-light overflow-hidden bg-radial-dark noise-bg-dark clip-diagonal-top -mt-10 z-20 w-full">
-      <div className="absolute top-10 right-10 pointer-events-none select-none opacity-[0.03] md:opacity-[0.02] leading-none mix-blend-screen">
-        <span className="font-display text-[15rem] md:text-[25rem] font-bold text-white">02</span>
-      </div>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
-      <div className="container mx-auto px-6 max-w-7xl relative z-10 w-full">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8">
-          <div
-            ref={headRef}
-            className={`flex flex-col gap-4 md:gap-6 max-w-2xl ${headVisible ? "animate-reveal-left" : "opacity-0"}`}
-          >
-            <h2 className="font-ui uppercase tracking-widest text-[#C9A84C] text-[11px] flex items-center gap-4">
-              <span className="w-8 h-[1px] bg-[#C9A84C]"></span>
-              REALITY CHECK
-            </h2>
-            <h3 className="font-display text-3xl md:text-5xl lg:text-7xl font-medium leading-[1.05]">
-              Why your current site is <span className="italic text-white">costing you money</span>
-            </h3>
-          </div>
+      {/* Text */}
+      <motion.div
+        initial={{ opacity: 0, x: feature.reverse ? 24 : -24 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ delay, duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
+        className={`flex flex-col gap-5 ${feature.reverse ? "lg:order-2" : "lg:order-1"}`}
+      >
+        <h3 className="font-display text-3xl md:text-4xl lg:text-5xl text-leway-dark leading-[1.1] tracking-tight">
+          {feature.title}
+        </h3>
+        <p className="font-body text-base md:text-lg text-leway-dark/65 leading-relaxed max-w-md">
+          {feature.desc}
+        </p>
+      </motion.div>
 
-          <div
-            ref={statRef}
-            className={`md:text-right ${statVisible ? "animate-reveal-right" : "opacity-0"}`}
-          >
-            <p className="font-ui text-[0.65rem] tracking-[0.2em] text-paper/50 uppercase mb-2">The Cost of Inaction</p>
-            <div className="font-display text-5xl md:text-7xl lg:text-9xl font-normal text-white tracking-tighter leading-none inline-block relative">
-              -$7k
-              <span className="absolute -bottom-2 -right-4 text-xs md:text-sm font-ui tracking-widest text-leway-gold uppercase rotate-[-9deg]">Alert</span>
-            </div>
-            <p className="font-body text-paper/60 text-base md:text-lg mt-4 font-light">/ month lost to amateurs.</p>
-          </div>
+      {/* Image */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ delay: delay + 0.1, duration: 0.8, ease: [0.32, 0.72, 0, 1] }}
+        className={`relative w-full aspect-[4/3] group z-0 ${feature.reverse ? "lg:order-1" : "lg:order-2"}`}
+      >
+        {/* Wireframe offset stroke */}
+        <div className="absolute inset-0 translate-x-3 translate-y-3 rounded-[2rem] border-2 border-leway-gold -z-10 transition-transform duration-500 group-hover:translate-x-4 group-hover:translate-y-4" />
+        
+        <div className="absolute inset-0 rounded-[2rem] overflow-hidden shadow-hover">
+          <Image
+            src={feature.image}
+            alt={feature.alt}
+            fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover"
+          />
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+export default function RealityCheck() {
+  return (
+    <section className="py-16 md:py-24 lg:py-32 bg-leway-stone/40 overflow-hidden">
+      <div className="container mx-auto px-6 max-w-7xl">
+
+        {/* Signature divider */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+          className="mb-16 md:mb-24"
+        >
+          <div className="w-full h-px bg-leway-dark/10" />
+          <p className="font-display italic text-2xl md:text-3xl lg:text-4xl text-leway-dark/80 text-center py-8 md:py-12 max-w-3xl mx-auto leading-[1.2]">
+            We don&apos;t just make things look good. We make them work.
+          </p>
+          <div className="w-full h-px bg-leway-dark/10" />
+        </motion.div>
+
+        {/* Feature rows */}
+        <div className="flex flex-col gap-12 md:gap-24 lg:gap-32">
+          {features.map((feature, i) => (
+            <FeatureRow key={feature.id} feature={feature} delay={i * 0.1} />
+          ))}
         </div>
 
-        <div className="flex flex-col lg:grid lg:grid-cols-12 gap-12 lg:gap-20 lg:items-start border-t border-white/10 pt-16 w-full">
-
-          <div
-            ref={killersRef}
-            className={`w-full lg:col-span-5 min-w-0 ${killersVisible ? "animate-reveal-up" : "opacity-0"}`}
-          >
-            <h4 className="font-display text-2xl lg:text-3xl mb-8 border-l-2 border-leway-green pl-6 py-1">The Silent Killers</h4>
-            <div className="flex flex-col gap-8 md:gap-10">
-              {silentKillers.map((item) => (
-                <div key={item.title} className="flex items-start gap-4">
-                  <div className="mt-[0.6rem] w-[5px] h-[5px] shrink-0 bg-leway-gold/50 rounded-full" />
-                  <div className="flex flex-col gap-2 flex-1 min-w-0">
-                    <p className="font-display text-lg md:text-2xl text-white break-words w-full pr-4 lg:pr-2">{item.title}</p>
-                    <p className="font-body text-paper/60 leading-relaxed font-light text-base md:text-lg pr-6 lg:pr-0">
-                      {item.desc}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div
-            ref={quoteRef}
-            className={`w-full lg:col-span-7 flex flex-col justify-center min-w-0 mt-8 lg:mt-0 ${quoteVisible ? "animate-reveal-up" : "opacity-0"}`}
-            style={{ animationDelay: "0.15s" }}
-          >
-            <blockquote className="font-display text-xl md:text-3xl lg:text-[2.75rem] leading-[1.3] md:leading-[1.25] text-white/95 break-words w-full pr-4 lg:pr-0">
-              "I sent out 50 proposals last month. The silence was deafening. It feels like shouting into the void, knowing you're qualified, but watching less experienced people get the contracts simply because they <span className="italic text-leway-gold opacity-90">looked the part</span>."
-            </blockquote>
-            <p className="font-ui uppercase tracking-widest text-sm text-leway-green mt-8 flex items-center gap-4">
-              <span className="w-12 h-[1px] bg-leway-green"></span>
-              Real Client Experience
-            </p>
-          </div>
-
-        </div>
       </div>
     </section>
   );

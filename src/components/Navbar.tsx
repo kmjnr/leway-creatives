@@ -2,241 +2,221 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { ChevronDown, X, Menu } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { Eyebrow } from "@/components/ui/Eyebrow";
 
 const navLinks = [
+  { label: "Services", href: "/#services" },
   { label: "How It Works", href: "/#how-it-works" },
   { label: "Testimonials", href: "/#testimonials" },
   { label: "FAQ", href: "/#faq" },
 ];
 
-const serviceDropdownItems = [
-  { label: "Web Design & Development", sublabel: "Get Clients Online", href: "/#services" },
-  { label: "Content & Copywriting", sublabel: "Get Found & Trusted", href: "/#services" },
-  { label: "Marketing Design", sublabel: "Look the Part", href: "/#services" },
-  { label: "Lead Generation", sublabel: "Fill Your Pipeline", href: "/#services" },
-  { label: "Career & Personal Branding", sublabel: "Get Hired or Noticed", href: "/#services" },
+const serviceItems = [
+  { label: "Web Design & Development", sublabel: "Get Clients Online" },
+  { label: "Content & Copywriting", sublabel: "Words That Convert" },
+  { label: "Marketing Design", sublabel: "Look the Part" },
+  { label: "Lead Generation", sublabel: "Fill Your Pipeline" },
+  { label: "Career & Personal Branding", sublabel: "Get Hired or Noticed" },
 ];
 
-const scrollTo = (id: string, pathname: string) => {
-  if (pathname !== "/") {
-    window.location.href = id;
-    return;
-  }
-  const el = document.querySelector(id.replace("/", ""));
-  el?.scrollIntoView({ behavior: "smooth" });
-};
+function scrollTo(id: string, pathname: string) {
+  const hash = id.replace("/", "");
+  if (pathname !== "/") { window.location.href = id; return; }
+  document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
+}
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  const servicesRef = useRef<HTMLDivElement>(null);
+  const servicesRef = useRef<HTMLLIElement>(null);
+  const rafRef = useRef(false);
   const scrolledRef = useRef(false);
-  const rafScheduled = useRef(false);
 
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (servicesRef.current && !servicesRef.current.contains(e.target as Node)) {
-        setServicesOpen(false);
-      }
-    };
-
-    const handleScroll = () => {
-      if (rafScheduled.current) return;
-      rafScheduled.current = true;
+    const onScroll = () => {
+      if (rafRef.current) return;
+      rafRef.current = true;
       requestAnimationFrame(() => {
-        rafScheduled.current = false;
-        const next = window.scrollY > 10;
+        rafRef.current = false;
+        const next = window.scrollY > 20;
         if (next !== scrolledRef.current) {
           scrolledRef.current = next;
           setScrolled(next);
         }
       });
     };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    // Initial check
-    handleScroll();
-
+    const onClickOutside = (e: MouseEvent) => {
+      if (servicesRef.current && !servicesRef.current.contains(e.target as Node)) {
+        setServicesOpen(false);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    document.addEventListener("mousedown", onClickOutside);
+    onScroll();
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", onScroll);
+      document.removeEventListener("mousedown", onClickOutside);
     };
   }, []);
 
+  // Lock scroll when mobile menu open
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
+
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-[70] bg-leway-dark/85 border-b border-white/5 backdrop-blur-sm">
+      {/* ── Floating Pill Navbar ───────────────────────────── */}
+      <header className="fixed top-0 left-0 right-0 z-[200] flex justify-center pt-4 md:pt-5 px-4 pointer-events-none">
         <nav
-          className="container mx-auto flex items-center justify-between px-6 py-4 md:py-5 max-w-7xl"
-          aria-label="Main navigation">
-
+          className={`pointer-events-auto w-full max-w-5xl flex items-center justify-between gap-4 px-4 md:px-6 h-14 md:h-16 rounded-full transition-all duration-500 ${
+            scrolled
+              ? "bg-white/95 backdrop-blur-md shadow-badge border border-black/5"
+              : "bg-white/80 backdrop-blur-sm shadow-sm border border-black/5"
+          }`}
+          aria-label="Main navigation"
+        >
           {/* Logo */}
-          <Link
-            href="/"
-            className="flex items-center gap-2 group"
-            aria-label="LEWAY Creatives Home">
+          <Link href="/" className="flex-shrink-0" aria-label="LEWAY Creatives Home">
             <Image
-              src="/images/leway-logo-main.png"
-              alt="LEWAY Creatives - Web Design, Copywriting & Lead Generation Agency"
-              title="LEWAY Creatives Logo"
-              className="h-8 md:h-10 w-auto group-hover:opacity-80 transition-opacity"
-              width={200}
-              height={48}
+              src="/images/leway_creatives_logo.png"
+              alt="LEWAY Creatives"
+              width={120}
+              height={36}
+              className="h-7 md:h-8 w-auto"
               priority
             />
           </Link>
 
-          {/* Desktop links */}
-          <ul className="hidden md:flex items-center gap-10">
-            {/* Services Dropdown */}
-            <li>
-              <div ref={servicesRef} className="relative">
-                <button
-                  onClick={() => setServicesOpen((o) => !o)}
-                  className="flex items-center gap-1 font-ui uppercase tracking-[0.15em] text-xs font-bold transition-colors text-white/70 hover:text-white"
-                >
-                  Services
-                  <ChevronDown size={14} className={`transition-transform ${servicesOpen ? "rotate-180" : ""}`} />
-                </button>
-                <AnimatePresence>
-                  {servicesOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                      exit={{ opacity: 0, y: 10, filter: "blur(10px)" }}
-                      transition={{ duration: 0.2, ease: "easeOut" }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-6 w-80 rounded-none border border-white/10 bg-[#0A1A0D]/95 backdrop-blur-3xl shadow-2xl p-2"
-                    >
-                      {serviceDropdownItems.map((item) => (
-                        <button
-                          key={item.label}
-                          onClick={() => {
-                            setServicesOpen(false);
-                            scrollTo(item.href, pathname);
-                          }}
-                          className="flex flex-col w-full px-5 py-4 text-left transition-colors hover:bg-white/5 border-b border-white/5 last:border-b-0 group"
-                        >
-                          <span className="font-display text-base font-medium text-white/90 group-hover:text-leway-green transition-colors mb-1">
-                            {item.label}
-                          </span>
-                          <span className="font-ui tracking-widest uppercase text-xs text-white/40">
-                            {item.sublabel}
-                          </span>
-                        </button>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </li>
-            {navLinks.map((l) =>
-              <li key={l.href}>
-                <button
-                  onClick={() => scrollTo(l.href, pathname)}
-                  className="font-ui uppercase tracking-[0.15em] text-xs font-bold transition-colors text-white/70 hover:text-white">
-                  {l.label}
-                </button>
-              </li>
-            )}
-            <li>
+          {/* Desktop Links */}
+          <ul className="hidden md:flex items-center gap-1">
+            {/* Services dropdown */}
+            <li ref={servicesRef} className="relative">
               <button
-                onClick={() => scrollTo("/#contact", pathname)}
-                className={`flex items-center justify-center px-8 py-3 font-ui uppercase tracking-[0.15em] text-xs font-bold transition-colors duration-300 ${scrolled ? "bg-leway-green text-leway-dark hover:bg-white hover:text-leway-dark" : "bg-white text-leway-dark hover:bg-leway-green hover:text-leway-dark"}`}>
-                Let's Talk
-              </button>
-            </li>
-          </ul>
-
-          {/* Mobile hamburger */}
-          <button
-            className="md:hidden relative z-[80] p-1 text-white"
-            onClick={() => setOpen(!open)}
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}>
-            {open ? <X size={24} className="text-white" /> : <Menu size={24} />}
-          </button>
-        </nav>
-      </header>
-
-      {/* Mobile overlay */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: -20, filter: "blur(10px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[60] bg-[#0A1A0D] flex flex-col items-center justify-center gap-8 md:hidden overflow-y-auto py-20">
-
-            <div className="flex flex-col items-center">
-              <button
-                onClick={() => setMobileServicesOpen((o) => !o)}
-                className="flex items-center gap-2 font-display text-3xl font-medium text-white hover:text-leway-green transition-colors"
+                onClick={() => setServicesOpen((o) => !o)}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium text-leway-dark/70 hover:text-leway-dark hover:bg-black/5 transition-all duration-200 font-body"
               >
                 Services
-                <ChevronDown size={20} className={`transition-transform ${mobileServicesOpen ? "rotate-180" : ""}`} />
+                <ChevronDown
+                  size={14}
+                  className={`transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`}
+                />
               </button>
+
               <AnimatePresence>
-                {mobileServicesOpen && (
+                {servicesOpen && (
                   <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="overflow-hidden flex flex-col items-center gap-6 mt-6"
+                    initial={{ opacity: 0, y: 8, scale: 0.97 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.97 }}
+                    transition={{ duration: 0.2, ease: [0.32, 0.72, 0, 1] }}
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-72 bg-leway-forest rounded-2xl shadow-hover border border-white/10 p-2 overflow-hidden"
                   >
-                    {serviceDropdownItems.map((item) => (
+                    {serviceItems.map((item) => (
                       <button
                         key={item.label}
                         onClick={() => {
-                          setOpen(false);
-                          setMobileServicesOpen(false);
-                          setTimeout(() => scrollTo(item.href, pathname), 100);
+                          setServicesOpen(false);
+                          scrollTo("/#services", pathname);
                         }}
-                        className="flex flex-col items-center text-center"
+                        className="flex flex-col w-full px-4 py-3 rounded-xl text-left transition-colors hover:bg-white/10 group"
                       >
-                        <span className="font-display text-xl font-medium text-white/70 hover:text-leway-green transition-colors">
+                        <span className="font-body text-sm font-medium text-white group-hover:text-white">
                           {item.label}
                         </span>
-                        <span className="font-ui tracking-widest uppercase text-xs text-white/30 mt-1">
+                        <Eyebrow as="span" className="text-white/50 mt-0.5">
                           {item.sublabel}
-                        </span>
+                        </Eyebrow>
                       </button>
                     ))}
                   </motion.div>
                 )}
               </AnimatePresence>
+            </li>
+
+            {navLinks.slice(1).map((l) => (
+              <li key={l.href}>
+                <button
+                  onClick={() => scrollTo(l.href, pathname)}
+                  className="px-4 py-2 rounded-full text-sm font-medium text-leway-dark/70 hover:text-leway-dark hover:bg-black/5 transition-all duration-200 font-body"
+                >
+                  {l.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          {/* CTA */}
+          <div className="hidden md:inline-flex btn-ripple-wave">
+            <button
+              onClick={() => scrollTo("/#contact", pathname)}
+              className="flex items-center gap-2 bg-leway-green text-leway-dark text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-leway-green/90 active:scale-[0.98] transition-all duration-200 font-body"
+            >
+              Start a Project
+            </button>
+          </div>
+
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setOpen(!open)}
+            className="md:hidden flex items-center justify-center w-11 h-11 rounded-full bg-black/5 text-leway-dark"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+          >
+            {open ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </nav>
+      </header>
+
+      {/* ── Mobile Full-Screen Overlay ─────────────────────── */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-[190] bg-leway-forest flex flex-col md:hidden"
+          >
+            <div className="flex-1 flex flex-col items-center justify-center gap-6 px-8 overflow-y-auto">
+              {navLinks.map((l, i) => (
+                <motion.button
+                  key={l.href}
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.07, duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
+                  onClick={() => { setOpen(false); setTimeout(() => scrollTo(l.href, pathname), 100); }}
+                  className="font-display text-4xl font-semibold text-white hover:text-leway-green transition-colors"
+                >
+                  {l.label}
+                </motion.button>
+              ))}
+
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.32, duration: 0.4 }}
+                className="mt-6 btn-ripple-wave"
+              >
+                <button
+                  onClick={() => { setOpen(false); setTimeout(() => scrollTo("/#contact", pathname), 100); }}
+                  className="bg-leway-green text-leway-dark font-semibold px-8 py-4 rounded-full text-lg hover:bg-leway-green/90 transition-colors font-body"
+                >
+                  Start a Project →
+                </button>
+              </motion.div>
             </div>
 
-            {navLinks.map((l) => (
-              <button
-                key={l.href}
-                onClick={() => {
-                  setOpen(false);
-                  setTimeout(() => scrollTo(l.href, pathname), 100);
-                }}
-                className="font-display text-3xl font-medium text-white hover:text-leway-green transition-colors">
-                {l.label}
-              </button>
-            ))}
-
-            <button
-              onClick={() => {
-                setOpen(false);
-                setTimeout(() => scrollTo("/#contact", pathname), 100);
-              }}
-              className="mt-8 bg-leway-green text-forest px-8 py-4 font-ui uppercase tracking-widest text-sm font-bold">
-              Book a Session
-            </button>
+            <div className="p-8 text-center">
+              <p className="text-sm text-white/40 font-body">connect@lewaycreatives.com</p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
