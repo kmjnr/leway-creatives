@@ -1,155 +1,135 @@
+import type { Metadata } from "next";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import Hero from "@/components/Hero";
+import { faqs } from "@/data/faqs";
+import { projects } from "@/data/work";
+import { services, serviceNames } from "@/data/services";
+import { site } from "@/data/site";
+import {
+  faqJsonLd,
+  organizationJsonLd,
+  pageMetadata,
+  websiteJsonLd,
+} from "@/lib/metadata";
 
-// Below-the-fold sections — loaded lazily to reduce initial JS bundle
-const Philosophy = dynamic(() => import("@/components/Philosophy"));
-const RealityCheck = dynamic(() => import("@/components/RealityCheck"));
+// Below-the-fold sections load lazily to keep the first paint light.
+const Work = dynamic(() => import("@/components/Work"));
 const Services = dynamic(() => import("@/components/Services"));
-const Comparison = dynamic(() => import("@/components/Comparison"));
 const HowItWorks = dynamic(() => import("@/components/HowItWorks"));
 const Testimonials = dynamic(() => import("@/components/Testimonials"));
 const FAQ = dynamic(() => import("@/components/FAQ"));
 const ContactForm = dynamic(() => import("@/components/ContactForm"));
 
+export const metadata: Metadata = pageMetadata({
+  title: "LEWAY Creatives — web design, copywriting & lead generation | Nairobi, Kenya",
+  description:
+    "Web design, copywriting and lead generation from one senior team in Nairobi. Ten builds shown as they run, five services with from-prices, and one fixed quote before any work starts.",
+  path: "/",
+  keywords:
+    "web design agency Kenya, web design Nairobi, copywriting agency, lead generation service, B2B lead generation, outsource web design, conversion landing page, LEWAY Creatives",
+  absolute: true,
+});
+
+/** The routes out of the homepage, so the landing page works as a hub. */
+const routes = [
+  {
+    href: "/work",
+    label: "Work",
+    body: `Ten builds with screenshots from the live deployment — ${projects.filter((p) => p.status === "live").length} running on their own domains today.`,
+  },
+  {
+    href: "/services",
+    label: "Services",
+    body: `All ${services.length} with a from-price, a realistic timeline and the deliverables spelled out.`,
+  },
+  {
+    href: "/about",
+    label: "About",
+    body: "Who does the work, how a project runs, and the four things this studio refuses to do.",
+  },
+  {
+    href: "/contact",
+    label: "Contact",
+    body: "A reply within one business day, a 20-minute scoping call, then one fixed quote.",
+  },
+];
+
+// Structured data is generated from the same arrays the visible page renders,
+// so the markup can never drift away from the content.
 const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-        {
-            "@type": ["LocalBusiness", "ProfessionalService"],
-            name: "LEWAY Creatives",
-            description:
-                "LEWAY CREATIVES combines high-end web and visual design with psychological copywriting. We build websites, resumes, and campaign assets that actually convert.",
-            url: "https://lewaycreatives.com",
-            priceRange: "$$",
-            address: {
-                "@type": "PostalAddress",
-                addressLocality: "Nairobi",
-                addressCountry: "KE",
-            },
-            areaServed: "Worldwide",
-            serviceType: [
-                "Web Design",
-                "Graphic Design",
-                "Copywriting",
-                "Resume Writing",
-                "Personal Branding",
-            ],
+  "@context": "https://schema.org",
+  "@graph": [
+    organizationJsonLd(serviceNames),
+    websiteJsonLd(),
+    faqJsonLd(faqs),
+    {
+      "@type": "ItemList",
+      name: `${site.name} — selected work`,
+      itemListElement: projects.map((project, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        item: {
+          "@type": "CreativeWork",
+          name: project.name,
+          url: project.url,
+          description: project.summary,
+          creator: { "@id": `${site.url}/#organization` },
         },
-        {
-            "@type": "FAQPage",
-            mainEntity: [
-                {
-                    "@type": "Question",
-                    name: "I'm just starting out. Is this too expensive?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "We have packages for individuals and established brands. If you think professional design and copywriting is expensive, try the amateurs. It costs you customers every day.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Do you use AI?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "We use AI for speed, not for thinking. The strategy is 100% human. The polish is 100% human. The tools just help us move faster.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "How long does a website take?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "A landing page? 2–4 days. A full site? 1–2 weeks. We move at the speed of business, not agency bureaucracy.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "How many revisions do I get?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Every project includes 2 rounds of revisions baked into the price. Most clients nail it by round one because we get the brief right upfront. Additional rounds are available at a flat fee — no surprises.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "What are your payment terms?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "We require 50% upfront to kick off, and the remaining 50% on delivery. For larger projects, we offer milestone-based billing. We accept M-Pesa, bank transfer, and PayPal.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Do you offer a satisfaction guarantee?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "We don't do refunds — we do results. That said, we've never had a client walk away unhappy. Our revision process ensures you get exactly what you need before we call it done.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Can you work with my existing brand guidelines?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Absolutely. Send us your brand kit and we'll work within your identity. If you don't have one yet, we can build that too — logos, color systems, typography, the whole package.",
-                    },
-                },
-                {
-                    "@type": "Question",
-                    name: "Do you offer ongoing support after launch?",
-                    acceptedAnswer: {
-                        "@type": "Answer",
-                        text: "Yes. We offer monthly retainer plans for content updates, website maintenance, and ongoing design work. Think of us as your creative department on speed dial.",
-                    },
-                },
-            ],
-        },
-        {
-            "@type": "Product",
-            name: "LEWAY Creatives Services",
-            aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: "5",
-                reviewCount: "3",
-            },
-            review: [
-                {
-                    "@type": "Review",
-                    author: { "@type": "Person", name: "Mary J" },
-                    reviewRating: { "@type": "Rating", ratingValue: "5" },
-                    reviewBody:
-                        "LEWAY Creatives fixed my bounce rate. Went from 70% to 35% in a week.",
-                },
-                {
-                    "@type": "Review",
-                    author: { "@type": "Person", name: "Alex Kamau" },
-                    reviewRating: { "@type": "Rating", ratingValue: "5" },
-                    reviewBody:
-                        "Got 3 interviews the month after they rewrote my LinkedIn.",
-                },
-            ],
-        },
-    ],
+      })),
+    },
+  ],
 };
 
 export default function Page() {
-    return (
-        <>
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-            />
-            <main>
-                <Hero />
-                <Philosophy />
-                <RealityCheck />
-                <Services />
-                <Comparison />
-                <HowItWorks />
-                <Testimonials />
-                <FAQ />
-                <ContactForm />
-            </main>
-        </>
-    );
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <main id="main">
+        <Hero />
+        <Work />
+        <Services />
+        <HowItWorks />
+        <Testimonials />
+
+        {/* The signposts. The homepage argues the case; these take you deeper. */}
+        <section aria-labelledby="routes-heading" className="bg-leway-paper">
+          <div className="container pb-24 md:pb-32">
+            <h2 id="routes-heading" className="font-display text-h2 text-leway-dark">
+              Where to go next.
+            </h2>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10 mt-10 md:mt-14">
+              {routes.map((route) => (
+                <li key={route.href}>
+                  <Link
+                    href={route.href}
+                    className="group block rounded-card bg-leway-paper-2 p-7 h-full transition-colors hover:bg-leway-mint"
+                  >
+                    <span className="font-display text-h3 text-leway-dark inline-flex items-center gap-2">
+                      {route.label}
+                      <span
+                        aria-hidden="true"
+                        className="transition-transform duration-200 group-hover:translate-x-0.5"
+                      >
+                        →
+                      </span>
+                    </span>
+                    <span className="block font-body text-base text-leway-dark/70 mt-3 max-w-[36ch]">
+                      {route.body}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <FAQ />
+        <ContactForm />
+      </main>
+    </>
+  );
 }

@@ -1,120 +1,84 @@
-"use client";
-
-import { motion } from "framer-motion";
+import Image from "next/image";
+import { getProject } from "@/data/work";
 
 const steps = [
   {
-    num: "01",
-    title: "Say Hello",
-    desc: "Tell us what you need via WhatsApp or email. We respond within one hour — every time.",
+    title: "Talk",
+    body: "Tell us what you need by email or WhatsApp. We reply within one business day with honest first questions — and a straight answer on whether we are right for the job.",
   },
   {
-    num: "02",
-    title: "We Deep-Dive",
-    desc: "We study your business, audience, and competitors before a single pixel is moved.",
+    title: "Scope",
+    body: "A short call, then a fixed quote covering scope, timeline and price. No hourly drift, no surprise invoices halfway through.",
   },
   {
-    num: "03",
-    title: "We Build",
-    desc: "Websites, copy, lead lists, design assets — built to brief and refined until perfect.",
+    title: "Build",
+    body: "Design and copy are made together. You review two structured checkpoints — structure first, then polish — so feedback lands where it changes the work.",
   },
   {
-    num: "04",
-    title: "You Launch",
-    desc: "Go live with confidence. Files, logins, clear instructions — and we're one message away.",
+    title: "Launch",
+    body: "Files, logins and a walkthrough before handover. Monthly retainers are available if you want us on call afterwards.",
   },
 ];
 
+/**
+ * One real build stands in for the process, because "you review real pages"
+ * is easier to believe with a real page in front of you.
+ */
+const shown = getProject("overlandhire");
+const frame = shown?.screens[1] ?? shown?.screens[0];
+
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="relative py-[clamp(4rem,3rem+5vw,8rem)] bg-leway-mint/50 overflow-hidden">
-      <div className="container mx-auto px-6 max-w-7xl">
-
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
-          className="text-center mb-16 md:mb-20"
-        >
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-leway-dark">
-            Our simple process.
-          </h2>
-          <p className="font-body text-base md:text-lg text-leway-dark/60 mt-4 max-w-md mx-auto leading-relaxed">
-            No confusion, no endless back-and-forth. Just a clear path from first message to final launch.
+    <section id="process" aria-label="How a project runs" className="bg-leway-mint">
+      <div className="container py-24 md:py-32">
+        <div className="max-w-2xl">
+          <h2 className="font-display text-h2 text-leway-dark">How a project runs.</h2>
+          <p className="font-body text-lead text-leway-dark/70 mt-5">
+            Four steps, one team, two checkpoints. You always know what is
+            happening and what it costs.
           </p>
-        </motion.div>
-
-        {/* Steps with organic connecting path */}
-        <div className="relative">
-
-          {/* Connecting SVG path — desktop only */}
-          <div className="hidden lg:block absolute top-12 left-[12.5%] right-[12.5%] pointer-events-none" aria-hidden="true">
-            <svg width="100%" height="40" viewBox="0 0 900 40" fill="none" preserveAspectRatio="none">
-              <path
-                d="M0 20 C150 5, 220 35, 300 20 C380 5, 450 35, 600 20 C700 5, 780 35, 900 20"
-                stroke="#22C55E"
-                strokeWidth="2"
-                strokeDasharray="6 4"
-                strokeLinecap="round"
-                opacity="0.5"
-              />
-            </svg>
-          </div>
-
-          {/* Steps grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {steps.map((step, i) => (
-              <motion.div
-                key={step.num}
-                initial={{ opacity: 0, y: 28 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ delay: i * 0.1, duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
-                className="card-warm p-6 md:p-8 flex flex-col gap-5 relative group cursor-default"
-              >
-                {/* Number circle */}
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-leway-dark flex items-center justify-center flex-shrink-0">
-                    <span className="font-display text-sm font-bold text-leway-gold">{step.num}</span>
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="font-display text-xl md:text-2xl text-leway-dark mb-2">{step.title}</h3>
-                  <p className="font-body text-sm text-leway-dark/60 leading-relaxed">{step.desc}</p>
-                </div>
-
-                {/* Mobile connector dot */}
-                {i < steps.length - 1 && (
-                  <div className="sm:hidden flex justify-center mt-2">
-                    <div className="w-px h-6 bg-leway-green/40" />
-                  </div>
-                )}
-              </motion.div>
-            ))}
-          </div>
         </div>
 
-        {/* Micro-CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4, duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-          className='text-center mt-16'
-        >
-          <p className='font-body text-base text-leway-dark/60 mb-4'>Ready to start?</p>
-          <button
-            onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-            className='font-body text-sm text-leway-green hover:text-leway-dark underline underline-offset-4 decoration-leway-green/40 hover:decoration-leway-dark transition-colors py-2 px-3'
-          >
-            Let&apos;s talk →
-          </button>
-        </motion.div>
+        {/* Steps read left to right; order comes from position, not numbers. */}
+        <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-12 mt-14 md:mt-20">
+          {steps.map((step) => (
+            <li key={step.title}>
+              <p className="font-display text-h3 text-leway-dark">{step.title}</p>
+              <p className="font-body text-base text-leway-dark/70 mt-4">{step.body}</p>
+            </li>
+          ))}
+        </ol>
 
+        {/* What a checkpoint actually looks at. */}
+        {shown && frame && (
+          <figure className="mt-16 md:mt-24">
+            <div className="relative aspect-[16/10] overflow-hidden rounded-card bg-leway-paper">
+              <Image
+                src={frame.src}
+                alt={`${shown.name} — ${frame.note || shown.imageAlt}`}
+                fill
+                sizes="(max-width: 1240px) 100vw, 1240px"
+                className="object-cover object-top"
+              />
+            </div>
+            <figcaption className="font-body text-small text-leway-dark/65 mt-4 flex flex-wrap items-baseline gap-x-3 max-w-[72ch]">
+              <span className="text-leway-dark">
+                {shown.name}
+              </span>
+              <span>{frame.note || shown.summary}</span>
+            </figcaption>
+          </figure>
+        )}
+
+        <a
+          href="#contact"
+          className="inline-flex items-center gap-2 font-body text-base text-leway-green-ink mt-14 py-3 underline decoration-leway-green-ink/40 underline-offset-4 hover:decoration-leway-green-ink transition-colors"
+        >
+          Start step one
+          <span aria-hidden="true">→</span>
+        </a>
       </div>
     </section>
   );
 }
+

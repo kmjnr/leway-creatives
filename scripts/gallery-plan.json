@@ -1,0 +1,63 @@
+{
+  "_comment": "Hand-picked case-study gallery frames. `top` is the scroll offset in the 1440px-wide full-page capture; `note` becomes the visible caption. Offsets were chosen from .taste-skill/contact/*.jpg contact sheets. Regions where a live site currently has a broken or unloaded asset are skipped on purpose — the gallery shows only what actually renders.",
+  "lifeline-hospitals": [
+    { "top": 0, "note": "Homepage — the appointment-first hero" },
+    { "top": 1068, "note": "Services grouped by department, each with a route in" },
+    { "top": 3204, "note": "Capacity at a glance, then how to get seen" },
+    { "top": 7475, "note": "Branch finder with directions and a 24/7 emergency line" }
+  ],
+  "adorntech": [
+    { "top": 0, "note": "Homepage — price promise above the fold" },
+    { "top": 904, "note": "Category navigation and what is selling this week" },
+    { "top": 1807, "note": "Discount band anchored to stock, not a countdown" },
+    { "top": 3615, "note": "Featured products with add-to-cart on the card" }
+  ],
+  "overlandhire": [
+    { "top": 0, "note": "Homepage — search first, brochure copy second" },
+    { "top": 1257, "note": "Fleet cards that carry the real daily price" },
+    { "top": 3142, "note": "Named routes with rates, so the quote is not a surprise" },
+    { "top": 4399, "note": "Reviews in the clients' own words" }
+  ],
+  "solarizeke": [
+    { "top": 0, "note": "Homepage — search across the licensed directory" },
+    { "top": 901, "note": "Featured placements, three slots at a time" },
+    { "top": 2702, "note": "Four tools, each pointing at a different decision" },
+    { "top": 3603, "note": "Methodology and sources, then the full footer" }
+  ],
+  "forestwood": [
+    { "top": 0, "note": "Homepage — live yard occupancy above the fold" },
+    { "top": 751, "note": "Bay types priced per month, not on enquiry" },
+    { "top": 1502, "note": "What a car storage yard has to provide" },
+    { "top": 4507, "note": "Practical notes for dealers, and a tenant's result" }
+  ],
+  "hadiyed-flowers": [
+    { "top": 0, "note": "Homepage — gift sets before product listings" },
+    { "top": 728, "note": "Bestsellers with prices visible on the grid" },
+    { "top": 1091, "note": "Occasion browsing across the full catalogue" },
+    { "top": 1819, "note": "Delivery promises, and reviews from recipients" }
+  ],
+  "paidtaskers": [
+    { "top": 0, "note": "Homepage — a live platform count, not a claim" },
+    { "top": 590, "note": "Open tasks with the payout shown up front" },
+    { "top": 2360, "note": "The numbers other task-platform directories will not publish" },
+    { "top": 2950, "note": "Trust rules written as things the site refuses to do" }
+  ],
+  "docsfast": [
+    { "top": 0, "note": "Homepage — a live conversion running in the hero" },
+    { "top": 484, "note": "All fifteen conversions listed on one page" },
+    { "top": 1935, "note": "Popular conversions, each with a route to the tool" },
+    { "top": 2903, "note": "Privacy behaviour spelled out before sign-up" }
+  ],
+  "curatelove": [
+    { "top": 0, "note": "Homepage — the generator input, not a sign-up wall" },
+    { "top": 2547, "note": "How the letter is built, step by step" },
+    { "top": 3820, "note": "The research behind the writing, cited on the page" },
+    { "top": 6367, "note": "Occasion and recipient entry points" }
+  ],
+  "premiumsafeboxes": [
+    { "top": 2521, "note": "Landing page — one product, one offer" },
+    { "top": 6303, "note": "Product photography doing the verification work" },
+    { "top": 7563, "note": "Full specifications, dimensions and weight" },
+    { "top": 8824, "note": "Trust markers and the complete-the-order step" }
+  ]
+}

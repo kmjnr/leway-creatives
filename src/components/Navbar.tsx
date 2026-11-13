@@ -1,225 +1,306 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, X, Menu } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Eyebrow } from "@/components/ui/Eyebrow";
+import { ChevronDown, Menu, X } from "lucide-react";
+import { services } from "@/data/services";
+import { site } from "@/data/site";
+import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { label: "Services", href: "/#services" },
-  { label: "How It Works", href: "/#how-it-works" },
-  { label: "Testimonials", href: "/#testimonials" },
-  { label: "FAQ", href: "/#faq" },
+  { label: "Home", href: "/" },
+  { label: "Work", href: "/work" },
+  { label: "Services", href: "/services" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ];
 
-const serviceItems = [
-  { label: "Web Design & Development", sublabel: "Get Clients Online" },
-  { label: "Content & Copywriting", sublabel: "Words That Convert" },
-  { label: "Marketing Design", sublabel: "Look the Part" },
-  { label: "Lead Generation", sublabel: "Fill Your Pipeline" },
-  { label: "Career & Personal Branding", sublabel: "Get Hired or Noticed" },
-];
-
-function scrollTo(id: string, pathname: string) {
-  const hash = id.replace("/", "");
-  if (pathname !== "/") { window.location.href = id; return; }
-  document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
+/** A nav item is current on its own route and every route beneath it. */
+function isCurrent(pathname: string, href: string) {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
 }
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const pathname = usePathname();
-  const servicesRef = useRef<HTMLLIElement>(null);
-  const rafRef = useRef(false);
-  const scrolledRef = useRef(false);
+  const servicesRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const onScroll = () => {
-      if (rafRef.current) return;
-      rafRef.current = true;
-      requestAnimationFrame(() => {
-        rafRef.current = false;
-        const next = window.scrollY > 20;
-        if (next !== scrolledRef.current) {
-          scrolledRef.current = next;
-          setScrolled(next);
-        }
-      });
-    };
-    const onClickOutside = (e: MouseEvent) => {
-      if (servicesRef.current && !servicesRef.current.contains(e.target as Node)) {
-        setServicesOpen(false);
-      }
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    document.addEventListener("mousedown", onClickOutside);
-    onScroll();
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      document.removeEventListener("mousedown", onClickOutside);
-    };
-  }, []);
-
-  // Lock scroll when mobile menu open
+  // Lock scroll behind the mobile menu.
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  // Any navigation closes whatever was open.
+  useEffect(() => {
+    setOpen(false);
+    setServicesOpen(false);
+  }, [pathname]);
+
+  // Escape closes the services panel and returns focus to its trigger.
+  useEffect(() => {
+    if (!servicesOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setServicesOpen(false);
+      servicesRef.current?.querySelector("button")?.focus();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [servicesOpen]);
+
+  // Escape closes the mobile menu.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
   return (
     <>
-      {/* ── Floating Pill Navbar ───────────────────────────── */}
-      <header className="fixed top-0 left-0 right-0 z-[200] flex justify-center pt-4 md:pt-5 px-4 pointer-events-none">
+      <header className="fixed top-0 left-0 right-0 z-[200] bg-leway-paper">
         <nav
-          className={`pointer-events-auto w-full max-w-5xl flex items-center justify-between gap-4 px-4 md:px-6 h-14 md:h-16 rounded-full transition-all duration-500 ${
-            scrolled
-              ? "bg-white/95 backdrop-blur-md shadow-badge border border-black/5"
-              : "bg-white/80 backdrop-blur-sm shadow-sm border border-black/5"
-          }`}
           aria-label="Main navigation"
+          className="container flex h-[72px] items-center justify-between gap-6"
         >
-          {/* Logo */}
-          <Link href="/" className="flex-shrink-0" aria-label="LEWAY Creatives Home">
+          <Link href="/" aria-label={`${site.name} home`} className="flex-shrink-0">
             <Image
               src="/images/leway_creatives_logo.png"
-              alt="LEWAY Creatives"
+              alt={site.name}
               width={120}
               height={36}
-              className="h-7 md:h-8 w-auto"
+              className="h-8 w-auto"
               priority
             />
           </Link>
 
-          {/* Desktop Links */}
+          {/* Desktop links — real hrefs, so they work without JS. */}
           <ul className="hidden md:flex items-center gap-1">
-            {/* Services dropdown */}
-            <li ref={servicesRef} className="relative">
-              <button
-                onClick={() => setServicesOpen((o) => !o)}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium text-leway-dark/70 hover:text-leway-dark hover:bg-black/5 transition-all duration-200 font-body"
-              >
-                Services
-                <ChevronDown
-                  size={14}
-                  className={`transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`}
-                />
-              </button>
-
-              <AnimatePresence>
-                {servicesOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 8, scale: 0.97 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 8, scale: 0.97 }}
-                    transition={{ duration: 0.2, ease: [0.32, 0.72, 0, 1] }}
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-72 bg-leway-forest rounded-2xl shadow-hover border border-white/10 p-2 overflow-hidden"
+            {navLinks.map((link) =>
+              link.href === "/services" ? (
+                <li key={link.href}>
+                  <div
+                    ref={servicesRef}
+                    className="relative"
+                    onMouseEnter={() => setServicesOpen(true)}
+                    onMouseLeave={() => setServicesOpen(false)}
                   >
-                    {serviceItems.map((item) => (
-                      <button
-                        key={item.label}
-                        onClick={() => {
-                          setServicesOpen(false);
-                          scrollTo("/#services", pathname);
-                        }}
-                        className="flex flex-col w-full px-4 py-3 rounded-xl text-left transition-colors hover:bg-white/10 group"
+                    <div className="flex items-center">
+                      <Link
+                        href="/services"
+                        className={cn(
+                          "inline-flex items-center h-11 pl-4 pr-1 rounded-l-pill font-body text-base transition-colors",
+                          isCurrent(pathname, "/services")
+                            ? "text-leway-dark"
+                            : "text-leway-dark/75 hover:text-leway-dark",
+                        )}
                       >
-                        <span className="font-body text-sm font-medium text-white group-hover:text-white">
-                          {item.label}
+                        Services
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => setServicesOpen((o) => !o)}
+                        aria-expanded={servicesOpen}
+                        aria-controls="services-menu"
+                        className="inline-flex items-center justify-center h-11 w-8 pr-3 rounded-r-pill text-leway-dark/70 hover:text-leway-dark transition-colors"
+                      >
+                        <span className="sr-only">
+                          {servicesOpen ? "Hide the service list" : "Show the service list"}
                         </span>
-                        <Eyebrow as="span" className="text-white/50 mt-0.5">
-                          {item.sublabel}
-                        </Eyebrow>
+                        <ChevronDown
+                          size={15}
+                          aria-hidden="true"
+                          className={cn(
+                            "transition-transform duration-200",
+                            servicesOpen && "rotate-180",
+                          )}
+                        />
                       </button>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </li>
+                    </div>
 
-            {navLinks.slice(1).map((l) => (
-              <li key={l.href}>
-                <button
-                  onClick={() => scrollTo(l.href, pathname)}
-                  className="px-4 py-2 rounded-full text-sm font-medium text-leway-dark/70 hover:text-leway-dark hover:bg-black/5 transition-all duration-200 font-body"
-                >
-                  {l.label}
-                </button>
-              </li>
-            ))}
+                    {/* The panel is always in the DOM; visibility is the only change. */}
+                    <div
+                      id="services-menu"
+                      hidden={!servicesOpen}
+                      className="absolute left-0 top-full pt-2 w-[22rem]"
+                    >
+                      <div className="rounded-card bg-leway-paper p-2 shadow-overlay">
+                        <ul>
+                          {services.map((service) => (
+                            <li key={service.slug}>
+                              <Link
+                                href={`/services/${service.slug}`}
+                                className="block px-4 py-3 min-h-[44px] rounded-card font-body text-base text-leway-dark/80 hover:text-leway-dark hover:bg-leway-dark/5 transition-colors"
+                              >
+                                {service.title}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                        <Link
+                          href="/services"
+                          className="block px-4 py-3 min-h-[44px] mt-1 rounded-card bg-leway-paper-2 font-body text-base text-leway-dark hover:bg-leway-mint transition-colors"
+                        >
+                          Timelines and from-prices
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              ) : (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    aria-current={isCurrent(pathname, link.href) ? "page" : undefined}
+                    className={cn(
+                      "inline-flex items-center h-11 px-4 rounded-pill font-body text-base transition-colors",
+                      isCurrent(pathname, link.href)
+                        ? "text-leway-dark bg-leway-dark/5"
+                        : "text-leway-dark/75 hover:text-leway-dark hover:bg-leway-dark/5",
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ),
+            )}
           </ul>
 
-          {/* CTA */}
-          <div className="hidden md:inline-flex btn-ripple-wave">
-            <button
-              onClick={() => scrollTo("/#contact", pathname)}
-              className="flex items-center gap-2 bg-leway-green text-leway-dark text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-leway-green/90 active:scale-[0.98] transition-all duration-200 font-body"
-            >
-              Start a Project
-            </button>
-          </div>
-
-          {/* Mobile hamburger */}
-          <button
-            onClick={() => setOpen(!open)}
-            className="md:hidden flex items-center justify-center w-11 h-11 rounded-full bg-black/5 text-leway-dark"
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
+          <Link
+            href="/contact"
+            className="hidden md:inline-flex items-center h-11 px-6 rounded-pill bg-leway-green text-leway-dark text-base font-semibold hover:bg-[#1EB857] active:scale-[0.98] transition-colors"
           >
-            {open ? <X size={18} /> : <Menu size={18} />}
+            Start a project
+          </Link>
+
+          {/* Mobile menu trigger */}
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            className="md:hidden flex items-center justify-center w-11 h-11 rounded-pill text-leway-dark"
+            aria-label="Open menu"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+          >
+            <Menu size={22} aria-hidden="true" />
           </button>
         </nav>
       </header>
 
-      {/* ── Mobile Full-Screen Overlay ─────────────────────── */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-[190] bg-leway-forest flex flex-col md:hidden"
+      {/* Mobile menu — flat pine field, large type, one action. */}
+      {open && (
+        <div
+          id="mobile-menu"
+          className="fixed inset-0 z-[210] bg-leway-dark text-leway-paper flex flex-col md:hidden overflow-y-auto"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menu"
+        >
+          <div className="flex h-[72px] items-center justify-between px-6 flex-shrink-0">
+            <Image
+              src="/images/leway_creatives_logo.png"
+              alt={site.name}
+              width={120}
+              height={36}
+              className="h-8 w-auto brightness-0 invert"
+            />
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="flex items-center justify-center w-11 h-11 rounded-pill text-leway-paper"
+              aria-label="Close menu"
+              autoFocus
+            >
+              <X size={22} aria-hidden="true" />
+            </button>
+          </div>
+
+          <nav
+            aria-label="Mobile navigation"
+            className="flex-1 flex flex-col justify-center gap-1 px-8 py-6"
           >
-            <div className="flex-1 flex flex-col items-center justify-center gap-6 px-8 overflow-y-auto">
-              {navLinks.map((l, i) => (
-                <motion.button
-                  key={l.href}
-                  initial={{ opacity: 0, y: 24 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.07, duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
-                  onClick={() => { setOpen(false); setTimeout(() => scrollTo(l.href, pathname), 100); }}
-                  className="font-display text-4xl font-semibold text-white hover:text-leway-green transition-colors"
-                >
-                  {l.label}
-                </motion.button>
+            <Link
+              href="/"
+              className="font-display text-4xl py-2 text-leway-paper hover:text-leway-green transition-colors"
+            >
+              Home
+            </Link>
+            <Link
+              href="/work"
+              className="font-display text-4xl py-2 text-leway-paper hover:text-leway-green transition-colors"
+            >
+              Work
+            </Link>
+
+            <Link
+              href="/services"
+              className="font-display text-4xl py-2 text-leway-paper hover:text-leway-green transition-colors"
+            >
+              Services
+            </Link>
+            {/* Two columns keeps the menu inside one screen on small phones. */}
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-0.5 pl-1 mb-2">
+              {services.map((service) => (
+                <li key={service.slug}>
+                  <Link
+                    href={`/services/${service.slug}`}
+                    className="inline-flex py-3 font-body text-small text-leway-paper/70 hover:text-leway-paper transition-colors"
+                  >
+                    {service.short}
+                  </Link>
+                </li>
               ))}
+            </ul>
 
-              <motion.div
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.32, duration: 0.4 }}
-                className="mt-6 btn-ripple-wave"
-              >
-                <button
-                  onClick={() => { setOpen(false); setTimeout(() => scrollTo("/#contact", pathname), 100); }}
-                  className="bg-leway-green text-leway-dark font-semibold px-8 py-4 rounded-full text-lg hover:bg-leway-green/90 transition-colors font-body"
-                >
-                  Start a Project →
-                </button>
-              </motion.div>
-            </div>
+            <Link
+              href="/about"
+              className="font-display text-4xl py-2 text-leway-paper hover:text-leway-green transition-colors"
+            >
+              About
+            </Link>
+            <Link
+              href="/contact"
+              className="font-display text-4xl py-2 text-leway-paper hover:text-leway-green transition-colors"
+            >
+              Contact
+            </Link>
 
-            <div className="p-8 text-center">
-              <p className="text-sm text-white/40 font-body">connect@lewaycreatives.com</p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <Link
+              href="/contact"
+              className="mt-6 inline-flex w-fit items-center h-14 px-8 rounded-pill bg-leway-green text-leway-dark font-semibold text-lg"
+            >
+              Start a project
+            </Link>
+          </nav>
+
+          <div className="px-8 pb-6 flex flex-col gap-1">
+            <a
+              href={`mailto:${site.email}`}
+              className="inline-flex items-center min-h-[44px] font-body text-small text-leway-paper/70 underline underline-offset-4 hover:text-leway-paper transition-colors"
+            >
+              {site.email}
+            </a>
+            <a
+              href={site.whatsappProject}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center min-h-[44px] font-body text-small text-leway-paper/70 underline underline-offset-4 hover:text-leway-paper transition-colors"
+            >
+              WhatsApp {site.phoneDisplay}
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          </div>
+        </div>
+      )}
     </>
   );
 }

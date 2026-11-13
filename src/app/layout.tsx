@@ -1,60 +1,63 @@
 import type { Metadata } from 'next';
-import { Fraunces, Outfit, Syne } from 'next/font/google';
+import { Fraunces, Outfit } from 'next/font/google';
 import './globals.css';
 import ScrollToTop from '@/components/ScrollToTop';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { site } from '@/data/site';
 
 export const metadata: Metadata = {
-    title: 'Web Design, Copywriting & Lead Generation | LEWAY Creatives | Kenya & Worldwide',
-    description: 'LEWAY Creatives delivers conversion-focused web design, copywriting, and B2B lead generation for businesses worldwide. World-class work at accessible rates. Serving clients in the US, UK, Canada, Australia, and Kenya. Get your free audit.',
-    keywords: 'web design agency, copywriting agency, lead generation service, B2B lead generation, outsource copywriting, affordable web design, prospect list building, contact list building, web design Kenya, copywriting Kenya, web design Nairobi, outsource web design, remote copywriting agency, conversion landing page design, LinkedIn lead generation, LEWAY Creatives',
-    authors: [{ name: 'LEWAY Creatives' }],
+    metadataBase: new URL(site.url),
+    title: {
+        default: `${site.name} — web design, copywriting & lead generation | Nairobi, Kenya`,
+        // Every interior page supplies its own title; this adds the brand once.
+        template: `%s | ${site.name}`,
+    },
+    description:
+        'Web design, copywriting and lead generation from one senior team in Nairobi. Ten builds shown as they run, and one fixed quote before any work starts.',
+    keywords:
+        'web design agency Kenya, web design Nairobi, copywriting agency, lead generation service, B2B lead generation, outsource web design, conversion landing page, LEWAY Creatives',
+    authors: [{ name: site.name }],
     alternates: {
-        canonical: 'https://lewaycreatives.com',
+        canonical: '/',
     },
     openGraph: {
-        title: 'Web Design + Copywriting + Lead Gen | LEWAY Creatives',
-        description: 'World-class web design, copywriting, and lead generation. Serving the US, UK, Canada, Australia & Kenya. One team. Real results.',
+        title: `${site.name} — web design, copy & lead generation`,
+        description:
+            'One senior team for the site, the words and the pipeline. Ten builds, shown as they are.',
         type: 'website',
-        url: 'https://lewaycreatives.com',
-        images: [{
-            url: 'https://lewaycreatives.com/images/leway-creatives-web-design-agency-kenya.webp',
-            width: 1200,
-            height: 630,
-            alt: 'LEWAY Creatives — Web Design, Copywriting & Lead Generation Agency',
-        }],
+        url: site.url,
+        siteName: site.name,
+        images: [
+            {
+                url: site.ogImage,
+                width: 1200,
+                height: 630,
+                alt: `${site.name} — selected work: Lifeline Group of Hospitals website`,
+            },
+        ],
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Web Design + Copy + Lead Gen | LEWAY Creatives',
-        description: 'World-class web design, copywriting, and lead generation. Serving the US, UK, Canada, Australia & Kenya.',
-        images: ['https://lewaycreatives.com/images/leway-creatives-web-design-agency-kenya.webp'],
+        title: `${site.name} — web design, copy & lead generation`,
+        description: 'One senior team for the site, the words and the pipeline.',
+        images: [site.ogImage],
     },
+    robots: { index: true, follow: true },
 };
 
-// Fraunces — friendly, high-x-height soft serif for H1/H2 headlines and display text
+// Fraunces — display serif for headlines only
 const fraunces = Fraunces({
     subsets: ['latin'],
-    weight: ['400', '500', '600', '700', '800'],
     variable: '--font-display',
     display: 'swap',
 });
 
-// Outfit — clean, readable sans-serif for body text and descriptions
+// Outfit — the single text face for everything else
 const outfit = Outfit({
     subsets: ['latin'],
-    weight: ['300', '400', '500', '600', '700'],
     variable: '--font-body',
-    display: 'swap',
-});
-
-// Syne — geometric sans for UI labels, eyebrows, and category tags
-const syne = Syne({
-    subsets: ['latin'],
-    weight: ['400', '500', '600', '700'],
-    variable: '--font-ui',
     display: 'swap',
 });
 
@@ -64,8 +67,11 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" suppressHydrationWarning className={`${fraunces.variable} ${outfit.variable} ${syne.variable}`}>
-            <body className="antialiased font-body min-h-screen bg-background text-foreground selection:bg-leway-green/20 selection:text-leway-dark relative">
+        <html lang="en" className={`${fraunces.variable} ${outfit.variable}`}>
+            <body className="min-h-screen bg-leway-paper font-body text-leway-dark antialiased">
+                <a href="#main" className="skip-link">
+                    Skip to content
+                </a>
                 <Navbar />
                 {children}
                 <Footer />

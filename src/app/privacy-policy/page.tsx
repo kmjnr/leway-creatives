@@ -1,91 +1,109 @@
+import type { Metadata } from "next";
+import PageHeader from "@/components/PageHeader";
+import { site } from "@/data/site";
+import { pageMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = pageMetadata({
+  title: "Privacy policy",
+  description: "How LEWAY Creatives collects, uses and protects information — and the rights you have over it under the Kenya Data Protection Act and the GDPR.",
+  path: "/privacy-policy",
+});
+
+const crumbs = [{ label: "Home", href: "/" }, { label: "Privacy policy" }];
+
 export default function PrivacyPolicyPage() {
-    return (
-        <main className="pt-28 pb-20">
-            <div className="container mx-auto px-6 max-w-3xl">
-                <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-2">
-                    Privacy Policy for LEWAY Creatives
-                </h1>
-                <p className="font-body text-sm text-muted-foreground mb-12">
-                    Last updated: February 15, 2026
-                </p>
+  return (
+    <main id="main" className="bg-leway-paper">
+      <PageHeader crumbs={crumbs} title="Privacy policy." lead="How LEWAY Creatives collects, uses and protects information — and the rights you have over it under the Kenya Data Protection Act and the GDPR.">
+        <p className="font-body text-small text-leway-dark/65">
+          Last updated 15 February 2026 · Questions? Email{" "}
+          <a
+            href={`mailto:${site.email}`}
+            className="text-leway-green-ink underline decoration-leway-green-ink/40 underline-offset-4 hover:decoration-leway-green-ink transition-colors"
+          >
+            {site.email}
+          </a>
+        </p>
+      </PageHeader>
 
-                <div className="prose prose-sm max-w-none font-body text-muted-foreground space-y-8 [&_h2]:font-display [&_h2]:text-foreground [&_h2]:text-xl [&_h2]:font-bold [&_h2]:mt-12 [&_h2]:mb-4 [&_h3]:font-display [&_h3]:text-foreground [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:mt-8 [&_h3]:mb-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_p]:leading-relaxed [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-2 hover:[&_a]:text-primary/80">
-                    <p>This Privacy Policy describes Our policies and procedures on the collection, use, and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
-                    <p>We use Your Personal Data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy.</p>
+      <div className="container pt-16 md:pt-20 pb-24 md:pb-32">
+        <div className="legal-prose max-w-3xl">
+<p>This Privacy Policy describes Our policies and procedures on the collection, use, and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
+                <p>We use Your Personal Data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy.</p>
 
-                    <h2>1. Interpretation and Definitions</h2>
-                    <h3>Interpretation</h3>
-                    <p>The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.</p>
-                    <h3>Definitions</h3>
-                    <p>For the purposes of this Privacy Policy:</p>
-                    <ul>
-                        <li><strong>Company</strong> refers to LEWAY Creatives, a business entity registered in Kenya.</li>
-                        <li><strong>Website</strong> refers to Leway Creatives, accessible from <a href="https://lewaycreatives.com/" target="_blank" rel="noopener noreferrer">https://lewaycreatives.com/</a>.</li>
-                        <li><strong>Service</strong> refers to the Website and all services offered by the Company, including but not limited to Web Design &amp; Development, Graphic &amp; Creative Design, Content Creation &amp; Copywriting, and Career &amp; Personal Branding.</li>
-                        <li><strong>Personal Data</strong> is any information that relates to an identified or identifiable individual.</li>
-                        <li><strong>You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</li>
-                        <li><strong>Country</strong> refers to: Kenya.</li>
-                        <li><strong>Device</strong> means any device that can access the Service such as a computer, a cell phone or a digital tablet.</li>
-                        <li><strong>Usage Data</strong> refers to data collected automatically, either generated by the use of the Service or from the Service infrastructure itself.</li>
-                        <li><strong>Cookies</strong> are small files placed on Your device by a website, containing details of Your browsing history.</li>
-                    </ul>
+                <h2>1. Interpretation and Definitions</h2>
+                <h3>Interpretation</h3>
+                <p>The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.</p>
+                <h3>Definitions</h3>
+                <p>For the purposes of this Privacy Policy:</p>
+                <ul>
+                    <li><strong>Company</strong> refers to LEWAY Creatives, a business entity registered in Kenya.</li>
+                    <li><strong>Website</strong> refers to Leway Creatives, accessible from <a href="https://lewaycreatives.com/" target="_blank" rel="noopener noreferrer">https://lewaycreatives.com/</a>.</li>
+                    <li><strong>Service</strong> refers to the Website and all services offered by the Company, including but not limited to Web Design &amp; Development, Graphic &amp; Creative Design, Content Creation &amp; Copywriting, and Career &amp; Personal Branding.</li>
+                    <li><strong>Personal Data</strong> is any information that relates to an identified or identifiable individual.</li>
+                    <li><strong>You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</li>
+                    <li><strong>Country</strong> refers to: Kenya.</li>
+                    <li><strong>Device</strong> means any device that can access the Service such as a computer, a cell phone or a digital tablet.</li>
+                    <li><strong>Usage Data</strong> refers to data collected automatically, either generated by the use of the Service or from the Service infrastructure itself.</li>
+                    <li><strong>Cookies</strong> are small files placed on Your device by a website, containing details of Your browsing history.</li>
+                </ul>
 
-                    <h2>2. Collecting and Using Your Personal Data</h2>
-                    <h3>Types of Data Collected</h3>
-                    <ul>
-                        <li><strong>Personal Data:</strong> While using Our Service, We may ask You to provide personally identifiable information, including: Email address, First name and last name, Phone number.</li>
-                        <li><strong>Client Project Data:</strong> For Career &amp; Personal Branding services, We may collect professional and career-related information You voluntarily provide. This information is used exclusively to fulfil the contracted service.</li>
-                        <li><strong>Usage Data:</strong> Collected automatically when using the Service, including IP address, browser type, pages visited, and diagnostic data.</li>
-                        <li><strong>Tracking Technologies and Cookies:</strong> We use Cookies and similar tracking technologies to track activity on Our Service, improve user experience, and for analytics and marketing purposes.</li>
-                    </ul>
+                <h2>2. Collecting and Using Your Personal Data</h2>
+                <h3>Types of Data Collected</h3>
+                <ul>
+                    <li><strong>Personal Data:</strong> While using Our Service, We may ask You to provide personally identifiable information, including: Email address, First name and last name, Phone number.</li>
+                    <li><strong>Client Project Data:</strong> For Career &amp; Personal Branding services, We may collect professional and career-related information You voluntarily provide. This information is used exclusively to fulfil the contracted service.</li>
+                    <li><strong>Usage Data:</strong> Collected automatically when using the Service, including IP address, browser type, pages visited, and diagnostic data.</li>
+                    <li><strong>Tracking Technologies and Cookies:</strong> We use Cookies and similar tracking technologies to track activity on Our Service, improve user experience, and for analytics and marketing purposes.</li>
+                </ul>
 
-                    <h3>How We Use Your Personal Data</h3>
-                    <ul>
-                        <li>To provide and maintain our Service, including fulfilment of services such as website design, content creation, and resume writing.</li>
-                        <li>To manage Your requests and communicate with You about your projects.</li>
-                        <li>For the performance of a contract: to develop, comply with, and undertake the purchase contract for the services You have purchased.</li>
-                        <li>To contact You by email or phone with updates related to the services you have engaged us for.</li>
-                        <li>To provide You with news and promotional offers about our services.</li>
-                        <li>For remarketing and advertising purposes.</li>
-                        <li>For business purposes such as data analysis and identifying usage trends.</li>
-                    </ul>
+                <h3>How We Use Your Personal Data</h3>
+                <ul>
+                    <li>To provide and maintain our Service, including fulfilment of services such as website design, content creation, and resume writing.</li>
+                    <li>To manage Your requests and communicate with You about your projects.</li>
+                    <li>For the performance of a contract: to develop, comply with, and undertake the purchase contract for the services You have purchased.</li>
+                    <li>To contact You by email or phone with updates related to the services you have engaged us for.</li>
+                    <li>To provide You with news and promotional offers about our services.</li>
+                    <li>For remarketing and advertising purposes.</li>
+                    <li>For business purposes such as data analysis and identifying usage trends.</li>
+                </ul>
 
-                    <h2>3. Third-Party Service Providers</h2>
-                    <ul>
-                        <li><strong>Analytics:</strong> We use Google Analytics to monitor use of our Service. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a>.</li>
-                        <li><strong>Email Marketing:</strong> We use Mailchimp to send newsletters. <a href="https://mailchimp.com/legal/privacy/" target="_blank" rel="noopener noreferrer">Mailchimp Privacy Policy</a>.</li>
-                        <li><strong>Payment Processing:</strong> We process payments via Bank Transfer. We do not collect or store your payment card information.</li>
-                    </ul>
+                <h2>3. Third-Party Service Providers</h2>
+                <ul>
+                    <li><strong>Analytics:</strong> We use Google Analytics to monitor use of our Service. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a>.</li>
+                    <li><strong>Email Marketing:</strong> We use Mailchimp to send newsletters. <a href="https://mailchimp.com/legal/privacy/" target="_blank" rel="noopener noreferrer">Mailchimp Privacy Policy</a>.</li>
+                    <li><strong>Payment Processing:</strong> We process payments via Bank Transfer. We do not collect or store your payment card information.</li>
+                </ul>
 
-                    <h2>4. Transfer and Retention of Your Personal Data</h2>
-                    <p>Your information is processed at the Company&apos;s operating offices in Kenya and may be transferred to computers located outside of Your jurisdiction. We will take all steps reasonably necessary to ensure that Your data is treated securely.</p>
-                    <p>The Company will retain Your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy.</p>
+                <h2>4. Transfer and Retention of Your Personal Data</h2>
+                <p>Your information is processed at the Company&apos;s operating offices in Kenya and may be transferred to computers located outside of Your jurisdiction. We will take all steps reasonably necessary to ensure that Your data is treated securely.</p>
+                <p>The Company will retain Your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy.</p>
 
-                    <h2>5. Disclosure of Your Personal Data</h2>
-                    <p>We do not sell your Personal Data. We may disclose your Personal Data in the good faith belief that such action is necessary to comply with a legal obligation, protect and defend the rights or property of the Company, or protect the personal safety of Users.</p>
+                <h2>5. Disclosure of Your Personal Data</h2>
+                <p>We do not sell your Personal Data. We may disclose your Personal Data in the good faith belief that such action is necessary to comply with a legal obligation, protect and defend the rights or property of the Company, or protect the personal safety of Users.</p>
 
-                    <h2>6. Security of Your Personal Data</h2>
-                    <p>The security of Your Personal Data is important to Us. While We strive to use commercially acceptable means to protect Your Personal Data, We cannot guarantee its absolute security.</p>
+                <h2>6. Security of Your Personal Data</h2>
+                <p>The security of Your Personal Data is important to Us. While We strive to use commercially acceptable means to protect Your Personal Data, We cannot guarantee its absolute security.</p>
 
-                    <h2>7. Your Data Protection Rights</h2>
-                    <h3>GDPR Compliance</h3>
-                    <p>If you are a resident of the EEA, your rights under GDPR include: the right to access, update or delete your information; the right of rectification; the right to object; the right of restriction; the right to data portability; the right to withdraw consent.</p>
-                    <h3>Kenya Data Protection Act (DPA) 2019 Compliance</h3>
-                    <p>As a business operating in Kenya, we are compliant with the DPA. Your rights include the right to be informed, the right to access, the right to object, the right to correction, and the right to deletion of false or misleading data.</p>
+                <h2>7. Your Data Protection Rights</h2>
+                <h3>GDPR Compliance</h3>
+                <p>If you are a resident of the EEA, your rights under GDPR include: the right to access, update or delete your information; the right of rectification; the right to object; the right of restriction; the right to data portability; the right to withdraw consent.</p>
+                <h3>Kenya Data Protection Act (DPA) 2019 Compliance</h3>
+                <p>As a business operating in Kenya, we are compliant with the DPA. Your rights include the right to be informed, the right to access, the right to object, the right to correction, and the right to deletion of false or misleading data.</p>
 
-                    <h2>8. Children&apos;s Privacy</h2>
-                    <p>Our Service does not address anyone under the age of 13. We do not knowingly collect personally identifiable information from children under 13.</p>
+                <h2>8. Children&apos;s Privacy</h2>
+                <p>Our Service does not address anyone under the age of 13. We do not knowingly collect personally identifiable information from children under 13.</p>
 
-                    <h2>9. Links to Other Websites</h2>
-                    <p>Our Service may contain links to other websites not operated by Us. We strongly advise You to review the Privacy Policy of every site You visit.</p>
+                <h2>9. Links to Other Websites</h2>
+                <p>Our Service may contain links to other websites not operated by Us. We strongly advise You to review the Privacy Policy of every site You visit.</p>
 
-                    <h2>10. Changes to this Privacy Policy</h2>
-                    <p>We may update Our Privacy Policy from time to time. We will notify You of any changes by posting the new Privacy Policy on this page and updating the &quot;Last updated&quot; date.</p>
+                <h2>10. Changes to this Privacy Policy</h2>
+                <p>We may update Our Privacy Policy from time to time. We will notify You of any changes by posting the new Privacy Policy on this page and updating the &quot;Last updated&quot; date.</p>
 
-                    <h2>11. Contact Us</h2>
-                    <p>If you have any questions about this Privacy Policy, You can contact us at <a href="mailto:connect@lewaycreatives.com">connect@lewaycreatives.com</a>.</p>
-                </div>
-            </div>
-        </main>
-    );
+                <h2>11. Contact Us</h2>
+                <p>If you have any questions about this Privacy Policy, You can contact us at <a href="mailto:connect@lewaycreatives.com">connect@lewaycreatives.com</a>.</p>
+        </div>
+      </div>
+    </main>
+  );
 }

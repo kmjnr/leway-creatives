@@ -1,64 +1,132 @@
-# Design System: LEWAY Creatives
+# Design System: LEWAY Creatives (v2)
 
-## 1. Visual Theme & Atmosphere
-A warm, approachable, and highly professional interface that balances trust with modern creative energy. The atmosphere feels like a collaborative, high-end agency workspace—clean and structured, yet deeply inviting. It shifts away from aggressive dark-mode "exclusive" aesthetics toward a softer, warmer foundation utilizing airy layouts, highly diffused shadows, and friendly, high-x-height serif typography.
-- **Density:** Daily App Balanced (4-5) - Content breathes with generous whitespace.
-- **Variance:** Offset Asymmetric (5-6) - Clean grids with deliberate asymmetric focal points (like Z-pattern layouts and bento boxes) to prevent boredom.
-- **Motion:** Fluid CSS (5-6) - Soft, spring-physics hovers and gentle scroll-interpolated fade-ups. Not chaotic.
+This document is normative. Every page — including every future page in the
+multipage build — follows it. When a rule and a habit conflict, the rule wins.
 
-## 2. Color Palette & Roles
-- **Soft Paper (#FAF8F2)** — Primary background surface. The core of the warm, approachable feel. Replaces harsh pure white.
-- **Warm Stone (#EDE7DB)** — Secondary background surface. Used for cards, panels, and layered depth.
-- **Deep Pine (#102117)** — Primary text and high-contrast anchor blocks (like the Hero section background). Replaces pure black.
-- **Forest Slate (#1B3327)** — Secondary dark depth. Used for dark supporting backgrounds and deep gradients.
-- **Signal Green (#22C55E)** — Primary accent. Used for CTAs, active states, focus rings, and high-visibility highlights.
-- **Mint Haze (#DDF5E6)** — Soft utility accent. Used for soft highlights, badge backgrounds, and visual relief around icons.
-- **Soft Gold (#C8A65A)** — Premium accent. Used extremely sparingly for refined details, statistics, and small structural dividers.
-- **Warm Grey (#D8D3C7)** — Neutral structural line. Used for borders, form fields, and subtle dividers.
+## 1. The argument comes first
 
-*(Note: Maximum 1 primary bright accent. The palette remains strictly within this warm/green/gold ecosystem. No purple, neon, or cool-grey fluctuations.)*
+A section exists because it proves a claim, not because templates have that
+section. The homepage order is the argument: **hero (proof-led) → selected work →
+services → process → client words → FAQ → contact.** New pages (case studies,
+service pages, about) must state their claim-and-proof order before building.
 
-## 3. Typography Rules
-- **Display: Fraunces** — Track-tight, controlled scale. Friendly, high-x-height soft serif used strictly for H1/H2 headlines and large statistics. It communicates approachability and editorial polish.
-- **Body: Outfit** — Relaxed leading (1.6+), 65ch max-width. Extremely clean, readable sans-serif used for all paragraphs, descriptions, and functional text.
-- **UI / Accents: Syne** — Used selectively for small category labels, tags, and uppercase eyebrow text. Spaced carefully.
-- **Banned Fonts:** Inter, Arial, Times New Roman, Georgia. Generic serifs are banned; Fraunces is specifically chosen for its character.
+The site's one idea: **the work is the proof.** Every page shows real
+screenshots of live builds — never stock, never generated stand-ins, never
+mockups presented as work.
 
-## 4. Component Stylings (Optimized for Reuse)
-To ensure maximum reusability across the site, all UI elements must be built as abstracted, isolated React components. Do not repeat long strings of Tailwind utility classes inline across pages.
-* **Buttons (`<Button>`):** Fully rounded pills (`rounded-full`) with generous padding (`px-6 py-3`). Primary uses **Signal Green** fill with **Deep Pine** text (for WCAG contrast). Tactile feedback: `-translate-y-[1px]` or `scale-[0.98]` on active. "Button-in-button" nested trailing arrow wrapper where applicable.
-* **Cards & Containers (`<Card>`):** Generously rounded corners (`rounded-2xl` or `2rem`). They employ the "Double-Bezel" technique: a subtle outer shell border (`ring-1 ring-black/5`) with an inner core background (**Warm Stone** or **White**). Highly diffused, soft ambient shadows (`shadow-sm` or `shadow-md`).
-* **Inputs:** Label above, error below. Focus ring in **Signal Green**. No floating labels. Backgrounds use **Warm Stone** or **White** depending on the surface.
-* **Badges/Tags (`<Badge>`):** Pill-shaped, small uppercase text. Background **Mint Haze**, text **Deep Pine**.
-* **Imagery (`<OptimizedImage>`):** All images must have matching rounded corners (`rounded-2xl`). No sharp-edged photography unless full-bleed. Images should feel warm, human, and collaborative.
+## 2. Colour & roles
 
-## 5. Layout & Responsive Principles
-The design system is strictly built to be **Mobile-First** and bulletproof across all viewports.
-- **Strict Mobile Collapse:** All multi-column layouts (Grid, Flex) must stack cleanly to a single column (`w-full`, `px-4`) below the `md` breakpoint (`< 768px`). Horizontal scrolling is considered a critical failure.
-- **Touch Targets:** All interactive elements must have a minimum `44px` tap target size to ensure accessibility on mobile devices.
-- **Grid-First Architecture:** Rely on CSS Grid for service blocks and features. Avoid complex flexbox percentage math.
-- **Whitespace (Macro):** Layouts must breathe. Use `py-24` to `py-32` for section vertical padding on desktop, scaling down to `py-16` on mobile via `clamp()`.
-- **Viewport Stability:** Full-height sections must use `min-h-[100dvh]`, never `h-screen`, to prevent catastrophic layout jumping on iOS Safari.
+| Token | Hex | Role |
+| --- | --- | --- |
+| `leway-paper` | `#FAF8F2` | Ground. Most of every page. |
+| `leway-paper-2` | `#F2EEE3` | Tone step between light sections. |
+| `leway-mint` | `#DDF5E6` | The process field (one field per page). |
+| `leway-stone` | `#E7E0D2` | Image wells / placeholders. |
+| `leway-dark` | `#102117` | Ink; hero, proof and contact fields. |
+| `leway-forest` | `#1B3327` | Panels sitting on dark fields. |
+| `leway-green` | `#22C55E` | **Action fill only** — always with pine text (7.4:1). |
+| `leway-green-ink` | `#0B6B3A` | Green as *text* on light surfaces (6.2:1 — passes AA). |
+| `leway-gold` | `#C8A65A` | **The house mark.** One short gold rule above each page h1 (PageHeader, and the homepage hero). Nothing else on the site uses gold. |
 
-## 6. Motion & Interaction
-- **Spring Physics Default:** Use custom cubic-beziers or spring physics for all interactions. No linear easing.
-- **Scroll Interpolation:** Elements enter the viewport with a gentle fade-up (`translate-y-12 opacity-0` to `translate-y-0 opacity-100`). No element should appear statically on load.
-- **Performance:** Animate exclusively via `transform` and `opacity`. Never animate layout-triggering properties (`top`, `left`, `width`, `height`).
+- Never more than one action-colour surface in the first viewport.
+- List markers are neutral dots — `leway-paper/50` on dark fields,
+  `leway-dark/40` on light ones — never green. The one exception is the form
+  success state, where green marks feedback, not action.
+- Running text: `leway-dark` on light, `leway-paper` on dark; 65–75% opacity
+  variants are the floor for secondary text. Anything below 50% opacity is
+  decoration, not content.
+- No pure white and pure black. No gradients, no glows, no glass.
 
-## 7. Performance, Speed & SEO (Web-Vitals Guardrails)
-- **Image Optimization:** All visual assets must be delivered in **.webp** format and processed through Next.js `<Image>` component to ensure lazy loading, strict width/height dimensions (preventing Cumulative Layout Shift - CLS), and responsive `srcset` generation.
-- **Component Lazy Loading:** Below-the-fold components must be dynamically imported (`next/dynamic`) to reduce the initial JavaScript payload and achieve lightning-fast First Contentful Paint (FCP).
-- **Semantic HTML:** The DOM tree must enforce strict structural meaning for SEO bots. 
-  - Only one `<h1>` per page. 
-  - Use `<section>`, `<article>`, and `<nav>` tags rather than generic `<div>`s.
-- **Font Optimization:** All fonts (`Fraunces`, `Outfit`, `Syne`) are loaded via `next/font` with `display: swap` to prevent Flash of Invisible Text (FOIT) without render-blocking the page load.
+## 3. Type
 
-## 8. Anti-Patterns (Banned)
-- **No Aggressive / Fear-Mongering Copy:** Do not use confrontational language ("Your brand looks like an amateur"). Keep tone collaborative and expert.
-- **No Forced Dark Mode:** The site defaults to light/warm modes. Do not invert sections unexpectedly.
-- **No Pure Black or Pure White:** Use **Deep Pine (#102117)** and **Soft Paper (#FAF8F2)** instead.
-- **No Generic Drop Shadows:** Harsh, dark, high-opacity shadows are banned. Use soft, diffused, color-tinted shadows.
-- **No Emojis:** Use clean, consistent SVG icons (e.g., Phosphor Icons) rendered in brand colors.
-- **No 3-Column Equal Grids Overuse:** Do not use basic 3-column rows repetitively. Mix with Bento or asymmetrical layouts.
-- **No AI Purple / Neon Glows:** Stick strictly to the green/gold/warm ecosystem.
-- **No Fake "Tech" UI:** Do not build fake dashboards with HTML divs. Use high-quality generated images (WebP) or actual portfolio screenshots.
+Two families, loaded via `next/font` (variable, `display: swap`):
+
+- **Fraunces** (`--font-display`) — headlines and pull quotes only. Weight 600.
+- **Outfit** (`--font-body`) — everything else.
+
+Five steps, defined in `tailwind.config.ts`; do not invent others:
+`text-display`, `text-h2`, `text-h3`, `text-lead`, `text-body` (17px),
+`text-small` (14px — labels and metadata only, never running paragraphs).
+
+Rules: headlines ≤ 2 lines at every width (write a title, not a sentence);
+no italic/coloured accent words inside headlines; no uppercase tracked labels
+(eyebrows are banned); body copy ≥ 16px.
+
+## 4. Surfaces, radius, shadow, lines
+
+- Sections are separated by tone steps and space — never hairlines or shadows.
+- Radius: `rounded-card` (20px) for surfaces, `rounded-pill` for actions and
+  chips. Nothing else.
+- Shadows exist only on things that truly float: the mobile menu, the
+  WhatsApp/scroll buttons. `shadow-overlay` / `shadow-overlay-sm` only.
+- Focus: `:focus-visible { outline: 2px solid currentColor; offset 3px }` —
+  global, already wired in `globals.css`.
+
+## 5. Components that exist
+
+`CtaButton` (primary / static / link), the `WorkCard` pattern (screenshot +
+name + status + summary + "Visit site"), the FAQ accordion (aria-expanded +
+aria-controls), the service row, and the contact form primitives (`Field`).
+Compose multipage from these before inventing anything new.
+
+## 6. Imagery
+
+Two kinds of image, two jobs. They never swap roles.
+
+- **Screenshots are proof.** Real screenshots of real deployments, captured at
+  1440 wide, cropped to 16:10, exported as WebP q82. The pipeline is
+  `scripts/capture-sites.mjs` (full-page captures of the live URLs) then
+  `scripts/slice-gallery.mjs` (frames from a hand-picked offset plan, so no
+  frame shows a broken or unloaded region of a live site). Every project links
+  to the live URL. Status label: "Live site" or "In development" — text, no
+  pulsing dots.
+- **Photography is atmosphere.** Imported photography is allowed and must go
+  through `src/components/ui/Photo.tsx`, which applies the single house grade
+  (`.photo`: saturate 0.92, contrast 1.03) so imported images sit inside the
+  paper-and-pine register. Rules:
+  - Crop out any legible third-party brand name, any garbled text and any
+    visible AI artefact before use — the derivative files live in
+    `public/images/photography/`, built by `scripts/make-photography.mjs`.
+  - Never caption a stock photograph as a member of the team or as a named
+    client.
+  - At most one photograph per section; screenshots and photographs are not
+    mixed inside one section.
+- No literal-metaphor stock (no giant question marks). No fake dashboards
+  presented as our own product. No image with a visible AI defect.
+
+## 7. Motion
+
+- Content is visible without JavaScript. Never animate from `opacity: 0` in
+  SSR-rendered markup.
+- Transform/opacity only; `prefers-reduced-motion` honoured globally.
+- The one signature move: pointer parallax on the hero work collage.
+  Feedback on hover/press everywhere else. No scroll reveals.
+
+## 8. Accessibility contract
+
+- Every input has a bound `<label htmlFor>`; errors use
+  `aria-describedby` + `role="alert"` + focus moved on submit failure.
+- Accordions and disclosures: `aria-expanded` + `aria-controls`.
+- Tap targets ≥ 44px, including nav and footer links.
+- Skip link in the layout; `section[id] { scroll-margin-top: 6rem }`.
+- Colour contrast ≥ 4.5:1 for text — the palette table lists the two safe
+  green pairings; anything else needs a measured check.
+
+## 9. Copy
+
+Specific, plain, active. Banned: "world-class", "unforgettable",
+"seamless(ly)", "game changer", "unlock", "supercharge", the "not just X, it's
+Y" construction, invented statistics, five-star rows, fake availability
+badges, fake chat simulations. Claims about work always point at the work.
+
+## 10. Multipage rules (next phase)
+
+- IA: `/` · `/work` (+ `/work/[slug]`) · `/services` (+ 5 service pages) ·
+  `/about` · `/contact`. Nav: Home · Work · Services · About · Contact.
+- Each page: own `h1`, metadata, OG image, breadcrumbs; own composition —
+  never a clone of the homepage section sequence.
+- Per-service pages get: the problem it solves, deliverables, timeline,
+  from-price, two related projects, two FAQs — shared data files
+  (the `src/data/faqs.ts` pattern) so JSON-LD can never drift from the page.
+- Case studies get: client, sector, problem, what we did, result, 3–6
+  screenshots — from `src/data/work.ts`, one source of truth.

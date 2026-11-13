@@ -15,7 +15,7 @@ export default function ScrollToTop() {
       rafScheduled.current = true;
       requestAnimationFrame(() => {
         rafScheduled.current = false;
-        const next = window.scrollY > 400;
+        const next = window.scrollY > 600;
         if (next !== visibleRef.current) {
           visibleRef.current = next;
           setVisible(next);
@@ -35,10 +35,10 @@ export default function ScrollToTop() {
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.2 }}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-24 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110 hover:shadow-xl hover:shadow-primary/25"
-          aria-label="Scroll to top"
+          className="fixed bottom-[92px] right-5 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-leway-dark text-leway-paper shadow-overlay-sm transition-transform hover:scale-105"
+          aria-label="Scroll back to top"
         >
-          <ArrowUp size={20} />
+          <ArrowUp size={20} aria-hidden="true" />
         </motion.button>
       )}
     </AnimatePresence>

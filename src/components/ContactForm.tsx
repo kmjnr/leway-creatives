@@ -1,95 +1,105 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
 import { z } from "zod";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckCircle2, ChevronDown, Check, ArrowRight } from "lucide-react";
-import { CtaButton } from "@/components/ui/CtaButton";
+import { Check, ChevronDown, Mail, MessageCircle } from "lucide-react";
+import { services } from "@/data/services";
+import { replyPromises, site } from "@/data/site";
+import { cn } from "@/lib/utils";
 
-/* ── Schema ────────────────────────────────────────────── */
 const SERVICE_OPTIONS = [
-  "Web Design & Development",
-  "Content & Copywriting",
-  "Marketing Design",
-  "Lead Generation",
-  "Career & Personal Branding",
-  "Full Growth Package (All Services)",
-  "Not Sure Yet — I Need Advice",
+  ...services.map((service) => service.title),
+  "Not sure yet — advise me",
+] as const;
+
+const BUDGET_OPTIONS = [
+  "Not sure yet",
+  "Under KSh 50,000",
+  "KSh 50,000 – 150,000",
+  "KSh 150,000 – 400,000",
+  "KSh 400,000+",
+  "Monthly retainer",
 ] as const;
 
 const schema = z.object({
-  name: z.string().trim().min(1, "Name is required").max(100),
-  email: z.string().trim().email("Enter a valid email").max(255),
-  whatsapp: z.string().trim().min(8, "Enter a valid WhatsApp number").max(20),
+  name: z.string().trim().min(1, "Enter your name").max(100),
+  email: z.string().trim().email("Enter a valid email address").max(255),
+  company: z.string().trim().max(120, "Keep it under 120 characters").optional().or(z.literal("")),
+  whatsapp: z.string().trim().max(20, "Enter a valid number, or leave it empty").optional().or(z.literal("")),
   services: z.array(z.string()).optional(),
-  service: z.string().trim().min(1, "Tell us what you need").max(1000),
+  budget: z.string().optional(),
+  message: z.string().trim().min(20, "A couple of sentences helps us prepare — at least 20 characters").max(2000),
+  website: z.string().optional(), // honeypot — humans never see this field
 });
 
 type FormData = z.infer<typeof schema>;
 
-function getFollowingMonth() {
-  const next = new Date();
-  next.setMonth(next.getMonth() + 1);
-  return next.toLocaleString("en-US", { month: "long" });
-}
-
-/* ── Field primitives ─────────────────────────────────── */
-function FieldLabel({ children }: { children: React.ReactNode }) {
+/* ── Field primitives — labels are bound with htmlFor ─────────── */
+function Field({
+  id,
+  label,
+  error,
+  optional = false,
+  children,
+}: {
+  id: string;
+  label: string;
+  error?: string;
+  optional?: boolean;
+  children: React.ReactNode;
+}) {
   return (
-    <label className="font-body text-sm text-white/70 block mb-1.5 ml-2 font-medium">{children}</label>
+    <div>
+      <label htmlFor={id} className="block font-body text-small font-medium text-leway-paper/85 mb-2">
+        {label}
+        {optional && <span className="text-leway-paper/70 font-normal"> · optional</span>}
+      </label>
+      {children}
+      {error && (
+        <p id={`${id}-error`} className="font-body text-small text-red-300 mt-2" role="alert">
+          {error}
+        </p>
+      )}
+    </div>
   );
 }
 
-function PillInput({ className = "", ...props }: React.InputHTMLAttributes<HTMLInputElement>) {
-  return (
-    <input
-      {...props}
-      className={`w-full bg-white border border-black/10 rounded-full px-5 py-3.5 font-body text-sm text-leway-dark placeholder:text-black/30 focus:outline-none focus:border-leway-green focus:ring-1 focus:ring-leway-green transition-all duration-200 ${className}`}
-    />
-  );
+const inputClass =
+  "w-full bg-leway-paper text-leway-dark rounded-pill px-5 min-h-[52px] font-body text-base placeholder:text-leway-dark/35 focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-leway-dark";
+
+interface ContactFormProps {
+  /** Omit on the contact page, where the page header already carries the h1. */
+  title?: string;
+  lead?: string;
 }
 
-function PillTextarea({ className = "", ...props }: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
-  return (
-    <textarea
-      {...props}
-      className={`w-full bg-white border border-black/10 rounded-3xl px-5 py-3.5 font-body text-sm text-leway-dark placeholder:text-black/30 focus:outline-none focus:border-leway-green focus:ring-1 focus:ring-leway-green transition-all duration-200 resize-none ${className}`}
-    />
-  );
-}
-
-/* ── Main Component ───────────────────────────────────── */
-export default function ContactForm() {
-  const [submitted, setSubmitted] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+export default function ContactForm({
+  title = "Tell us what you need.",
+  lead = "A few lines are enough — the goal, the timeline, the budget if you have one. We reply within one business day with questions or a call slot.",
+}: ContactFormProps) {
+  const [submittedName, setSubmittedName] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const followingMonth = getFollowingMonth();
 
   const {
     register,
     handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<FormData>({ resolver: zodResolver(schema), defaultValues: { services: [] } });
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+    defaultValues: { services: [], company: "", whatsapp: "", budget: "", website: "" },
+  });
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  const onInvalid = (errs: typeof errors) => {
+    const order = ["name", "email", "company", "whatsapp", "budget", "message"] as const;
+    const first = order.find((key) => errs[key]);
+    if (first) document.getElementById(`cf-${first}`)?.focus();
+  };
 
   const onSubmit = async (data: FormData) => {
-    setIsSubmitting(true);
     setSubmitError(null);
+    if (data.website) return; // bot filled the honeypot — pretend success
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
@@ -98,272 +108,258 @@ export default function ContactForm() {
       });
       if (!res.ok) {
         const json = await res.json().catch(() => ({}));
-        throw new Error(json.error || "Something went wrong. Please try again.");
+        throw new Error(json.error || "Something went wrong. Please try again, or email us directly.");
       }
-      setSubmitted(data.name);
+      setSubmittedName(data.name.trim().split(/\s+/)[0]);
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Something went wrong. Please try again.";
-      setSubmitError(message);
-    } finally {
-      setIsSubmitting(false);
+      setSubmitError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     }
   };
 
   return (
     <section
       id="contact"
-      className="relative py-[clamp(4rem,3rem+5vw,8rem)] bg-leway-dark text-white overflow-hidden"
-      aria-label="Contact LEWAY Creatives"
+      aria-label="Contact"
+      className="bg-leway-dark text-leway-paper"
     >
-      {/* Background image with green overlay */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <Image
-          src="/images/contact_image.webp"
-          alt="LEWAY Creatives workspace"
-          fill
-          priority
-          unoptimized
-          sizes="100vw"
-          className="object-cover object-center opacity-50"
-        />
-        {/* Dark pine & green overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-leway-dark/90 via-leway-forest/85 to-leway-dark/90" />
-        <div className="absolute inset-0 bg-leway-green/15 mix-blend-overlay" />
-      </div>
+      <div className="container py-24 md:py-32">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-start">
 
-      <div className="container mx-auto px-6 max-w-7xl relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center">
-
-          {/* ── Left: Headline ───────────────────────────── */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
-            className="flex flex-col gap-8 lg:pr-10 lg:sticky lg:top-32"
-          >
-            <div>
-              <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-white leading-[1.08] tracking-tight">
-                Let&apos;s build something you&apos;re proud of.
+          {/* Left: the pitch and the direct routes */}
+          <div className="flex flex-col gap-8 lg:sticky lg:top-28">
+            {title && (
+              <h2 className="font-display text-h2 text-leway-paper [text-wrap:balance]">
+                {title}
               </h2>
-              <p className="font-body text-base md:text-lg text-white/55 mt-5 leading-relaxed max-w-md">
-                Fill in your details and we&apos;ll get back to you within a few hours. No commitment required.
+            )}
+            {lead && (
+              <p className="font-body text-lead text-leway-paper/70 max-w-[44ch]">
+                {lead}
               </p>
-            </div>
+            )}
 
-            {/* Trust strip */}
-            <div className="flex flex-col gap-3">
-              {[
-                "23+ projects delivered worldwide",
-                "Fast turnaround — no waiting weeks",
-                "100% client satisfaction rate",
-              ].map((item) => (
-                <div key={item} className="flex items-center gap-3">
-                  <span className="w-5 h-5 rounded-full bg-leway-green/20 flex items-center justify-center flex-shrink-0">
-                    <Check size={11} strokeWidth={2.5} className="text-leway-green" />
-                  </span>
-                  <span className="font-body text-sm text-white/55">{item}</span>
-                </div>
+            <ul className="flex flex-col gap-3 font-body text-base text-leway-paper/80">
+              {replyPromises.map((promise) => (
+                <li key={promise} className="flex items-center gap-3">
+                  <span
+                    aria-hidden="true"
+                    className="w-1.5 h-1.5 rounded-full bg-leway-paper/50 flex-shrink-0"
+                  />
+                  {promise}
+                </li>
               ))}
+            </ul>
+
+            <div className="flex flex-wrap items-center gap-4 pt-2">
+              <a
+                href={`mailto:${site.email}`}
+                className="inline-flex items-center gap-2.5 min-h-[52px] px-6 rounded-pill bg-leway-forest text-leway-paper hover:bg-leway-dark transition-colors"
+              >
+                <Mail size={18} aria-hidden="true" />
+                {site.email}
+              </a>
+              <a
+                href={site.whatsappProject}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2.5 min-h-[52px] px-6 rounded-pill bg-leway-forest text-leway-paper hover:bg-leway-dark transition-colors"
+              >
+                <MessageCircle size={18} aria-hidden="true" />
+                WhatsApp us
+                <span className="sr-only"> (opens in a new tab)</span>
+              </a>
             </div>
-          </motion.div>
 
-          {/* ── Right: Form card ─────────────────────────── */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ delay: 0.15, duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
-            className="relative"
-          >
-            {/* Floating Availability Badge */}
-            <div className="absolute -top-5 right-6 z-20 hidden sm:flex items-center gap-2 bg-white text-leway-dark shadow-xl rounded-full px-5 py-2.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-leway-green animate-pulse" />
-              <span className="font-body text-sm font-medium tracking-wide">
-                Taking new clients for {followingMonth}
-              </span>
+            <p className="font-body text-small text-leway-paper/70">
+              {site.city}, {site.country} · working with teams in Kenya, the US,
+              the UK, Canada and Australia.
+            </p>
+
+            {/* Fills the column with something useful rather than empty space
+                beside the form. */}
+            <div className="pt-2">
+              <h3 className="font-body text-base font-semibold text-leway-paper">
+                What helps us quote quickly
+              </h3>
+              <ul className="mt-4 flex flex-col gap-3">
+                {[
+                  "The one thing a visitor should do on the finished site.",
+                  "The pages you already have, or think you need.",
+                  "Any deadline that is real, and what depends on it.",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <span
+                      aria-hidden="true"
+                      className="mt-[10px] w-1.5 h-1.5 rounded-full bg-leway-paper/50 flex-shrink-0"
+                    />
+                    <span className="font-body text-base text-leway-paper/70 max-w-[38ch]">
+                      {item}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
+          </div>
 
-            <AnimatePresence mode="wait">
-              {submitted ? (
-                /* ── Success state ── */
-                <motion.div
-                  key="success"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
-                  className="bg-leway-forest border border-white/10 rounded-[2rem] p-8 md:p-12 flex flex-col items-center text-center gap-6 shadow-2xl relative z-10"
+          {/* Right: the form */}
+          <div className="bg-leway-forest rounded-[1.5rem] p-6 sm:p-8 lg:p-10">
+            {submittedName ? (
+              <div role="status" className="flex flex-col items-center text-center gap-5 py-14">
+                <span className="flex h-16 w-16 items-center justify-center rounded-full bg-leway-green/20 text-leway-green">
+                  <Check size={30} strokeWidth={2} aria-hidden="true" />
+                </span>
+                <h3 className="font-display text-h3 text-leway-paper">
+                  Thanks, {submittedName}.
+                </h3>
+                <p className="font-body text-base text-leway-paper/70 max-w-[36ch]">
+                  Your enquiry is with us. Expect a reply within one business
+                  day — if it&rsquo;s urgent, message us on WhatsApp.
+                </p>
+                <a
+                  href={site.whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-body text-base text-leway-green underline decoration-leway-green/40 underline-offset-4 hover:decoration-leway-green py-2"
                 >
-                  <div className="w-16 h-16 rounded-full bg-leway-green/20 flex items-center justify-center">
-                    <CheckCircle2 size={32} strokeWidth={1.5} className="text-leway-green" />
-                  </div>
-                  <div>
-                    <h3 className="font-display text-3xl text-white mb-3">You&apos;re all set, {submitted}!</h3>
-                    <p className="font-body text-base text-white/60 leading-relaxed">
-                      We&apos;ve received your message and will be in touch within a few hours. Check your inbox (or WhatsApp).
-                    </p>
-                  </div>
-                </motion.div>
-              ) : (
-                /* ── Form ── */
-                <motion.form
-                  key="form"
-                  onSubmit={handleSubmit(onSubmit)}
-                  noValidate
-                  className="bg-leway-forest border border-white/10 rounded-[2rem] p-5 sm:p-8 md:p-10 flex flex-col gap-6 shadow-2xl relative z-10"
-                >
-                  {/* Name + Email */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <FieldLabel>Your name *</FieldLabel>
-                      <PillInput
-                        {...register("name")}
-                        placeholder="Jane Smith"
-                        autoComplete="name"
-                      />
-                      {errors.name && (
-                        <p className="font-body text-xs text-red-500 mt-1.5 pl-4">{errors.name.message}</p>
-                      )}
-                    </div>
-                    <div>
-                      <FieldLabel>Email address *</FieldLabel>
-                      <PillInput
-                        {...register("email")}
-                        type="email"
-                        placeholder="jane@company.com"
-                        autoComplete="email"
-                      />
-                      {errors.email && (
-                        <p className="font-body text-xs text-red-500 mt-1.5 pl-4">{errors.email.message}</p>
-                      )}
-                    </div>
-                  </div>
+                  Message us on WhatsApp
+                </a>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-6">
+                {/* Honeypot — hidden from humans, irresistible to bots */}
+                <div className="absolute left-[-9999px]" aria-hidden="true">
+                  <label htmlFor="cf-website">Website</label>
+                  <input id="cf-website" type="text" tabIndex={-1} autoComplete="off" {...register("website")} />
+                </div>
 
-                  {/* WhatsApp */}
-                  <div>
-                    <FieldLabel>WhatsApp number *</FieldLabel>
-                    <PillInput
-                      {...register("whatsapp")}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <Field id="cf-name" label="Your name" error={errors.name?.message}>
+                    <input
+                      id="cf-name"
+                      type="text"
+                      autoComplete="name"
+                      aria-invalid={!!errors.name}
+                      aria-describedby={errors.name ? "cf-name-error" : undefined}
+                      className={cn(inputClass, errors.name && "ring-2 ring-red-400")}
+                      {...register("name")}
+                    />
+                  </Field>
+                  <Field id="cf-email" label="Email" error={errors.email?.message}>
+                    <input
+                      id="cf-email"
+                      type="email"
+                      autoComplete="email"
+                      spellCheck={false}
+                      aria-invalid={!!errors.email}
+                      aria-describedby={errors.email ? "cf-email-error" : undefined}
+                      className={cn(inputClass, errors.email && "ring-2 ring-red-400")}
+                      {...register("email")}
+                    />
+                  </Field>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <Field id="cf-company" label="Company" optional error={errors.company?.message}>
+                    <input
+                      id="cf-company"
+                      type="text"
+                      autoComplete="organization"
+                      aria-invalid={!!errors.company}
+                      aria-describedby={errors.company ? "cf-company-error" : undefined}
+                      className={cn(inputClass, errors.company && "ring-2 ring-red-400")}
+                      {...register("company")}
+                    />
+                  </Field>
+                  <Field id="cf-whatsapp" label="WhatsApp number" optional error={errors.whatsapp?.message}>
+                    <input
+                      id="cf-whatsapp"
                       type="tel"
-                      placeholder="+1 234 567 8900"
+                      inputMode="tel"
                       autoComplete="tel"
+                      placeholder="+254…"
+                      aria-invalid={!!errors.whatsapp}
+                      aria-describedby={errors.whatsapp ? "cf-whatsapp-error" : undefined}
+                      className={cn(inputClass, errors.whatsapp && "ring-2 ring-red-400")}
+                      {...register("whatsapp")}
                     />
-                    {errors.whatsapp && (
-                      <p className="font-body text-xs text-red-500 mt-1.5 pl-4">{errors.whatsapp.message}</p>
+                  </Field>
+                </div>
+
+                {/* Services as checkbox chips — no popovers, fully keyboard-usable */}
+                <fieldset>
+                  <legend className="font-body text-small font-medium text-leway-paper/85 mb-3">
+                    What do you need? <span className="text-leway-paper/70 font-normal">· pick any</span>
+                  </legend>
+                  <div className="flex flex-wrap gap-2.5">
+                    {SERVICE_OPTIONS.map((option) => (
+                      <label key={option} className="cursor-pointer">
+                        <input type="checkbox" value={option} className="sr-only peer" {...register("services")} />
+                        <span className="inline-flex items-center min-h-[44px] px-4 rounded-pill bg-leway-paper/10 text-leway-paper/85 font-body text-small transition-colors peer-checked:bg-leway-green peer-checked:text-leway-dark peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-leway-paper">
+                          {option}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+
+                <Field id="cf-budget" label="Budget range" optional error={errors.budget?.message}>
+                  <div className="relative">
+                    <select
+                      id="cf-budget"
+                      defaultValue=""
+                      aria-invalid={!!errors.budget}
+                      aria-describedby={errors.budget ? "cf-budget-error" : undefined}
+                      className={cn(inputClass, "appearance-none pr-12", errors.budget && "ring-2 ring-red-400")}
+                      {...register("budget")}
+                    >
+                      <option value="">Select a range…</option>
+                      {BUDGET_OPTIONS.map((option) => (
+                        <option key={option} value={option}>{option}</option>
+                      ))}
+                    </select>
+                    <ChevronDown
+                      size={18}
+                      aria-hidden="true"
+                      className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 text-leway-dark/65"
+                    />
+                  </div>
+                </Field>
+
+                <Field id="cf-message" label="A little more detail" error={errors.message?.message}>
+                  <textarea
+                    id="cf-message"
+                    rows={4}
+                    placeholder="What are you building, and what should it do for the business?"
+                    aria-invalid={!!errors.message}
+                    aria-describedby={errors.message ? "cf-message-error" : undefined}
+                    className={cn(
+                      "w-full bg-leway-paper text-leway-dark rounded-card px-5 py-4 font-body text-base placeholder:text-leway-dark/35 resize-none focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-leway-dark",
+                      errors.message && "ring-2 ring-red-400",
                     )}
-                  </div>
+                    {...register("message")}
+                  />
+                </Field>
 
-                  {/* Services multi-select dropdown */}
-                  <div>
-                    <FieldLabel>What do you need?</FieldLabel>
-                    <Controller
-                      name="services"
-                      control={control}
-                      render={({ field }) => {
-                        const selected: string[] = field.value ?? [];
-                        const toggle = (opt: string) => {
-                          const next = selected.includes(opt)
-                            ? selected.filter((s) => s !== opt)
-                            : [...selected, opt];
-                          field.onChange(next);
-                        };
-                        return (
-                          <div ref={dropdownRef} className="relative">
-                            <button
-                              type="button"
-                              onClick={() => setDropdownOpen(!dropdownOpen)}
-                              className="w-full bg-white border border-black/10 rounded-full px-5 py-3.5 font-body text-sm text-left flex items-center justify-between transition-all duration-200 hover:border-leway-green"
-                            >
-                              <span className={selected.length ? "text-leway-dark" : "text-black/30"}>
-                                {selected.length
-                                  ? `${selected.length} service${selected.length > 1 ? "s" : ""} selected`
-                                  : "Select services…"}
-                              </span>
-                              <ChevronDown
-                                size={18}
-                                className={`text-black/40 transition-transform ${dropdownOpen ? "rotate-180" : ""}`}
-                              />
-                            </button>
-
-                            <AnimatePresence>
-                              {dropdownOpen && (
-                                <motion.div
-                                  initial={{ opacity: 0, y: 8 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: 8 }}
-                                  transition={{ duration: 0.2, ease: [0.32, 0.72, 0, 1] }}
-                                  className="absolute top-full left-0 right-0 mt-2 bg-leway-forest border border-white/10 rounded-2xl overflow-hidden z-50 shadow-xl"
-                                >
-                                  {SERVICE_OPTIONS.map((opt) => {
-                                    const checked = selected.includes(opt);
-                                    return (
-                                      <button
-                                        key={opt}
-                                        type="button"
-                                        onClick={() => toggle(opt)}
-                                        className="w-full flex items-center gap-3 px-5 py-3.5 text-left hover:bg-white/5 transition-colors border-b border-white/5 last:border-b-0"
-                                      >
-                                        <span
-                                          className={`w-5 h-5 rounded-md border flex items-center justify-center flex-shrink-0 transition-all ${
-                                            checked
-                                              ? "bg-leway-green border-leway-green"
-                                              : "border-white/20"
-                                          }`}
-                                        >
-                                          {checked && <Check size={11} strokeWidth={3} className="text-white" />}
-                                        </span>
-                                        <span className="font-body text-sm text-white/80">{opt}</span>
-                                      </button>
-                                    );
-                                  })}
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-                        );
-                      }}
-                    />
-                  </div>
-
-                  {/* Message */}
-                  <div>
-                    <FieldLabel>A little more detail *</FieldLabel>
-                    <PillTextarea
-                      {...register("service")}
-                      rows={4}
-                      placeholder="Tell us about your business, your goal, your timeline, your budget — anything that helps us prepare."
-                    />
-                    {errors.service && (
-                      <p className="font-body text-xs text-red-500 mt-1.5 pl-4">{errors.service.message}</p>
-                    )}
-                  </div>
-
-                  {/* Error */}
-                  {submitError && (
-                    <p className="font-body text-sm text-red-500 bg-red-50 rounded-xl px-4 py-3 border border-red-100">
-                      {submitError}
-                    </p>
-                  )}
-
-                  {/* Reassurance — placed above submit as final persuasion beat */}
-                  <p className="font-body text-xs text-white/40 text-center">
-                    We respond within a few hours. No spam, ever.
+                {submitError && (
+                  <p role="alert" className="font-body text-small text-red-300 bg-leway-dark/40 rounded-card px-4 py-3">
+                    {submitError}
                   </p>
+                )}
 
-                  {/* Submit */}
-                  <CtaButton
-                    type="submit"
-                    disabled={isSubmitting}
-                    showArrow={!isSubmitting}
-                    className="w-full disabled:opacity-50 disabled:cursor-not-allowed"
-                    wrapperClassName="w-full mt-2"
-                  >
-                    {isSubmitting ? "Sending…" : "Start a Project"}
-                  </CtaButton>
-                </motion.form>
-              )}
-            </AnimatePresence>
-          </motion.div>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="inline-flex items-center justify-center min-h-[56px] rounded-pill bg-leway-green text-leway-dark font-semibold text-base hover:bg-[#1EB857] active:scale-[0.98] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? "Sending…" : "Send enquiry"}
+                </button>
+
+                <p className="font-body text-small text-leway-paper/70 text-center">
+                  We reply within one business day. No newsletters, no spam.
+                </p>
+              </form>
+            )}
+          </div>
 
         </div>
       </div>
