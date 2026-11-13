@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
@@ -51,7 +50,6 @@ export default async function ServicePage({
   const service = getService(slug);
   if (!service) notFound();
 
-  const proof = getProject(service.proofProject);
   const related = service.relatedProjects
     .map((s) => getProject(s))
     .filter((p): p is NonNullable<ReturnType<typeof getProject>> => Boolean(p));
@@ -230,52 +228,57 @@ export default async function ServicePage({
               ))}
             </div>
 
-            {/* One atmospheric photograph, sized to its real resolution. */}
-            {service.photo && (
-              <Photo
-                src={service.photo.src}
-                alt={service.photo.alt}
-                caption={service.photo.caption}
-                ratio={service.photo.ratio}
-                sizes={`(max-width: 640px) 100vw, ${service.photo.maxW === "max-w-sm" ? "384px" : "576px"}`}
-                className={`${service.photo.maxW} mt-14 md:mt-16`}
-              />
-            )}
+            {/* Atmosphere for the process field. Never presented as a build. */}
+            <Photo
+              src={service.involvesImage.src}
+              alt={service.involvesImage.alt}
+              caption={service.involvesImage.caption}
+              ratio="16/10"
+              sizes="(max-width: 768px) 100vw, 768px"
+              className="mt-14 md:mt-16 max-w-3xl"
+            />
           </div>
         </section>
 
-        {/* The proof: a real screenshot of a real build, then two projects. */}
-        <section id="proof" aria-labelledby="proof-heading" className="bg-leway-paper-2">
+        {/* Where the finished work turns up. Atmosphere only, never evidence. */}
+        <section aria-labelledby="context-heading" className="bg-leway-paper-2">
           <div className="container py-20 md:py-28">
             <div className="max-w-2xl">
-              <h2 id="proof-heading" className="font-display text-h2 text-leway-dark">
+              <h2 id="context-heading" className="font-display text-h2 text-leway-dark">
                 Where it shows up.
               </h2>
               <p className="font-body text-lead text-leway-dark/70 mt-5">
-                This is the service in its natural habitat — a screen from one
-                of the builds below, taken from the deployment.
+                The work leaves our desk and turns up in ordinary places — a
+                counter, a leaflet, a phone that finally rings. The photograph
+                is atmosphere. The proof is the builds below.
               </p>
             </div>
 
-            {proof && (
-              <figure className="mt-12 md:mt-16">
-                <div className="relative aspect-[16/10] overflow-hidden rounded-card bg-leway-stone">
-                  <Image
-                    src={proof.screens[3]?.src ?? proof.screens[1]?.src ?? proof.image}
-                    alt={`${proof.name} — ${proof.screens[3]?.note ?? proof.screens[1]?.note ?? proof.imageAlt}`}
-                    fill
-                    sizes="(max-width: 1240px) 100vw, 1240px"
-                    className="object-cover object-top"
-                  />
-                </div>
-                <figcaption className="font-body text-small text-leway-dark/65 mt-4">
-                  {proof.name} —{" "}
-                  {proof.screens[3]?.note ?? proof.screens[1]?.note ?? proof.sector}
-                </figcaption>
-              </figure>
-            )}
+            <Photo
+              src={service.contextImage.src}
+              alt={service.contextImage.alt}
+              caption={service.contextImage.caption}
+              ratio="16/10"
+              sizes="(max-width: 1240px) 100vw, 1240px"
+              className="mt-12 md:mt-16"
+            />
+          </div>
+        </section>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-14 mt-14 md:mt-16">
+        {/* The proof: real screenshots of real builds, in their own field. */}
+        <section id="proof" aria-labelledby="proof-heading" className="bg-leway-paper">
+          <div className="container py-20 md:py-28">
+            <div className="max-w-2xl">
+              <h2 id="proof-heading" className="font-display text-h2 text-leway-dark">
+                Built, and running.
+              </h2>
+              <p className="font-body text-lead text-leway-dark/70 mt-5">
+                Two builds that used this service. Each links to the live
+                deployment and the decisions behind it.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-14 mt-12 md:mt-16">
               {related.map((project) => (
                 <WorkCard
                   key={project.slug}

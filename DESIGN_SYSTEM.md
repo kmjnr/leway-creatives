@@ -90,7 +90,17 @@ Two kinds of image, two jobs. They never swap roles.
   - Never caption a stock photograph as a member of the team or as a named
     client.
   - At most one photograph per section; screenshots and photographs are not
-    mixed inside one section.
+    mixed inside one section. The one exception is an index list of
+    independent, linked entries (the five rows under "Services"), where each
+    row carries exactly one image of its own discipline and none carries a
+    screenshot. The list is one catalogue, not five stacked decorations.
+- **Generated atmosphere** obeys every photography rule above. Section images
+  made with GPT Image 2.6 (Flora) are exported by `scripts/make-generated.mjs`
+  into `public/images/generated/` as 1200×750 WebP q82 and always render
+  through `Photo.tsx`. Prompts exclude legible text, logos and garbled
+  characters; captions describe the scene and never present a generated image
+  as a client build. Real build screenshots stay in their own section, so a
+  generated image never stands in for proof.
 - No literal-metaphor stock (no giant question marks). No fake dashboards
   presented as our own product. No image with a visible AI defect.
 

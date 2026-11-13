@@ -26,3 +26,6 @@ dist-ssr
 .agents/
 .taste-skill/
 *.tsbuildinfo
+
+# Raw Flora generation sources (large working files, not runtime assets)
+scripts/flora-source/

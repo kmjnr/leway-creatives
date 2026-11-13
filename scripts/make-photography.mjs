@@ -28,12 +28,8 @@ const crops = [
   { from: "avatar_6.png", rect: [0, 0, 640, 640], out: 480, to: "avatar-michael.jpg" },
   { from: "avatar_4.png", rect: [0, 0, 640, 640], out: 480, to: "avatar-alexis.jpg" },
 
-  // Service pages — one atmospheric photo each, cropped clear of every defect.
-  { from: "service_web_design.png", rect: [30, 0, 304, 190], to: "photo-web-design.jpg" },
-  { from: "service_content.png", rect: [0, 0, 380, 285], to: "photo-copywriting.jpg" },
-  { from: "service_marketing.png", rect: [435, 200, 205, 128], to: "photo-brand-identity.jpg" },
-  { from: "growth_dashboard_laptop.webp", rect: [798, 485, 402, 251], to: "photo-lead-generation.jpg" },
-  { from: "service_career.png", rect: [240, 164, 267, 199], to: "photo-personal-branding.jpg" },
+  // Service pages now use generated atmosphere — see scripts/make-generated.mjs.
+  // The old five service crops were retired with them.
 
   // About + services index.
   { from: "strategy_design_image.webp", rect: [100, 300, 305, 305], to: "photo-about-team.jpg" },

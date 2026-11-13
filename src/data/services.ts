@@ -5,6 +5,13 @@ export interface ServiceInclude {
   body: string;
 }
 
+/** A generated atmospheric image. Never evidence of a build. */
+export interface AtmosphereImage {
+  src: string;
+  alt: string;
+  caption: string;
+}
+
 export interface Service {
   slug: string;
   /** Full name — page h1, JSON-LD, form chips. */
@@ -33,18 +40,19 @@ export interface Service {
     note: string;
   };
   /**
-   * One atmospheric photograph for the service page. The crop is chosen to
-   * exclude every defect in the source (see scripts/make-photography.mjs),
-   * and the caption never claims the picture shows our team or a client.
+   * One discipline-specific illustration for the row on the services index.
+   * It shows what the craft looks like, never a finished client build.
    */
-  photo?: {
-    src: string;
-    alt: string;
-    caption: string;
-    ratio: "16/10" | "4/3";
-    /** Tailwind max-width class, matched to the file's real resolution. */
-    maxW: string;
-  };
+  indexImage: AtmosphereImage;
+  /**
+   * Two generated atmospheric images, one per field on the service page.
+   * They are scenery, never evidence: the proof lives further down the page
+   * in screenshots of real builds. Captions describe the scene and never
+   * claim the picture shows our team, a client or a deployment.
+   * Both are 1200x750 WebP from scripts/make-generated.mjs.
+   */
+  involvesImage: AtmosphereImage;
+  contextImage: AtmosphereImage;
   /** Two real projects from src/data/work.ts. */
   relatedProjects: string[];
   /** The screenshot that proves the service — a real client build. */
@@ -99,14 +107,22 @@ export const services: Service[] = [
       amount: "KSh 45,000",
       note: "Landing pages start lower and are quoted per scope. Every quote is fixed before work starts.",
     },
-        photo: {
-      src: "/images/photography/photo-web-design.jpg",
-      alt: "A dim studio wall with a warehouse window, dark shelves and framed prints",
-      caption: "The build happens at a desk, not in a deck.",
-      ratio: "16/10",
-      maxW: "max-w-xl",
+    indexImage: {
+      src: "/images/generated/index-web-design.webp",
+      alt: "A monitor showing an empty page wireframe with grid guides beside a tablet showing the same layout in one narrow column",
+      caption: "A page wireframe and its narrow-screen version, before styling.",
     },
-relatedProjects: ["lifeline-hospitals", "overlandhire"],
+    involvesImage: {
+      src: "/images/generated/involves-web-design.webp",
+      alt: "Cream sheets with empty pencil layout boxes, a ruler and a closed laptop on a desk",
+      caption: "The page structure, drawn on paper before a design file opens.",
+    },
+    contextImage: {
+      src: "/images/generated/context-web-design.webp",
+      alt: "An open laptop on a small shop counter with a plant and a notebook, its screen out of focus",
+      caption: "A site in use on a shop counter, late morning.",
+    },
+    relatedProjects: ["lifeline-hospitals", "overlandhire"],
     proofProject: "lifeline-hospitals",
     faqs: [
       {
@@ -163,14 +179,22 @@ relatedProjects: ["lifeline-hospitals", "overlandhire"],
       amount: "KSh 15,000",
       note: "Per page for standalone copy. Site-wide copy is quoted with the build.",
     },
-        photo: {
-      src: "/images/photography/photo-copywriting.jpg",
-      alt: "A bright home-office corner with a window, framed line art and a brass lamp",
-      caption: "A quiet desk and plain sentences.",
-      ratio: "4/3",
-      maxW: "max-w-xl",
+    indexImage: {
+      src: "/images/generated/index-copywriting.webp",
+      alt: "Manuscript sheets with ruled lines, bracketed empty paragraphs and pencil editing marks, with a red pencil and fountain pen",
+      caption: "Editing marks and paragraph brackets on a blank manuscript.",
     },
-relatedProjects: ["premiumsafeboxes", "forestwood"],
+    involvesImage: {
+      src: "/images/generated/involves-copywriting.webp",
+      alt: "An open blank notebook with a fountain pen, a stack of plain paper and a cup of tea on a desk",
+      caption: "Plain sentences start on a blank page.",
+    },
+    contextImage: {
+      src: "/images/generated/context-copywriting.webp",
+      alt: "A folded cream leaflet on a café table beside a ceramic cup, its printed lines out of focus",
+      caption: "Words out in the world, on a table rather than a screen.",
+    },
+    relatedProjects: ["premiumsafeboxes", "forestwood"],
     proofProject: "premiumsafeboxes",
     faqs: [
       {
@@ -227,14 +251,22 @@ relatedProjects: ["premiumsafeboxes", "forestwood"],
       amount: "KSh 30,000",
       note: "Includes the guide and final files. Packaging and full collateral systems are quoted separately.",
     },
-        photo: {
-      src: "/images/photography/photo-brand-identity.jpg",
-      alt: "A cream mug printed with a single logo mark beside two pens on a concrete surface",
-      caption: "One mark, applied the same way everywhere.",
-      ratio: "16/10",
-      maxW: "max-w-sm",
+    indexImage: {
+      src: "/images/generated/index-brand-identity.webp",
+      alt: "A geometric monogram drawn on a construction grid with blank colour swatch chips and plain kraft packaging pieces",
+      caption: "One mark drawn on a construction grid, tested on packaging.",
     },
-relatedProjects: ["hadiyed-flowers", "solarizeke"],
+    involvesImage: {
+      src: "/images/generated/involves-brand-identity.webp",
+      alt: "A cream sheet with one small dark green geometric mark, blank colour swatch chips and a brass ruler",
+      caption: "One mark, tested on paper before it goes anywhere else.",
+    },
+    contextImage: {
+      src: "/images/generated/context-brand-identity.webp",
+      alt: "A plain kraft box, paper bag and card with a small embossed geometric mark on pale stone",
+      caption: "The same mark, applied consistently across packaging.",
+    },
+    relatedProjects: ["hadiyed-flowers", "solarizeke"],
     proofProject: "hadiyed-flowers",
     faqs: [
       {
@@ -292,14 +324,22 @@ relatedProjects: ["hadiyed-flowers", "solarizeke"],
       suffix: "/month",
       note: "Monthly retainer per campaign. List volume is agreed per month; there is no per-lead commission.",
     },
-        photo: {
-      src: "/images/photography/photo-lead-generation.jpg",
-      alt: "A green notebook and pen on an oak desk beside a closed laptop",
-      caption: "Records built by hand, with the source written down.",
-      ratio: "16/10",
-      maxW: "max-w-xl",
+    indexImage: {
+      src: "/images/generated/index-lead-generation.webp",
+      alt: "Printed research sheets with ruled empty rows, a highlighter, blank sticky notes and a tabbed notebook on a desk",
+      caption: "Research sheets with empty rows waiting to be verified.",
     },
-relatedProjects: ["paidtaskers", "docsfast"],
+    involvesImage: {
+      src: "/images/generated/involves-lead-generation.webp",
+      alt: "An open notebook with an empty ruled table, a pencil, a phone face down and a blank paper calendar",
+      caption: "Records built by hand, with the source written down.",
+    },
+    contextImage: {
+      src: "/images/generated/context-lead-generation.webp",
+      alt: "A phone lying face down beside a paper calendar, a pen and a closed notebook in early morning light",
+      caption: "A quiet desk before the enquiries start arriving.",
+    },
+    relatedProjects: ["paidtaskers", "docsfast"],
     proofProject: "paidtaskers",
     faqs: [
       {
@@ -356,14 +396,22 @@ relatedProjects: ["paidtaskers", "docsfast"],
       amount: "KSh 12,000",
       note: "Profile and CV together. Portfolio curation is quoted on the number of projects.",
     },
-        photo: {
-      src: "/images/photography/photo-personal-branding.jpg",
-      alt: "A woman smiling mid-conversation at a busy professional event",
-      caption: "Positioning starts with how you introduce yourself.",
-      ratio: "4/3",
-      maxW: "max-w-md",
+    indexImage: {
+      src: "/images/generated/index-personal-branding.webp",
+      alt: "A profile document laid out as empty structured blocks with a blank square portrait frame, a portfolio booklet and a fountain pen",
+      caption: "A profile laid out as empty blocks, with a blank portrait frame.",
     },
-relatedProjects: ["curatelove", "docsfast"],
+    involvesImage: {
+      src: "/images/generated/involves-personal-branding.webp",
+      alt: "A closed dark green notebook, reading glasses and a folded navy jacket over a wooden chair near a window",
+      caption: "Positioning starts with what you can say plainly about your work.",
+    },
+    contextImage: {
+      src: "/images/generated/context-personal-branding.webp",
+      alt: "A person seen from behind at a table in a bright meeting room with a plain notebook and a glass of water",
+      caption: "An introduction made in a room, not a profile picture.",
+    },
+    relatedProjects: ["curatelove", "docsfast"],
     proofProject: "curatelove",
     faqs: [
       {

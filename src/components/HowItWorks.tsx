@@ -1,5 +1,4 @@
-import Image from "next/image";
-import { getProject } from "@/data/work";
+import Photo from "@/components/ui/Photo";
 
 const steps = [
   {
@@ -21,11 +20,16 @@ const steps = [
 ];
 
 /**
- * One real build stands in for the process, because "you review real pages"
- * is easier to believe with a real page in front of you.
+ * The process field gets atmosphere, not a screenshot. A car-hire pricing
+ * page never belonged under "How a project runs"; screenshots of live builds
+ * stay in the Work section and the case studies, where they are evidence.
  */
-const shown = getProject("overlandhire");
-const frame = shown?.screens[1] ?? shown?.screens[0];
+const processImage = {
+  src: "/images/generated/process-desk.webp",
+  alt: "Four cream sheets with faint empty pencil layout boxes laid in a row on a desk beside a closed notebook, a pencil and a cup of coffee",
+  caption:
+    "Four steps, written down before anything is built. Atmosphere, not a client build.",
+};
 
 export default function HowItWorks() {
   return (
@@ -49,26 +53,14 @@ export default function HowItWorks() {
           ))}
         </ol>
 
-        {/* What a checkpoint actually looks at. */}
-        {shown && frame && (
-          <figure className="mt-16 md:mt-24">
-            <div className="relative aspect-[16/10] overflow-hidden rounded-card bg-leway-paper">
-              <Image
-                src={frame.src}
-                alt={`${shown.name} — ${frame.note || shown.imageAlt}`}
-                fill
-                sizes="(max-width: 1240px) 100vw, 1240px"
-                className="object-cover object-top"
-              />
-            </div>
-            <figcaption className="font-body text-small text-leway-dark/65 mt-4 flex flex-wrap items-baseline gap-x-3 max-w-[72ch]">
-              <span className="text-leway-dark">
-                {shown.name}
-              </span>
-              <span>{frame.note || shown.summary}</span>
-            </figcaption>
-          </figure>
-        )}
+        <Photo
+          src={processImage.src}
+          alt={processImage.alt}
+          caption={processImage.caption}
+          ratio="16/10"
+          sizes="(max-width: 1240px) 100vw, 1240px"
+          className="mt-16 md:mt-24"
+        />
 
         <a
           href="#contact"
@@ -81,4 +73,3 @@ export default function HowItWorks() {
     </section>
   );
 }
-

@@ -85,17 +85,21 @@ export default function ServicesIndexPage() {
           </ul>
         </PageHeader>
 
-        {/* The list, with prices, timelines and a real screenshot per service. */}
+        {/* The five disciplines, one illustration each. Proof lives on the
+            service pages and the work pages, not in this catalogue. */}
         <section aria-label="All services" className="bg-leway-paper">
           <div className="container py-20 md:py-28">
+            <p className="font-body text-base text-leway-dark/70 mb-10 max-w-[62ch]">
+              The pictures illustrate the disciplines, not finished client
+              sites. Follow any service through for the real builds.
+            </p>
             <ul className="flex flex-col gap-4">
-              {services.map((service, i) => (
+              {services.map((service) => (
                 <ServiceRow
                   key={service.slug}
                   service={service}
                   tone="paper"
-                  showProof
-                  proofFrame={1 + (i % 2)}
+                  showIndexImage
                 />
               ))}
             </ul>
@@ -160,7 +164,8 @@ export default function ServicesIndexPage() {
             </h2>
             <p className="font-body text-lead text-leway-dark/70 mt-5 max-w-[58ch]">
               The services are not sold in the abstract. Each of these has real
-              projects attached, with screenshots of the deployment.
+              projects attached; the case study pages show screenshots of the
+              live deployment.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10 mt-12">
