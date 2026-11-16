@@ -37,11 +37,14 @@ export default function Navbar() {
     };
   }, [open]);
 
-  // Any navigation closes whatever was open.
-  useEffect(() => {
-    setOpen(false);
-    setServicesOpen(false);
-  }, [pathname]);
+  // Close menus on navigation. Done in the click handler rather than an
+  // effect, so a route change never triggers a synchronous state reset.
+  const closeOnLink = (e: React.MouseEvent<HTMLElement>) => {
+    if ((e.target as HTMLElement).closest("a")) {
+      setOpen(false);
+      setServicesOpen(false);
+    }
+  };
 
   // Escape closes the services panel and returns focus to its trigger.
   useEffect(() => {
@@ -70,6 +73,7 @@ export default function Navbar() {
       <header className="fixed top-0 left-0 right-0 z-[200] bg-leway-paper">
         <nav
           aria-label="Main navigation"
+          onClick={closeOnLink}
           className="container flex h-[72px] items-center justify-between gap-6"
         >
           <Link href="/" aria-label={`${site.name} home`} className="flex-shrink-0">
@@ -226,6 +230,7 @@ export default function Navbar() {
 
           <nav
             aria-label="Mobile navigation"
+            onClick={closeOnLink}
             className="flex-1 flex flex-col justify-center gap-1 px-8 py-6"
           >
             <Link

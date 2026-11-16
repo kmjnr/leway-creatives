@@ -50,7 +50,8 @@ class CDP {
       if (msg.id && this.pending.has(msg.id)) {
         const { resolve, reject } = this.pending.get(msg.id);
         this.pending.delete(msg.id);
-        msg.error ? reject(new Error(JSON.stringify(msg.error))) : resolve(msg.result);
+        if (msg.error) reject(new Error(JSON.stringify(msg.error)));
+        else resolve(msg.result);
       } else if (msg.method) {
         for (const fn of this.events.get(msg.method) ?? []) fn(msg.params);
       }
@@ -134,11 +135,6 @@ for (const [slug, url] of targets) {
   }
   const { targetId } = await browser.send("Target.createTarget", { url: "about:blank" });
   const { sessionId } = await browser.send("Target.attachToTarget", { targetId, flatten: true });
-
-  const send = (method, params) =>
-    browser.send(method, params).catch((err) => {
-      throw err;
-    });
 
   // Route session-scoped messages through the flat session id.
   const tab = {

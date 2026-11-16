@@ -13,13 +13,7 @@
  *         src/data/screens.json (caption + dimensions per frame)
  */
 import sharp from "sharp";
-import {
-  readdirSync,
-  writeFileSync,
-  mkdirSync,
-  existsSync,
-  readFileSync,
-} from "node:fs";
+import { readdirSync, writeFileSync, mkdirSync, readFileSync } from "node:fs";
 
 const FULL = ".taste-skill/full";
 const OUT = "public/images/work";

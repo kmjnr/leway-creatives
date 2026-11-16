@@ -225,7 +225,7 @@ export default function ContactForm({
                 </a>
               </div>
             ) : (
-              <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-6">
+              <form onSubmit={handleSubmit(onSubmit, onInvalid)} noValidate className="flex flex-col gap-6">
                 {/* Honeypot — hidden from humans, irresistible to bots */}
                 <div className="absolute left-[-9999px]" aria-hidden="true">
                   <label htmlFor="cf-website">Website</label>
