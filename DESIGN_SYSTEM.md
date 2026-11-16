@@ -7,9 +7,13 @@ multipage build — follows it. When a rule and a habit conflict, the rule wins.
 
 A section exists because it proves a claim, not because templates have that
 section. The homepage order is the argument: **hero (the person behind the work)
-→ selected work (the proof) → services → process → client words → FAQ →
-contact.** New pages (case studies, service pages, about) must state their
-claim-and-proof order before building.
+→ selected work (the proof) → services → process → FAQ → contact.** New pages
+(case studies, service pages, about) must state their claim-and-proof order
+before building.
+
+There is no testimonial section. Quotes that cannot be traced to a real client
+thread are not published, and stock portraits are never captioned as clients —
+the work is the proof instead.
 
 The site's one idea: **the work is the proof.** Every page shows real
 screenshots of live builds — never stock, never generated stand-ins, never
@@ -65,10 +69,14 @@ no italic/coloured accent words inside headlines; no uppercase tracked labels
 
 ## 5. Components that exist
 
-`CtaButton` (primary / static / link), the `WorkCard` pattern (screenshot +
+`CtaButton` (primary / link), the `WorkCard` pattern (screenshot +
 name + status + summary + "Visit site"), the FAQ accordion (aria-expanded +
-aria-controls), the service row, and the contact form primitives (`Field`).
-Compose multipage from these before inventing anything new.
+aria-controls), the service row, the `Photo` wrapper, and the contact form
+primitives (`Field`). Compose multipage from these before inventing anything new.
+
+Structured data is emitted only through `src/components/JsonLd.tsx`, and its
+graph is composed by `pageJsonLd()` in `src/lib/metadata.ts`, so every page
+shares the same organization, website and breadcrumb nodes.
 
 ## 6. Imagery
 
@@ -118,7 +126,8 @@ Two kinds of image, two jobs. They never swap roles.
   SSR-rendered markup.
 - Transform/opacity only; `prefers-reduced-motion` honoured globally.
 - The one signature move: pointer parallax on the hero portrait. The proof
-  stays still, in the work section below it.
+  stays still, in the work section below it. It is a single CSS transform
+  written by `Hero.tsx` — no animation library ships for it.
   Feedback on hover/press everywhere else. No scroll reveals.
 
 ## 8. Accessibility contract
@@ -149,3 +158,10 @@ badges, fake chat simulations. Claims about work always point at the work.
   (the `src/data/faqs.ts` pattern) so JSON-LD can never drift from the page.
 - Case studies get: client, sector, problem, what we did, result, 3–6
   screenshots — from `src/data/work.ts`, one source of truth.
+
+## 11. Counts and claims are derived, never typed
+
+Any number that describes the body of work — build count, live count, service
+count, project count — is computed from `src/data/*` at render time. Copy never
+hard-codes "ten builds" or "six live", because the data will outgrow it. If a
+sentence cannot be derived, it does not belong in the template.

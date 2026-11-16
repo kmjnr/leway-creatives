@@ -17,6 +17,7 @@ const studioLinks = [
   { label: "About the studio", href: "/about" },
   { label: "Contact", href: "/contact" },
   { label: "Questions", href: "/contact#faq" },
+  { label: "Sitemap", href: "/sitemap" },
 ];
 
 const legalLinks = [

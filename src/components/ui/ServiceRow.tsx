@@ -1,7 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Service } from "@/data/services";
-import { getProject } from "@/data/work";
 import Photo from "@/components/ui/Photo";
 import { cn } from "@/lib/utils";
 
@@ -12,17 +10,10 @@ interface ServiceRowProps {
   /** Shows the deliverable names under the summary. */
   showDeliverables?: boolean;
   /**
-   * Shows a real screenshot of a build that used this service, taken from
-   * src/data/work.ts. Off on the homepage, where the work section above
-   * already carries the images.
-   */
-  showProof?: boolean;
-  /** Which frame of the proof project to show, so a page never repeats one. */
-  proofFrame?: number;
-  /**
-   * Shows the discipline illustration from service.indexImage instead of a
-   * screenshot. Used on the services index, where the list is a catalogue of
-   * the five disciplines rather than a wall of proof. Never both at once.
+   * Shows the discipline illustration from service.indexImage. Used on the
+   * services index, where the list is a catalogue of the five disciplines
+   * rather than a wall of proof. Real build screenshots live on the service
+   * and case-study pages.
    */
   showIndexImage?: boolean;
   /** Surface the row sits on, so the hover state reads as a lift. */
@@ -39,16 +30,10 @@ export default function ServiceRow({
   service,
   showPrice = true,
   showDeliverables = true,
-  showProof = false,
-  proofFrame = 1,
   showIndexImage = false,
   tone = "paper-2",
   className,
 }: ServiceRowProps) {
-  const proof = showProof && !showIndexImage ? getProject(service.proofProject) : undefined;
-  const screen = proof?.screens[proofFrame] ?? proof?.screens[0];
-  const hasImage = showIndexImage || Boolean(proof && screen);
-
   return (
     <li
       className={cn(
@@ -60,7 +45,7 @@ export default function ServiceRow({
       <div
         className={cn(
           "grid grid-cols-1 items-start gap-x-10 gap-y-7",
-          hasImage && "lg:grid-cols-[1fr_19rem]",
+          showIndexImage && "lg:grid-cols-[1fr_19rem]",
         )}
       >
         <div>
@@ -105,8 +90,7 @@ export default function ServiceRow({
           </span>
         </div>
 
-        {/* The index shows the craft; a proof row shows real work. Never both. */}
-        {showIndexImage ? (
+        {showIndexImage && (
           <Photo
             src={service.indexImage.src}
             alt={service.indexImage.alt}
@@ -115,23 +99,6 @@ export default function ServiceRow({
             sizes="(max-width: 1024px) 100vw, 304px"
             className="lg:pt-1"
           />
-        ) : (
-          proof && screen && (
-            <figure className="lg:pt-1">
-              <div className="relative aspect-[16/10] overflow-hidden rounded-card bg-leway-stone">
-                <Image
-                  src={screen.src}
-                  alt={`${proof.name} — ${screen.note || proof.imageAlt}`}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 304px"
-                  className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
-                />
-              </div>
-              <figcaption className="font-body text-small text-leway-dark/65 mt-3">
-                {proof.name} · {proof.type}
-              </figcaption>
-            </figure>
-          )
         )}
       </div>
     </li>

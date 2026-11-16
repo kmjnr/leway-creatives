@@ -2,24 +2,19 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
 import PageCta from "@/components/PageCta";
+import JsonLd from "@/components/JsonLd";
 import ServiceRow from "@/components/ui/ServiceRow";
 import Photo from "@/components/ui/Photo";
 import FaqList from "@/components/ui/FaqList";
-import { services, serviceNames } from "@/data/services";
+import { services } from "@/data/services";
 import { faqs } from "@/data/faqs";
 import { projectsForService } from "@/data/work";
-import {
-  breadcrumbJsonLd,
-  faqJsonLd,
-  organizationJsonLd,
-  pageMetadata,
-  websiteJsonLd,
-} from "@/lib/metadata";
+import { faqJsonLd, pageJsonLd, pageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = pageMetadata({
   title: "Services — web design, copywriting, branding & lead generation",
   description:
-    "Five services with from-prices and honest timelines: web design & development from KSh 45,000, brand identity from KSh 30,000, lead generation from KSh 20,000 a month.",
+    `${services.length} services with from-prices and honest timelines: web design & development from KSh 20,000, brand identity from KSh 30,000, lead generation from KSh 20,000 a month.`,
   path: "/services",
   keywords:
     "web design price Kenya, copywriting rates Nairobi, brand identity Kenya, lead generation service, personal branding Kenya",
@@ -36,38 +31,29 @@ const pricingRules = [
 const crumbs = [{ label: "Home", href: "/" }, { label: "Services" }];
 
 export default function ServicesIndexPage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      organizationJsonLd(serviceNames),
-      websiteJsonLd(),
-      breadcrumbJsonLd(crumbs),
-      {
-        "@type": "ItemList",
-        name: "Services",
-        itemListElement: services.map((service, i) => ({
-          "@type": "ListItem",
-          position: i + 1,
-          name: service.title,
-          description: service.summary,
-        })),
-      },
-      faqJsonLd(faqs),
-    ],
-  };
+  const jsonLd = pageJsonLd(
+    {
+      "@type": "ItemList",
+      name: "Services",
+      itemListElement: services.map((service, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: service.title,
+        description: service.summary,
+      })),
+    },
+    { crumbs, extra: [faqJsonLd(faqs)] },
+  );
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
 
       <main id="main">
         <PageHeader
           crumbs={crumbs}
           title="Services."
-          lead="Five ways to work with us. Each one has a starting price, a realistic timeline and a page that explains exactly what lands in your folder. Most projects combine two or three."
+          lead={`${services.length} ways to work with us. Each one has a starting price, a realistic timeline and a page that explains exactly what lands in your folder. Most projects combine two or three.`}
           tone="paper"
           width="wide"
         >
@@ -165,7 +151,7 @@ export default function ServicesIndexPage() {
             <p className="font-body text-lead text-leway-dark/70 mt-5 max-w-[58ch]">
               The services are not sold in the abstract. Each of these has real
               projects attached; the case study pages show screenshots of the
-              live deployment.
+              deployment itself.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10 mt-12">

@@ -1,5 +1,7 @@
 "use client";
 
+import { site } from "@/data/site";
+
 /**
  * A plain, honest WhatsApp link. No simulated chat, no fake notification
  * dot — one persistent, reachable way to start a conversation.
@@ -7,7 +9,7 @@
 export default function WhatsAppButton() {
   return (
     <a
-      href="https://wa.me/254741408647?text=Hi%20LEWAY%20Creatives!%20I%27d%20like%20to%20discuss%20a%20project."
+      href={site.whatsappProject}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with LEWAY Creatives on WhatsApp (opens in a new tab)"

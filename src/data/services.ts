@@ -104,8 +104,8 @@ export const services: Service[] = [
       note: "A landing page usually takes 2–4 working days. A full site takes 1–2 weeks, depending on page count and how quickly content and feedback come back.",
     },
     price: {
-      amount: "KSh 45,000",
-      note: "Landing pages start lower and are quoted per scope. Every quote is fixed before work starts.",
+      amount: "KSh 20,000",
+      note: "As low as KSh 20,000 for a landing page or a small site of a few pages. Larger builds are quoted per scope, and every quote is fixed before work starts.",
     },
     indexImage: {
       src: "/images/generated/index-web-design.webp",

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUp } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function ScrollToTop() {
   const [visible, setVisible] = useState(false);
@@ -27,20 +27,20 @@ export default function ScrollToTop() {
   }, []);
 
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.button
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          transition={{ duration: 0.2 }}
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-[92px] right-5 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-leway-dark text-leway-paper shadow-overlay-sm transition-transform hover:scale-105"
-          aria-label="Scroll back to top"
-        >
-          <ArrowUp size={20} aria-hidden="true" />
-        </motion.button>
+    <button
+      type="button"
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      aria-label="Scroll back to top"
+      aria-hidden={!visible}
+      tabIndex={visible ? 0 : -1}
+      className={cn(
+        "fixed bottom-[92px] right-5 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-leway-dark text-leway-paper shadow-overlay-sm transition-all duration-200",
+        visible
+          ? "opacity-100 scale-100 pointer-events-auto hover:scale-105"
+          : "opacity-0 scale-75 pointer-events-none",
       )}
-    </AnimatePresence>
+    >
+      <ArrowUp size={20} aria-hidden="true" />
+    </button>
   );
 }

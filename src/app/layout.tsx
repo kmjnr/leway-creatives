@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Fraunces, Outfit } from 'next/font/google';
 import './globals.css';
 import ScrollToTop from '@/components/ScrollToTop';
@@ -6,6 +6,7 @@ import WhatsAppButton from '@/components/WhatsAppButton';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { site } from '@/data/site';
+import { projects } from '@/data/work';
 
 export const metadata: Metadata = {
     metadataBase: new URL(site.url),
@@ -15,17 +16,14 @@ export const metadata: Metadata = {
         template: `%s | ${site.name}`,
     },
     description:
-        'Web design, copywriting and lead generation from one senior team in Nairobi. Ten builds shown as they run, and one fixed quote before any work starts.',
+        `Web design, copywriting and lead generation from one senior team in Nairobi. ${projects.length} builds shown as they run, and one fixed quote before any work starts.`,
     keywords:
         'web design agency Kenya, web design Nairobi, copywriting agency, lead generation service, B2B lead generation, outsource web design, conversion landing page, LEWAY Creatives',
     authors: [{ name: site.name }],
-    alternates: {
-        canonical: '/',
-    },
     openGraph: {
         title: `${site.name} — web design, copy & lead generation`,
         description:
-            'One senior team for the site, the words and the pipeline. Ten builds, shown as they are.',
+            `One senior team for the site, the words and the pipeline. ${projects.length} builds, shown as they are.`,
         type: 'website',
         url: site.url,
         siteName: site.name,
@@ -44,7 +42,13 @@ export const metadata: Metadata = {
         description: 'One senior team for the site, the words and the pipeline.',
         images: [site.ogImage],
     },
-    robots: { index: true, follow: true },
+};
+
+export const viewport: Viewport = {
+    themeColor: '#FAF8F2',
+    colorScheme: 'light',
+    width: 'device-width',
+    initialScale: 1,
 };
 
 // Fraunces — display serif for headlines only

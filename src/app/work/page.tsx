@@ -2,21 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
 import PageCta from "@/components/PageCta";
+import JsonLd from "@/components/JsonLd";
 import WorkCard from "@/components/ui/WorkCard";
 import { projects } from "@/data/work";
-import { serviceNames } from "@/data/services";
 import { site } from "@/data/site";
-import {
-  breadcrumbJsonLd,
-  organizationJsonLd,
-  pageMetadata,
-  websiteJsonLd,
-} from "@/lib/metadata";
+import { pageJsonLd, pageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = pageMetadata({
   title: "Work — live sites and builds in development",
-  description:
-    "Ten builds from LEWAY Creatives: hospitals, retail, car hire, solar, property, florist, directories and web apps. Every screenshot taken from the live deployment.",
+  description: `${projects.length} builds from LEWAY Creatives: hospitals, retail, car hire, solar, property, florist, directories and web apps. Every screenshot taken from the live deployment.`,
   path: "/work",
   keywords:
     "web design portfolio Kenya, Nairobi web design case studies, e-commerce website Kenya, landing page examples",
@@ -28,31 +22,25 @@ const sectors = Array.from(new Set(projects.map((p) => p.sector)));
 
 const crumbs = [{ label: "Home", href: "/" }, { label: "Work" }];
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    organizationJsonLd(serviceNames),
-    websiteJsonLd(),
-    breadcrumbJsonLd(crumbs),
-    {
-      "@type": "CollectionPage",
-      name: "Work — live sites and builds in development",
-      description:
-        "Ten builds from LEWAY Creatives, with screenshots taken from each live deployment.",
-      url: `${site.url}/work`,
-      mainEntity: {
-        "@type": "ItemList",
-        numberOfItems: projects.length,
-        itemListElement: projects.map((project, i) => ({
-          "@type": "ListItem",
-          position: i + 1,
-          name: project.name,
-          url: `${site.url}/work/${project.slug}`,
-        })),
-      },
+const jsonLd = pageJsonLd(
+  {
+    "@type": "CollectionPage",
+    name: "Work — live sites and builds in development",
+    description: `${projects.length} builds from ${site.name}, with screenshots taken from each live deployment.`,
+    url: `${site.url}/work`,
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: projects.length,
+      itemListElement: projects.map((project, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: project.name,
+        url: `${site.url}/work/${project.slug}`,
+      })),
     },
-  ],
-};
+  },
+  { crumbs },
+);
 
 function Count({ value, label }: { value: number; label: string }) {
   return (
@@ -66,17 +54,14 @@ function Count({ value, label }: { value: number; label: string }) {
 export default function WorkIndexPage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
 
       <main id="main">
         <PageHeader
           crumbs={crumbs}
           title="Work."
-        lead="Ten builds — hospitals, retail, car hire, solar, property, directories and two products of our own. Every screenshot on this site is taken from the deployment itself, and every project links to the real thing."
-      >
+          lead={`${projects.length} builds — hospitals, retail, car hire, solar, property, directories and two products of our own. Every screenshot on this site is taken from the deployment itself, and every project links to the real thing.`}
+        >
         <div className="grid grid-cols-3 gap-x-4 gap-y-6 sm:flex sm:flex-wrap sm:gap-x-12">
           <Count value={live.length} label="Live on their own domain" />
           <Count value={inDevelopment.length} label="Client sites in development" />
@@ -154,15 +139,15 @@ export default function WorkIndexPage() {
           </p>
         </div>
       </section>
-
-        <PageCta
-          title="Your build would be the eleventh."
-          body="Tell us what the site has to do and we will come back with a scope, a timeline and one fixed price — before any work starts."
-          primary={{ label: "Start a project", href: "/contact" }}
-          secondary={{ label: "See what a build costs", href: "/services" }}
-          withReplyDetail
-        />
       </main>
+
+      <PageCta
+        title={`Your build would be number ${projects.length + 1}.`}
+        body="Tell us what the site has to do and we will come back with a scope, a timeline and one fixed price — before any work starts."
+        primary={{ label: "Start a project", href: "/contact" }}
+        secondary={{ label: "See what a build costs", href: "/services" }}
+        withReplyDetail
+      />
     </>
   );
 }

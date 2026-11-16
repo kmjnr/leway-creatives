@@ -1,16 +1,20 @@
 import Link from "next/link";
 import WorkCard from "@/components/ui/WorkCard";
-import { featuredProjects, moreProjects } from "@/data/work";
+import { featuredProjects, moreProjects, projects } from "@/data/work";
 
 export default function Work() {
+  const liveCount = projects.filter((project) => project.status === "live").length;
+  const devCount = projects.length - liveCount;
+
   return (
     <section id="work" aria-label="Selected work" className="bg-leway-paper">
       <div className="container py-24 md:py-32">
         <div className="max-w-2xl">
           <h2 className="font-display text-h2 text-leway-dark">Selected work.</h2>
           <p className="font-body text-lead text-leway-dark/70 mt-5">
-            Ten builds — four client sites in development, six live products.
-            Every screenshot is the real thing, taken from the deployment.
+            {projects.length} builds — {devCount} client sites in development,{" "}
+            {liveCount} live {liveCount === 1 ? "product" : "products"}. Every
+            screenshot is the real thing, taken from the deployment.
           </p>
         </div>
 

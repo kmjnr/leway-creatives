@@ -43,10 +43,7 @@ export default function PageHeader({
         {/* The house mark: one short gold rule, every page. */}
         <span
           aria-hidden="true"
-          className={cn(
-            "block w-10 h-[3px] rounded-pill mt-7",
-            dark ? "bg-leway-gold" : "bg-leway-gold",
-          )}
+          className="block w-10 h-[3px] rounded-pill mt-7 bg-leway-gold"
         />
 
         <h1

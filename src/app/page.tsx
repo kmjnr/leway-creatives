@@ -1,42 +1,37 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import Hero from "@/components/Hero";
+import Work from "@/components/Work";
+import Services from "@/components/Services";
+import HowItWorks from "@/components/HowItWorks";
+import FAQ from "@/components/FAQ";
+import ContactSection from "@/components/ContactSection";
+import DeferredContactForm from "@/components/contact/DeferredContactForm";
+import JsonLd from "@/components/JsonLd";
 import { faqs } from "@/data/faqs";
 import { projects } from "@/data/work";
-import { services, serviceNames } from "@/data/services";
+import { services } from "@/data/services";
 import { site } from "@/data/site";
-import {
-  faqJsonLd,
-  organizationJsonLd,
-  pageMetadata,
-  websiteJsonLd,
-} from "@/lib/metadata";
-
-// Below-the-fold sections load lazily to keep the first paint light.
-const Work = dynamic(() => import("@/components/Work"));
-const Services = dynamic(() => import("@/components/Services"));
-const HowItWorks = dynamic(() => import("@/components/HowItWorks"));
-const Testimonials = dynamic(() => import("@/components/Testimonials"));
-const FAQ = dynamic(() => import("@/components/FAQ"));
-const ContactForm = dynamic(() => import("@/components/ContactForm"));
+import { faqJsonLd, pageJsonLd, pageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = pageMetadata({
   title: "LEWAY Creatives — web design, copywriting & lead generation | Nairobi, Kenya",
   description:
-    "Web design, copywriting and lead generation from one senior team in Nairobi. Ten builds shown as they run, five services with from-prices, and one fixed quote before any work starts.",
+    `Web design, copywriting and lead generation from one senior team in Nairobi. ${projects.length} builds shown as they run, ${services.length} services with from-prices, and one fixed quote before any work starts.`,
   path: "/",
   keywords:
     "web design agency Kenya, web design Nairobi, copywriting agency, lead generation service, B2B lead generation, outsource web design, conversion landing page, LEWAY Creatives",
   absolute: true,
 });
 
+const liveCount = projects.filter((project) => project.status === "live").length;
+
 /** The routes out of the homepage, so the landing page works as a hub. */
 const routes = [
   {
     href: "/work",
     label: "Work",
-    body: `Ten builds with screenshots from the live deployment — ${projects.filter((p) => p.status === "live").length} running on their own domains today.`,
+    body: `${projects.length} builds with screenshots from the live deployment — ${liveCount} running on their own domains today.`,
   },
   {
     href: "/services",
@@ -57,46 +52,37 @@ const routes = [
 
 // Structured data is generated from the same arrays the visible page renders,
 // so the markup can never drift away from the content.
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    organizationJsonLd(serviceNames),
-    websiteJsonLd(),
-    faqJsonLd(faqs),
-    {
-      "@type": "ItemList",
-      name: `${site.name} — selected work`,
-      itemListElement: projects.map((project, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        item: {
-          "@type": "CreativeWork",
-          name: project.name,
-          url: project.url,
-          description: project.summary,
-          creator: { "@id": `${site.url}/#organization` },
-        },
-      })),
-    },
-  ],
-};
+const jsonLd = pageJsonLd(
+  {
+    "@type": "ItemList",
+    name: `${site.name} — selected work`,
+    itemListElement: projects.map((project, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "CreativeWork",
+        name: project.name,
+        url: project.url,
+        description: project.summary,
+        creator: { "@id": `${site.url}/#organization` },
+      },
+    })),
+  },
+  { extra: [faqJsonLd(faqs)] },
+);
 
 export default function Page() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
       <main id="main">
         <Hero />
         <Work />
         <Services />
         <HowItWorks />
-        <Testimonials />
 
         {/* The signposts. The homepage argues the case; these take you deeper. */}
-        <section aria-labelledby="routes-heading" className="bg-leway-paper">
+        <section aria-labelledby="routes-heading" className="bg-leway-paper-2">
           <div className="container pb-24 md:pb-32">
             <h2 id="routes-heading" className="font-display text-h2 text-leway-dark">
               Where to go next.
@@ -128,7 +114,7 @@ export default function Page() {
         </section>
 
         <FAQ />
-        <ContactForm />
+        <ContactSection form={<DeferredContactForm />} />
       </main>
     </>
   );

@@ -22,20 +22,10 @@ mkdirSync(OUT, { recursive: true });
  * region still reads sharp at its display size) and capped at 1200 wide.
  */
 const crops = [
-  // Testimonial portraits — full-frame, square, for a circular crop.
-  { from: "avatar_1.png", rect: [0, 0, 640, 640], out: 480, to: "avatar-mary.jpg" },
-  { from: "avatar_3.png", rect: [0, 0, 640, 640], out: 480, to: "avatar-alan.jpg" },
-  { from: "avatar_6.png", rect: [0, 0, 640, 640], out: 480, to: "avatar-michael.jpg" },
-  { from: "avatar_4.png", rect: [0, 0, 640, 640], out: 480, to: "avatar-alexis.jpg" },
-
-  // Service pages now use generated atmosphere — see scripts/make-generated.mjs.
-  // The old five service crops were retired with them.
-
-  // About + services index.
-  { from: "strategy_design_image.webp", rect: [100, 300, 305, 305], to: "photo-about-team.jpg" },
+  // Services index + contact page. Generated atmosphere now covers the
+  // service pages (scripts/make-generated.mjs), and the About page uses the
+  // founder portrait directly, so only these two derivatives remain in use.
   { from: "strategy_desk_setup.webp", rect: [280, 20, 552, 345], to: "photo-pricing.jpg" },
-
-  // Contact page — the one photo in the set with no defects at full size.
   { from: "contact_image.webp", rect: [190, 0, 1024, 768], out: 1200, to: "contact-desk.jpg" },
 ];
 

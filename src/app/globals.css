@@ -17,8 +17,10 @@
     scroll-behavior: smooth;
   }
 
-  /* Anchored sections clear the fixed bar. */
-  section[id] {
+  /* Anchored sections and headings clear the fixed bar. */
+  section[id],
+  h2[id],
+  h3[id] {
     scroll-margin-top: 6rem;
   }
 
@@ -59,6 +61,15 @@
    */
   .photo {
     filter: saturate(0.92) contrast(1.03);
+  }
+
+  /*
+   * The hero portrait's pointer parallax. The transform itself is written by
+   * Hero.tsx; this only smooths it, so no animation library is needed.
+   */
+  .hero-parallax {
+    will-change: transform;
+    transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 }
 
@@ -161,5 +172,8 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  .hero-parallax {
+    transform: none !important;
   }
 }

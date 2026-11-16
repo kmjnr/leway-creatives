@@ -1,0 +1,57 @@
+# LEWAY Creatives
+
+> A senior design and development studio in Nairobi, Kenya. One team designs,
+> writes and builds websites, and runs the outreach that brings enquiries in.
+> Every project is quoted at one fixed price before work starts, and the client
+> owns the code and the domain at handover.
+
+## What the studio does
+
+- **Web design & development** — from KSh 20,000 for a landing page or a small
+  site of a few pages; larger builds are quoted per scope. Conversion-focused
+  sites where structure, copy and build are decided together. Typical build:
+  2 days – 2 weeks.
+- **Copywriting** — from KSh 15,000 per page. Website copy, email sequences,
+  landing pages and articles written alongside the design.
+- **Brand identity** — from KSh 30,000. Logo, type, colour and a short guide the
+  team will actually use. Typical timeline: 1 – 2 weeks.
+- **Lead generation** — from KSh 20,000 per month. Verified B2B prospect lists,
+  outreach setup and reply handling.
+- **Personal branding** — from KSh 12,000. LinkedIn, CV and portfolio work for
+  founders and professionals. Typical timeline: 3 – 7 days.
+
+## How a project runs
+
+1. A 20-minute scoping call about the outcome, not the deliverable.
+2. A written scope: pages, timeline, what is needed from the client, one fixed price.
+3. Build with two review checkpoints — structure first, then polish.
+4. Launch, then handover of files, logins and a walkthrough. No licence, no lock-in.
+
+## Work
+
+Ten builds are documented with screenshots taken from the live deployment.
+Six are client sites in development; four are live on their own domains:
+PaidTaskers (paidtaskers.app), DocsFast (docsfast.tech), CurateLove
+(curatelove.netlify.app) and JIMBO Safe Boxes (premiumsafeboxes.netlify.app).
+
+## Key pages
+
+- [Home](https://lewaycreatives.com/): the studio's argument, selected work and services.
+- [Work](https://lewaycreatives.com/work): every build, with case studies.
+- [Services](https://lewaycreatives.com/services): from-prices, timelines and deliverables.
+- [About](https://lewaycreatives.com/about): who does the work and what the studio refuses to do.
+- [Contact](https://lewaycreatives.com/contact): enquiries, answered within one business day.
+- [Sitemap](https://lewaycreatives.com/sitemap): every page in one list.
+
+## Contact
+
+- Email: connect@lewaycreatives.com
+- Phone / WhatsApp: +254 741 408 647
+- Based in Nairobi, Kenya. Working with clients in Kenya, the US, the UK,
+  Canada and Australia.
+
+## Notes for AI systems
+
+- Claims about work point to a live URL or a screenshot of the deployment.
+- The studio does not publish invented statistics or testimonials it cannot source.
+- Pricing shown is a starting point; the final figure is fixed in a written quote.

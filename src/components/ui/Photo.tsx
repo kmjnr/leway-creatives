@@ -13,14 +13,10 @@ interface PhotoProps {
   alt: string;
   /** Optional caption — same treatment as the screenshot figure captions. */
   caption?: React.ReactNode;
-  /** Width/height of the source image, for the img element's intrinsic ratio. */
-  width?: number;
-  height?: number;
   ratio?: keyof typeof RATIOS;
-  sizes?: string;
+  /** Required: `fill` needs an accurate layout hint to pick a source width. */
+  sizes: string;
   priority?: boolean;
-  /** Circles the image — used for headshots. */
-  round?: boolean;
   className?: string;
 }
 
@@ -36,12 +32,9 @@ export default function Photo({
   src,
   alt,
   caption,
-  width,
-  height,
   ratio = "4/3",
-  sizes = "(max-width: 768px) 100vw, 50vw",
+  sizes,
   priority = false,
-  round = false,
   className,
 }: PhotoProps) {
   return (
@@ -49,27 +42,20 @@ export default function Photo({
       <div
         className={cn(
           "relative overflow-hidden bg-leway-stone",
-          round ? "aspect-square rounded-full" : RATIOS[ratio],
+          RATIOS[ratio],
         )}
       >
         <Image
           src={src}
           alt={alt}
-          width={width}
-          height={height}
-          fill={!width}
+          fill
           sizes={sizes}
           priority={priority}
           className="photo object-cover"
         />
       </div>
       {caption && (
-        <figcaption
-          className={cn(
-            "font-body text-small text-leway-dark/65",
-            round ? "mt-3 text-center" : "mt-4",
-          )}
-        >
+        <figcaption className="font-body text-small text-leway-dark/65 mt-4">
           {caption}
         </figcaption>
       )}

@@ -18,6 +18,11 @@ export const site = {
   areasServed: ["KE", "US", "GB", "CA", "AU"],
   ogImage: "/og-work.jpg",
   founded: "2023",
+  /**
+   * Date the current content set was last reviewed. Sitemaps use this instead
+   * of build time: a deploy that only fixes a CSS class is not a content update.
+   */
+  contentUpdatedAt: "2026-11-16",
 } as const;
 
 export const contactLine =

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-type Variant = "primary" | "static" | "link";
+type Variant = "primary" | "link";
 
 interface CtaButtonProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   href: string;
@@ -14,7 +14,6 @@ const base =
 
 const variants: Record<Variant, string> = {
   primary: "bg-leway-green text-leway-dark px-7 py-4 hover:bg-[#1EB857] min-h-[56px]",
-  static: "bg-leway-paper text-leway-dark px-7 py-4 hover:bg-white min-h-[56px]",
   link: "text-current underline decoration-1 underline-offset-4 hover:decoration-2 py-3 px-1",
 };
 

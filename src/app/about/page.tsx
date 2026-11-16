@@ -3,18 +3,14 @@ import Link from "next/link";
 import Image from "next/image";
 import PageHeader from "@/components/PageHeader";
 import PageCta from "@/components/PageCta";
+import JsonLd from "@/components/JsonLd";
 import WorkCard from "@/components/ui/WorkCard";
 import Photo from "@/components/ui/Photo";
 import { CtaButton } from "@/components/ui/CtaButton";
 import { projects } from "@/data/work";
-import { services, serviceNames } from "@/data/services";
+import { services } from "@/data/services";
 import { site } from "@/data/site";
-import {
-  breadcrumbJsonLd,
-  organizationJsonLd,
-  pageMetadata,
-  websiteJsonLd,
-} from "@/lib/metadata";
+import { pageJsonLd, pageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = pageMetadata({
   title: "About — a small studio in Nairobi that ships",
@@ -56,30 +52,22 @@ const refusals = [
 ];
 
 export default function AboutPage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      organizationJsonLd(serviceNames),
-      websiteJsonLd(),
-      breadcrumbJsonLd(crumbs),
-      {
-        "@type": "AboutPage",
-        name: `About ${site.name}`,
-        description:
-          "Who builds the work, how a project runs, and what the studio refuses to do.",
-        url: `${site.url}/about`,
-      },
-    ],
-  };
+  const jsonLd = pageJsonLd(
+    {
+      "@type": "AboutPage",
+      name: `About ${site.name}`,
+      description:
+        "Who builds the work, how a project runs, and what the studio refuses to do.",
+      url: `${site.url}/about`,
+    },
+    { crumbs },
+  );
 
   const proof = projects.find((p) => p.slug === "lifeline-hospitals") ?? projects[0];
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
 
       <main id="main">
         <PageHeader
@@ -271,7 +259,7 @@ export default function AboutPage() {
 
             <div className="flex flex-wrap items-center gap-x-10 gap-y-4 mt-12">
               <CtaButton href="/work" variant="link">
-                All ten builds
+                All {projects.length} builds
               </CtaButton>
               <Link
                 href="/services"

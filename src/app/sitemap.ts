@@ -10,7 +10,8 @@ const BASE_URL = site.url;
  * cannot be added without appearing here.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
+  // A stable content date, not the build clock — see site.contentUpdatedAt.
+  const lastModified = new Date(site.contentUpdatedAt);
 
   const top = [
     { path: "", priority: 1.0, changeFrequency: "weekly" as const },
@@ -23,7 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...top.map((entry) => ({
       url: `${BASE_URL}${entry.path}`,
-      lastModified: now,
+      lastModified,
       changeFrequency: entry.changeFrequency,
       priority: entry.priority,
     })),
@@ -31,7 +32,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // One page per service.
     ...services.map((service) => ({
       url: `${BASE_URL}/services/${service.slug}`,
-      lastModified: now,
+      lastModified,
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
@@ -39,20 +40,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // One page per project, case studies ranking just under the indexes.
     ...projects.map((project) => ({
       url: `${BASE_URL}/work/${project.slug}`,
-      lastModified: now,
+      lastModified,
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
 
     {
+      url: `${BASE_URL}/sitemap`,
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.3,
+    },
+    {
       url: `${BASE_URL}/privacy-policy`,
-      lastModified: now,
+      lastModified,
       changeFrequency: "yearly" as const,
       priority: 0.2,
     },
     {
       url: `${BASE_URL}/terms-and-conditions`,
-      lastModified: now,
+      lastModified,
       changeFrequency: "yearly" as const,
       priority: 0.2,
     },

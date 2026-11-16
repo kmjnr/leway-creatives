@@ -17,5 +17,10 @@ jobs:
       with:
         node-version: 24
         cache: 'npm'
-    - run: npm install
-    - run: npm run lint --
+    - run: npm ci
+    - name: Lint
+      run: npm run lint
+    - name: Type check
+      run: npx tsc --noEmit
+    - name: Build
+      run: npm run build

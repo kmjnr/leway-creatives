@@ -1,5 +1,5 @@
 import { CtaButton } from "@/components/ui/CtaButton";
-import { site } from "@/data/site";
+import { replyPromises, site } from "@/data/site";
 import { cn } from "@/lib/utils";
 
 interface PageCtaProps {
@@ -17,11 +17,7 @@ interface PageCtaProps {
   className?: string;
 }
 
-const promises = [
-  "We reply within one business day",
-  "A 20-minute scoping call, no deck",
-  "A fixed quote before any work starts",
-];
+const promises = replyPromises;
 
 /** The closing band on interior pages: one decision, stated plainly. */
 export default function PageCta({
@@ -39,7 +35,8 @@ export default function PageCta({
     <section
       aria-label="Next step"
       className={cn(
-        dark ? "bg-leway-dark" : tone === "mint" ? "bg-leway-mint" : "bg-leway-paper-2",
+        dark ? "bg-leway-dark text-leway-paper" : "text-leway-dark",
+        !dark && (tone === "mint" ? "bg-leway-mint" : "bg-leway-paper-2"),
         className,
       )}
     >

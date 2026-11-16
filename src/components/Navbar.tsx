@@ -28,6 +28,9 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const servicesRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const wasOpen = useRef(false);
 
   // Lock scroll behind the mobile menu.
   useEffect(() => {
@@ -58,12 +61,43 @@ export default function Navbar() {
     return () => document.removeEventListener("keydown", onKey);
   }, [servicesOpen]);
 
-  // Escape closes the mobile menu.
+  // The mobile menu is a modal dialog: Escape closes it, Tab stays inside it,
+  // and focus returns to the trigger on close.
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      if (wasOpen.current) {
+        menuButtonRef.current?.focus();
+        wasOpen.current = false;
+      }
+      return;
+    }
+
+    wasOpen.current = true;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setOpen(false);
+        return;
+      }
+      if (e.key !== "Tab") return;
+
+      const root = dialogRef.current;
+      if (!root) return;
+      const focusable = Array.from(
+        root.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
+      ).filter((el) => el.offsetParent !== null);
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
+
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
@@ -188,6 +222,7 @@ export default function Navbar() {
 
           {/* Mobile menu trigger */}
           <button
+            ref={menuButtonRef}
             type="button"
             onClick={() => setOpen(true)}
             className="md:hidden flex items-center justify-center w-11 h-11 rounded-pill text-leway-dark"
@@ -203,6 +238,7 @@ export default function Navbar() {
       {/* Mobile menu — flat pine field, large type, one action. */}
       {open && (
         <div
+          ref={dialogRef}
           id="mobile-menu"
           className="fixed inset-0 z-[210] bg-leway-dark text-leway-paper flex flex-col md:hidden overflow-y-auto"
           role="dialog"

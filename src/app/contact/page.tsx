@@ -2,19 +2,16 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
-import ContactForm from "@/components/ContactForm";
+import ContactSection from "@/components/ContactSection";
+import ContactFormIsland from "@/components/contact/ContactFormIsland";
+import JsonLd from "@/components/JsonLd";
 import FaqList from "@/components/ui/FaqList";
 import Photo from "@/components/ui/Photo";
 import { faqs } from "@/data/faqs";
-import { services, serviceNames } from "@/data/services";
+import { services } from "@/data/services";
 import { projects } from "@/data/work";
 import { site } from "@/data/site";
-import {
-  breadcrumbJsonLd,
-  organizationJsonLd,
-  pageMetadata,
-  websiteJsonLd,
-} from "@/lib/metadata";
+import { pageJsonLd, pageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = pageMetadata({
   title: "Contact — start a project",
@@ -51,28 +48,20 @@ const nextSteps = [
 ];
 
 export default function ContactPage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      organizationJsonLd(serviceNames),
-      websiteJsonLd(),
-      breadcrumbJsonLd(crumbs),
-      {
-        "@type": "ContactPage",
-        name: `Contact ${site.name}`,
-        description:
-          "Project enquiries, scoping calls and fixed quotes for web design, copywriting and lead generation.",
-        url: `${site.url}/contact`,
-      },
-    ],
-  };
+  const jsonLd = pageJsonLd(
+    {
+      "@type": "ContactPage",
+      name: `Contact ${site.name}`,
+      description:
+        "Project enquiries, scoping calls and fixed quotes for web design, copywriting and lead generation.",
+      url: `${site.url}/contact`,
+    },
+    { crumbs },
+  );
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
 
       <main id="main">
         <PageHeader
@@ -83,7 +72,7 @@ export default function ContactPage() {
         />
 
         {/* The form continues the dark field the header opened. */}
-        <ContactForm title="" lead="" />
+        <ContactSection title="" lead="" form={<ContactFormIsland />} />
 
         {/* What happens next. */}
         <section aria-labelledby="next-heading" className="bg-leway-paper">
@@ -183,7 +172,7 @@ export default function ContactPage() {
                   >
                     work page shows what came out of them
                   </Link>
-                  . {services.length} services, ten builds, no gate.
+                  . {services.length} services, {projects.length} builds, no gate.
                 </p>
 
                 {/* A taste of the work, so someone deciding whether to get in

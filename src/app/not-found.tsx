@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { services } from "@/data/services";
+import { projects } from "@/data/work";
 
 export const metadata: Metadata = {
   title: "Page not found",
   description:
     "That page does not exist on lewaycreatives.com. Here are the routes that do.",
-  robots: { index: false, follow: true },
 };
 
 /** The useful routes, so a 404 is a detour rather than a dead end. */
 const routes = [
-  { href: "/work", label: "Work", body: "Ten builds with screenshots from the deployment." },
-  { href: "/services", label: "Services", body: "Five services, each with a from-price." },
+  { href: "/work", label: "Work", body: `${projects.length} builds with screenshots from the deployment.` },
+  { href: "/services", label: "Services", body: `${services.length} services, each with a from-price.` },
   { href: "/about", label: "About", body: "Who does the work and how a project runs." },
   { href: "/contact", label: "Contact", body: "One reply within a business day." },
 ];

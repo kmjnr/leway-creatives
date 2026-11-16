@@ -4,20 +4,15 @@ import { notFound } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import PageCta from "@/components/PageCta";
+import JsonLd from "@/components/JsonLd";
 import FaqList from "@/components/ui/FaqList";
 import Photo from "@/components/ui/Photo";
 import WorkCard from "@/components/ui/WorkCard";
 import { CtaButton } from "@/components/ui/CtaButton";
-import { getService, services, serviceNames } from "@/data/services";
+import { getService, services } from "@/data/services";
 import { getProject, projectsForService } from "@/data/work";
 import { site } from "@/data/site";
-import {
-  breadcrumbJsonLd,
-  faqJsonLd,
-  organizationJsonLd,
-  pageMetadata,
-  websiteJsonLd,
-} from "@/lib/metadata";
+import { faqJsonLd, pageJsonLd, pageMetadata } from "@/lib/metadata";
 
 export function generateStaticParams() {
   return services.map((service) => ({ slug: service.slug }));
@@ -32,12 +27,16 @@ export async function generateMetadata({
   const service = getService(slug);
   if (!service) return {};
 
+  const proof = getProject(service.proofProject);
+
   return pageMetadata({
     title: `${service.title} — from ${service.price.amount}${service.price.suffix ?? ""}`,
     description: service.summary,
     path: `/services/${service.slug}`,
-    ogImage: getProject(service.proofProject)?.image ?? site.ogImage,
-    ogImageAlt: getProject(service.proofProject)?.imageAlt ?? `${site.name} — selected work`,
+    ogImage: proof?.image ?? site.ogImage,
+    ogImageAlt: proof?.imageAlt ?? `${site.name} — selected work`,
+    ogImageWidth: 1200,
+    ogImageHeight: proof ? 750 : 630,
   });
 }
 
@@ -64,48 +63,52 @@ export default async function ServicePage({
     { label: service.short },
   ];
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      organizationJsonLd(serviceNames),
-      websiteJsonLd(),
-      breadcrumbJsonLd(crumbs),
-      {
-        "@type": "Service",
-        name: service.title,
-        serviceType: service.title,
-        description: service.summary,
+  const priceValue = service.price.amount.replace(/[^\d]/g, "");
+  const monthly = Boolean(service.price.suffix);
+
+  const jsonLd = pageJsonLd(
+    {
+      "@type": "Service",
+      name: service.title,
+      serviceType: service.title,
+      description: service.summary,
+      url: `${site.url}/services/${service.slug}`,
+      provider: { "@id": `${site.url}/#organization` },
+      areaServed: site.areasServed.map((code) => ({
+        "@type": "Country",
+        identifier: code,
+      })),
+      offers: {
+        "@type": "Offer",
         url: `${site.url}/services/${service.slug}`,
-        provider: { "@id": `${site.url}/#organization` },
-        areaServed: site.areasServed.map((code) => ({
-          "@type": "Country",
-          identifier: code,
-        })),
-        offers: {
-          "@type": "Offer",
+        priceCurrency: "KES",
+        price: priceValue,
+        availability: "https://schema.org/InStock",
+        description: service.price.note,
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: priceValue,
           priceCurrency: "KES",
-          price: service.price.amount.replace(/[^\d]/g, ""),
-          priceSpecification: {
-            "@type": "PriceSpecification",
-            minPrice: service.price.amount.replace(/[^\d]/g, ""),
-            priceCurrency: "KES",
-            valueAddedTaxIncluded: false,
-          },
-          description: service.price.note,
-          availability: "https://schema.org/InStock",
+          valueAddedTaxIncluded: false,
+          ...(monthly
+            ? {
+                unitCode: "MON",
+                referenceQuantity: {
+                  "@type": "QuantitativeValue",
+                  value: 1,
+                  unitCode: "MON",
+                },
+              }
+            : {}),
         },
       },
-      // The two questions on this page, and only those, so the markup cannot drift.
-      faqJsonLd(service.faqs),
-    ],
-  };
+    },
+    { crumbs, extra: [faqJsonLd(service.faqs)] },
+  );
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
 
       <main id="main">
         <header className="bg-leway-paper pt-28 md:pt-36">

@@ -4,18 +4,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
 import PageCta from "@/components/PageCta";
+import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import WorkCard from "@/components/ui/WorkCard";
 import { CtaButton } from "@/components/ui/CtaButton";
 import { getProject, projects, statusLabel } from "@/data/work";
-import { serviceNames, services } from "@/data/services";
+import { services } from "@/data/services";
 import { site } from "@/data/site";
-import {
-  breadcrumbJsonLd,
-  organizationJsonLd,
-  pageMetadata,
-  websiteJsonLd,
-} from "@/lib/metadata";
+import { pageJsonLd, pageMetadata } from "@/lib/metadata";
 
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
@@ -36,6 +32,8 @@ export async function generateMetadata({
     path: `/work/${project.slug}`,
     ogImage: project.image,
     ogImageAlt: project.imageAlt,
+    ogImageWidth: 1200,
+    ogImageHeight: 750,
     ogType: "article",
   });
 }
@@ -64,31 +62,23 @@ export default async function CaseStudyPage({
     { label: project.name },
   ];
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      organizationJsonLd(serviceNames),
-      websiteJsonLd(),
-      breadcrumbJsonLd(crumbs),
-      {
-        "@type": "CreativeWork",
-        name: `${project.name} — ${project.type}`,
-        description: project.summary,
-        url: `${site.url}/work/${project.slug}`,
-        image: `${site.url}${project.image}`,
-        about: project.sector,
-        creator: { "@id": `${site.url}/#organization` },
-        ...(dev ? {} : { sameAs: project.url }),
-      },
-    ],
-  };
+  const jsonLd = pageJsonLd(
+    {
+      "@type": "CreativeWork",
+      name: `${project.name} — ${project.type}`,
+      description: project.summary,
+      url: `${site.url}/work/${project.slug}`,
+      image: `${site.url}${project.image}`,
+      about: project.sector,
+      creator: { "@id": `${site.url}/#organization` },
+      ...(dev ? {} : { sameAs: project.url }),
+    },
+    { crumbs },
+  );
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
 
       <main id="main">
         {/* Masthead — the claim, then the evidence, in that order. */}

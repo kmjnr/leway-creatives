@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { site } from "@/data/site";
+import { services } from "@/data/services";
 
 interface PageMetaOptions {
   /** Goes through the layout's title template unless `absolute` is set. */
@@ -10,6 +11,9 @@ interface PageMetaOptions {
   /** Defaults to the studio OG card. */
   ogImage?: string;
   ogImageAlt?: string;
+  /** Actual pixel size of `ogImage`; defaults suit the 1200×630 studio card. */
+  ogImageWidth?: number;
+  ogImageHeight?: number;
   ogType?: "website" | "article";
   keywords?: string;
   /** Skips the "| LEWAY Creatives" template — used by the homepage only. */
@@ -26,6 +30,8 @@ export function pageMetadata({
   path,
   ogImage = site.ogImage,
   ogImageAlt = `${site.name} — selected work`,
+  ogImageWidth = 1200,
+  ogImageHeight = 630,
   ogType = "website",
   keywords,
   absolute = false,
@@ -43,7 +49,7 @@ export function pageMetadata({
       url,
       siteName: site.name,
       type: ogType,
-      images: [{ url: ogImage, width: 1200, height: 630, alt: ogImageAlt }],
+      images: [{ url: ogImage, width: ogImageWidth, height: ogImageHeight, alt: ogImageAlt }],
     },
     twitter: {
       card: "summary_large_image",
@@ -51,6 +57,35 @@ export function pageMetadata({
       description,
       images: [ogImage],
     },
+  };
+}
+
+/** Typical from-price span, derived from the rate card rather than restated. */
+const prices = services.map((service) =>
+  Number(service.price.amount.replace(/[^\d]/g, "")),
+);
+const priceRange = `KSh ${Math.min(...prices).toLocaleString("en-KE")} – KSh ${Math.max(...prices).toLocaleString("en-KE")}`;
+
+/**
+ * Composes the nodes every page shares. Pass the page's own node(s) and,
+ * where relevant, its breadcrumbs; the result is one @graph with stable @ids.
+ */
+export function pageJsonLd(
+  page: Record<string, unknown> | Record<string, unknown>[],
+  options: {
+    crumbs?: { label: string; href?: string }[];
+    extra?: Record<string, unknown>[];
+  } = {},
+) {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      organizationJsonLd(services.map((service) => service.title)),
+      websiteJsonLd(),
+      ...(options.crumbs ? [breadcrumbJsonLd(options.crumbs)] : []),
+      ...(Array.isArray(page) ? page : [page]),
+      ...(options.extra ?? []),
+    ],
   };
 }
 
@@ -68,7 +103,7 @@ export function organizationJsonLd(serviceNames: string[]) {
     logo: `${site.url}/images/leway_creatives_logo.png`,
     description:
       "Web design, copywriting, brand identity, lead generation and personal branding from one senior team in Nairobi, Kenya.",
-    priceRange: "KSh 12,000 – KSh 250,000",
+    priceRange,
     foundingDate: site.founded,
     address: {
       "@type": "PostalAddress",

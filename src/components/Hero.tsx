@@ -1,14 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef } from "react";
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-  useReducedMotion,
-} from "framer-motion";
+import { useCallback, useEffect, useRef } from "react";
 import { ArrowRight } from "lucide-react";
 
 const founder = {
@@ -17,26 +10,45 @@ const founder = {
   caption: "Lewis Kim — the person who scopes, designs and builds the work.",
 };
 
+/** Maximum pointer offset, in pixels, at the edge of the hero. */
+const RANGE_X = 6;
+const RANGE_Y = 5;
+
 export default function Hero() {
-  const reduceMotion = useReducedMotion();
-  const ref = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const figureRef = useRef<HTMLElement>(null);
+  const frame = useRef<number | null>(null);
 
-  // Pointer parallax on the hero portrait — transform only, disabled for
-  // reduced-motion users and on touch (no mousemove events fire).
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const sx = useSpring(mx, { stiffness: 120, damping: 18 });
-  const sy = useSpring(my, { stiffness: 120, damping: 18 });
-  const imageX = useTransform(sx, [-0.5, 0.5], reduceMotion ? [0, 0] : [6, -6]);
-  const imageY = useTransform(sy, [-0.5, 0.5], reduceMotion ? [0, 0] : [5, -5]);
+  useEffect(() => {
+    return () => {
+      if (frame.current !== null) cancelAnimationFrame(frame.current);
+    };
+  }, []);
 
-  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = ref.current?.getBoundingClientRect();
-    if (!rect) return;
-    mx.set((e.clientX - rect.left) / rect.width - 0.5);
-    my.set((e.clientY - rect.top) / rect.height - 0.5);
-  };
-  const handleLeave = () => { mx.set(0); my.set(0); };
+  // Pointer parallax on the hero portrait — transform only, one frame per
+  // move, and disabled for reduced-motion users. Touch devices never fire
+  // mousemove, so the image simply stays still there.
+  const handleMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const rect = sectionRef.current?.getBoundingClientRect();
+    const figure = figureRef.current;
+    if (!rect || !figure) return;
+
+    const x = (0.5 - (e.clientX - rect.left) / rect.width) * RANGE_X * 2;
+    const y = (0.5 - (e.clientY - rect.top) / rect.height) * RANGE_Y * 2;
+
+    if (frame.current !== null) cancelAnimationFrame(frame.current);
+    frame.current = requestAnimationFrame(() => {
+      figure.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0)`;
+    });
+  }, []);
+
+  const handleLeave = useCallback(() => {
+    if (frame.current !== null) cancelAnimationFrame(frame.current);
+    if (figureRef.current) {
+      figureRef.current.style.transform = "translate3d(0, 0, 0)";
+    }
+  }, []);
 
   return (
     <section
@@ -44,7 +56,7 @@ export default function Hero() {
       className="relative bg-leway-dark text-leway-paper overflow-hidden"
     >
       <div
-        ref={ref}
+        ref={sectionRef}
         onMouseMove={handleMove}
         onMouseLeave={handleLeave}
         className="container grid grid-cols-1 lg:grid-cols-12 gap-14 lg:gap-10 items-center pt-32 pb-20 lg:pt-40 lg:pb-28"
@@ -83,13 +95,13 @@ export default function Hero() {
 
           <p className="font-body text-small text-leway-paper/70 max-w-[44ch]">
             Hospitals, retail, car hire, solar and directory products — every
-            project below links to the live site, not a mockup.
+            project below links to the real deployment, not a mockup.
           </p>
         </div>
 
         {/* The founder portrait — one photograph, the hero's parallax subject. */}
         <div className="lg:col-span-6 relative">
-          <motion.figure style={{ x: imageX, y: imageY }} className="relative">
+          <figure ref={figureRef} className="hero-parallax relative">
             <div className="relative aspect-[16/10] overflow-hidden rounded-card bg-leway-forest">
               <Image
                 src={founder.src}
@@ -103,7 +115,7 @@ export default function Hero() {
             <figcaption className="mt-3 font-body text-small text-leway-paper/70 sm:text-right">
               {founder.caption}
             </figcaption>
-          </motion.figure>
+          </figure>
         </div>
       </div>
     </section>
