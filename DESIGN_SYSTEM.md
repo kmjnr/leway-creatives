@@ -6,9 +6,10 @@ multipage build — follows it. When a rule and a habit conflict, the rule wins.
 ## 1. The argument comes first
 
 A section exists because it proves a claim, not because templates have that
-section. The homepage order is the argument: **hero (proof-led) → selected work →
-services → process → client words → FAQ → contact.** New pages (case studies,
-service pages, about) must state their claim-and-proof order before building.
+section. The homepage order is the argument: **hero (the person behind the work)
+→ selected work (the proof) → services → process → client words → FAQ →
+contact.** New pages (case studies, service pages, about) must state their
+claim-and-proof order before building.
 
 The site's one idea: **the work is the proof.** Every page shows real
 screenshots of live builds — never stock, never generated stand-ins, never
@@ -94,6 +95,13 @@ Two kinds of image, two jobs. They never swap roles.
     independent, linked entries (the five rows under "Services"), where each
     row carries exactly one image of its own discipline and none carries a
     screenshot. The list is one catalogue, not five stacked decorations.
+- The hero portrait is the one photograph rendered directly in `Hero.tsx`
+  rather than through `Photo.tsx`, because it is the parallax subject; it still
+  carries the `.photo` grade. `scripts/make-hero.mjs` crops the GPT Image 2.5
+  Flare refinement of the founder's own photograph to 16:10, 1200×750 WebP q82.
+  The refinement preserves his face and shows a finished design on the laptop,
+  not outline wireframes. The About page uses the supplied portrait itself as
+  a square WebP. Caption both as the founder; the user confirmed the identity.
 - **Generated atmosphere** obeys every photography rule above. Section images
   made with GPT Image 2.6 (Flora) are exported by `scripts/make-generated.mjs`
   into `public/images/generated/` as 1200×750 WebP q82 and always render
@@ -109,7 +117,8 @@ Two kinds of image, two jobs. They never swap roles.
 - Content is visible without JavaScript. Never animate from `opacity: 0` in
   SSR-rendered markup.
 - Transform/opacity only; `prefers-reduced-motion` honoured globally.
-- The one signature move: pointer parallax on the hero work collage.
+- The one signature move: pointer parallax on the hero portrait. The proof
+  stays still, in the work section below it.
   Feedback on hover/press everywhere else. No scroll reveals.
 
 ## 8. Accessibility contract

@@ -10,25 +10,25 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { featuredProjects } from "@/data/work";
 
-const mainShot = featuredProjects[0];
-const sideShot = featuredProjects[1];
+const founder = {
+  src: "/images/photography/hero-founder.webp",
+  alt: "Lewis Kim, founder of LEWAY Creatives, at his desk with a finished website design open on the laptop",
+  caption: "Lewis Kim — the person who scopes, designs and builds the work.",
+};
 
 export default function Hero() {
   const reduceMotion = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
 
-  // Pointer parallax on the work collage — transform only, disabled for
+  // Pointer parallax on the hero portrait — transform only, disabled for
   // reduced-motion users and on touch (no mousemove events fire).
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const sx = useSpring(mx, { stiffness: 120, damping: 18 });
   const sy = useSpring(my, { stiffness: 120, damping: 18 });
-  const mainX = useTransform(sx, [-0.5, 0.5], reduceMotion ? [0, 0] : [5, -5]);
-  const mainY = useTransform(sy, [-0.5, 0.5], reduceMotion ? [0, 0] : [4, -4]);
-  const sideX = useTransform(sx, [-0.5, 0.5], reduceMotion ? [0, 0] : [-12, 12]);
-  const sideY = useTransform(sy, [-0.5, 0.5], reduceMotion ? [0, 0] : [-8, 8]);
+  const imageX = useTransform(sx, [-0.5, 0.5], reduceMotion ? [0, 0] : [6, -6]);
+  const imageY = useTransform(sy, [-0.5, 0.5], reduceMotion ? [0, 0] : [5, -5]);
 
   const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = ref.current?.getBoundingClientRect();
@@ -83,47 +83,25 @@ export default function Hero() {
 
           <p className="font-body text-small text-leway-paper/70 max-w-[44ch]">
             Hospitals, retail, car hire, solar and directory products — every
-            screenshot on this page is the live site, not a mockup.
+            project below links to the live site, not a mockup.
           </p>
         </div>
 
-        {/* Work collage — real client builds, pointer parallax */}
-        <div className="lg:col-span-6 relative pb-10 sm:pb-14 lg:pb-0">
-          <motion.figure style={{ x: mainX, y: mainY }} className="relative z-10">
-            <div className="rounded-[1.5rem] bg-leway-paper p-2.5">
-              <div className="relative aspect-[16/10] overflow-hidden rounded-[1rem]">
-                <Image
-                  src={mainShot.image}
-                  alt={mainShot.imageAlt}
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 46vw"
-                  className="object-cover object-top"
-                />
-              </div>
+        {/* The founder portrait — one photograph, the hero's parallax subject. */}
+        <div className="lg:col-span-6 relative">
+          <motion.figure style={{ x: imageX, y: imageY }} className="relative">
+            <div className="relative aspect-[16/10] overflow-hidden rounded-card bg-leway-forest">
+              <Image
+                src={founder.src}
+                alt={founder.alt}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 46vw"
+                className="photo object-cover"
+              />
             </div>
             <figcaption className="mt-3 font-body text-small text-leway-paper/70 sm:text-right">
-              {mainShot.name} — Nairobi hospital, client build
-            </figcaption>
-          </motion.figure>
-
-          <motion.figure
-            style={{ x: sideX, y: sideY }}
-            className="absolute -bottom-2 sm:-bottom-6 -left-2 sm:-left-10 z-20 w-[52%] sm:w-[46%] hidden sm:block"
-          >
-            <div className="rounded-[1.25rem] bg-leway-paper p-2">
-              <div className="relative aspect-[16/10] overflow-hidden rounded-[0.75rem]">
-                <Image
-                  src={sideShot.image}
-                  alt={sideShot.imageAlt}
-                  fill
-                  sizes="(max-width: 1024px) 30vw, 18vw"
-                  className="object-cover object-top"
-                />
-              </div>
-            </div>
-            <figcaption className="mt-2 font-body text-small text-leway-paper/70">
-              {sideShot.name} — electronics retail, client build
+              {founder.caption}
             </figcaption>
           </motion.figure>
         </div>

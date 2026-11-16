@@ -115,8 +115,9 @@ export default function AboutPage() {
                 </p>
 
                 <Photo
-                  src="/images/photography/photo-about-team.jpg"
-                  alt="A person in a navy blazer seen in profile during a working conversation"
+                  src="/images/photography/founder-portrait.webp"
+                  alt="Lewis Kim, founder of LEWAY Creatives"
+                  caption="Lewis Kim — the person who scopes, designs and builds the work."
                   ratio="1/1"
                   sizes="(max-width: 1024px) 100vw, 320px"
                   className="mt-10 max-w-xs"
