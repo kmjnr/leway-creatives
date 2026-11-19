@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import Script from 'next/script';
 import { Fraunces, Outfit } from 'next/font/google';
 import './globals.css';
 import ScrollToTop from '@/components/ScrollToTop';
@@ -73,6 +74,16 @@ export default function RootLayout({
     return (
         <html lang="en" className={`${fraunces.variable} ${outfit.variable}`}>
             <body className="min-h-screen bg-leway-paper font-body text-leway-dark antialiased">
+                <Script
+                    id="gtm-datalayer"
+                    strategy="afterInteractive"
+                >{`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());`}</Script>
+                <Script
+                    src="https://www.googletagmanager.com/gtm.js?id=GTM-KS2CH4LL"
+                    strategy="afterInteractive"
+                />
                 <a href="#main" className="skip-link">
                     Skip to content
                 </a>
